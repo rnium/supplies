@@ -1,0 +1,53 @@
+<odoo>
+    <data>
+        <template id="portal_supplier_registration">
+            <t t-call="website.layout">
+<!--                <script type="text/javascript" src="/supplier_management/static/src/js/registration.js" defer=""/>-->
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            <div class="card my-5 p-4">
+<!--                                <div class="card-header">-->
+<!--                                    <h3 class="text-center">Supplier Registration</h3>-->
+<!--                                </div>-->
+                                <div class="form-group my-3" >
+                                    <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="'${csrf_token}'"/>
+<!--                                    <label for="email">Enter Your Email to start the registration</label>-->
+                                    <div class="form-floating">
+                                      <input type="email" class="form-control mb-2" id="email" placeholder="name@example.com"/>
+                                      <label for="floatingInput">Your Email address</label>
+                                    </div>
+                                    <div class="form-floating">
+                                      <input type="text" class="form-control" id="otp" placeholder="OTP"/>
+                                      <label for="floatingInput">Enter The OTP</label>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-danger" id="alert_container" style="display: none;">
+                                    <strong class="d-block">Error!</strong>
+                                    <span class="error_message_text" >
+                                            Something went wrong. Please try again later.
+                                    </span>
+                                </div>
+                                <button class="btn btn-primary" id="send_otp_btn">Send OTP</button>
+                                <button class="btn btn-primary" id="verify_otp_btn" style="display: none;">Verify OTP</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+<!--            <div class="container">-->
+<!--                    <div class="row">-->
+<!--                        <div class="col-md-6 offset-md-3">-->
+<!--                            <div class="form-group" >-->
+<!--                                <label for="email">Email</label>-->
+<!--                                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email"/>-->
+<!--                                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+<!--                            </div>-->
+<!--                            <button class="btn btn-primary">Send OTP</button>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+        </template>
+    </data>
+</odoo>

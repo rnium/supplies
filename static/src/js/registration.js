@@ -1,6 +1,7 @@
 // ELEMENT IDs
 const CSRF_INPUT_ID = '#csrf_token';
 const SEND_OTP_BTN_ID = '#send_otp_btn';
+const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
 const ALERT_CONTAINER_ID = '#alert_container';
 
@@ -14,7 +15,7 @@ function showError(alertContainerId, msg) {
     $(alertContainerId).show(200,()=>{
         setTimeout(()=>{
             $(alertContainerId).hide()
-        }, 2000)
+        }, 20000)
     })
 }
 
@@ -64,10 +65,25 @@ function send_otp() {
         data: JSON.stringify(format_rpc_data({email: email})),
         success: function (data) {
             console.log(data);
+            if (data?.result?.status === 'success') {
+                $(SEND_OTP_BTN_ID).hide();
+                $(OTP_INPUT_CONTAINER_ID).show(
+                    200,
+                    () => {
+                        $(`${OTP_INPUT_CONTAINER_ID} input`).focus();
+                    }
+                );
+                $(VERIFY_OTP_BTN_ID).show();
+            } else {
+                showError(ALERT_CONTAINER_ID, data?.result?.error || 'Failed to send OTP');
+            }
         },
         error: function (xhr, status, error) {
             showError(ALERT_CONTAINER_ID, 'Failed to send OTP');
-        }
+        },
+        complete: function () {
+            $(SEND_OTP_BTN_ID).prop('disabled', false);
+        },
     });
 }
 

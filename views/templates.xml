@@ -17,7 +17,7 @@
                                       <input type="email" class="form-control mb-2" id="email" placeholder="name@example.com"/>
                                       <label for="floatingInput">Your Email address</label>
                                     </div>
-                                    <div class="form-floating">
+                                    <div class="form-floating" id="otp_input_container" style="display: none;">
                                       <input type="text" class="form-control" id="otp" placeholder="OTP"/>
                                       <label for="floatingInput">Enter The OTP</label>
                                     </div>
@@ -25,9 +25,7 @@
 
                                 <div class="alert alert-danger" id="alert_container" style="display: none;">
                                     <strong class="d-block">Error!</strong>
-                                    <span class="error_message_text" >
-                                            Something went wrong. Please try again later.
-                                    </span>
+                                    <span class="error_message_text" />
                                 </div>
                                 <button class="btn btn-primary" id="send_otp_btn">Send OTP</button>
                                 <button class="btn btn-primary" id="verify_otp_btn" style="display: none;">Verify OTP</button>

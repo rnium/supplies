@@ -6,7 +6,7 @@ const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
 const ALERT_CONTAINER_ID = '#alert_container';
 
 // API Endpoints
-const SEND_OTP_API = '/supplier-registration/send-otp';
+const SEND_OTP_API = '/supplies/register/send-otp';
 
 function showError(alertContainerId, msg) {
     $(alertContainerId).removeClass("alert-warning");

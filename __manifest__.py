@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Supplier Management",
+    'name': "BJIT Supplies",
 
-    'summary': "Manage suppliers and RFPs",
+    'summary': "Manage suppliers and RFPs for BJIT",
 
     'description': """
-Long description of module's purpose
+        This module is used to manage suppliers and RFPs for BJIT.
     """,
 
     'author': "Md. Saiful Islam Roni",
@@ -15,6 +15,7 @@ Long description of module's purpose
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
+    'application': True,
 
     # any module necessary for this one to work correctly
     'depends': ['base', 'website'],
@@ -32,7 +33,7 @@ Long description of module's purpose
     'assets': {
         'web.assets_frontend': [
             'web/static/lib/jquery/jquery.js',
-            'supplier_management/static/src/js/registration.js',
+            'bjit_supplies/static/src/js/registration.js',
         ]
     }
 }

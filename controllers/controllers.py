@@ -17,6 +17,14 @@ class SupplierRegistration(http.Controller):
         Sends an OTP to the given mobile number
         """
         email = request.params.get('email')
-        otp = utils.generate_otp()
-        print(f"Generated OTP: {otp}")
+        is_valid, message = utils.validate_email_address(request, email)
+        if not is_valid:
+            return utils.format_response('error', message)
+        otp_obj = request.env['bjit_supplies.registration.otp'].sudo().create(
+            {'email': email}
+        )
+        try:
+            otp_obj.send_otp_email()
+        except Exception as e:
+            return utils.format_response('error', str(e))
         return utils.format_response('success', 'OTP sent successfully to your email address')

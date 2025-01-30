@@ -2,6 +2,7 @@
 from odoo import http
 from odoo.http import request, route
 from . import utils
+from odoo import fields
 
 class SupplierRegistration(http.Controller):
     @http.route(['/supplies/register'], type='http', auth='public', website=True)
@@ -28,3 +29,17 @@ class SupplierRegistration(http.Controller):
         except Exception as e:
             return utils.format_response('error', str(e))
         return utils.format_response('success', 'OTP sent successfully to your email address')
+
+    @http.route(['/supplies/register/verify-otp'], type='json', auth='none', methods=['POST'])
+    def verify_otp(self):
+        """
+        Verifies the OTP
+        """
+        email = request.params.get('email')
+        otp = request.params.get('otp')
+        otp_obj = request.env['bjit_supplies.registration.otp'].sudo().search(
+            [('email', '=', email), ('otp', '=', otp), ('expiry_time', '>=', fields.Datetime.now())]
+        )
+        if not otp_obj or not otp_obj.verify_otp():
+            return utils.format_response('error', 'Invalid OTP')
+        return utils.format_response('success', 'OTP verified successfully')

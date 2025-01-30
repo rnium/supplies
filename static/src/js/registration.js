@@ -7,6 +7,7 @@ const ALERT_CONTAINER_ID = '#alert_container';
 
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
+const VERIFY_OTP_API = '/supplies/register/verify-otp';
 
 function showError(alertContainerId, msg) {
     $(alertContainerId).removeClass("alert-warning");
@@ -74,6 +75,7 @@ function send_otp() {
                     }
                 );
                 $(VERIFY_OTP_BTN_ID).show();
+                $('#email').prop('readonly', true);
             } else {
                 showError(ALERT_CONTAINER_ID, data?.result?.error || 'Failed to send OTP');
             }
@@ -87,6 +89,41 @@ function send_otp() {
     });
 }
 
+function verify_otp() {
+    const email = $('#email').val();
+    const otp = $('#otp').val();
+    if (!otp) {
+        showError(ALERT_CONTAINER_ID, 'OTP is required');
+        return;
+    }
+    $.ajax({
+        type: 'POST',
+        url: VERIFY_OTP_API,
+        contentType: 'application/json',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRFToken', get_csrf_token());
+            $(VERIFY_OTP_BTN_ID).prop('disabled', true);
+        },
+        data: JSON.stringify(format_rpc_data({email: email, otp: otp})),
+        success: function (data) {
+            console.log(data);
+            if (data?.result?.status === 'success') {
+                showWarning(ALERT_CONTAINER_ID, 'OTP Verified Successfully');
+            } else {
+                showError(ALERT_CONTAINER_ID, data?.result?.error || 'Failed to verify OTP');
+            }
+        },
+        error: function (xhr, status, error) {
+            showError(ALERT_CONTAINER_ID, 'Failed to verify OTP');
+        },
+        complete: function () {
+            $(VERIFY_OTP_BTN_ID).prop('disabled', false);
+        },
+    });
+}
+
 $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
+    $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
 });

@@ -24,10 +24,13 @@ class RegistrationOTP(models.Model):
         ).send_mail(self.id, force_send=True)
         
 
-    def verify_otp(self, otp):
+    def verify_otp(self):
         """
         Verifies the given OTP
         """
-        pass
+        if not self.is_verified and self.expiry_time >= fields.Datetime.now():
+            self.write({'is_verified': True})
+            return True
+        return False
     
     

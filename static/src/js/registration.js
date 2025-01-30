@@ -80,6 +80,12 @@ function showWarning(alertContainerId, msg) {
     })
 }
 
+function showToast() {
+    const toastLiveExample = document.getElementById('liveToast')
+    const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+    toastBootstrap.show()
+}
+
 function validateStepInputs(step) {
     let isValid = true;
     const toggleIsInvalid = (element, isInvalid) => {
@@ -212,7 +218,8 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
-        validateStepInputs(pageManager.page);
+        // validateStepInputs(pageManager.page);
+        showToast();
         //pageManager.goNext();
     });
     $(PREV_BTN_ID).on('click', () => {

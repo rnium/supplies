@@ -67,6 +67,7 @@ function send_otp() {
         success: function (data) {
             console.log(data);
             if (data?.result?.status === 'success') {
+                showWarning(ALERT_CONTAINER_ID, 'OTP has been sent to your email.');
                 $(SEND_OTP_BTN_ID).hide();
                 $(OTP_INPUT_CONTAINER_ID).show(
                     200,
@@ -111,11 +112,11 @@ function verify_otp() {
             if (data?.result?.status === 'success') {
                 showWarning(ALERT_CONTAINER_ID, 'OTP Verified Successfully');
             } else {
-                showError(ALERT_CONTAINER_ID, data?.result?.error || 'Failed to verify OTP');
+                showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
             }
         },
         error: function (xhr, status, error) {
-            showError(ALERT_CONTAINER_ID, 'Failed to verify OTP');
+            showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
         },
         complete: function () {
             $(VERIFY_OTP_BTN_ID).prop('disabled', false);

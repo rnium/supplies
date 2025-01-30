@@ -34,7 +34,6 @@
     'assets': {
         'web.assets_frontend': [
             'web/static/lib/jquery/jquery.js',
-            'bjit_supplies/static/src/js/jquery.validate.min.js',
             'bjit_supplies/static/src/js/registration.js',
         ]
     }

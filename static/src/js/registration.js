@@ -13,33 +13,6 @@ const PREV_BTN_ID = '#prev_btn';
 const SUBMIT_BTN_ID = '#submit_btn';
 
 
-const jquery_validation_schemas = {
-    step_1: {
-        rules: {
-            company_name: {
-                required: true,
-                minlength: 3,
-            }
-        },
-        messages: {
-            company_name: {
-                required: 'Company Name is required',
-                minlength: 'Company Name should be at least 3 characters',
-            }
-        }
-    }
-}
-
-function validateStep(step) {
-    const $stepContainer = $(`${STEPS_CONTAINER_ID} .step:nth-child(${step})`).html();
-    const $tempForm = $('<form></form>');
-    $tempForm.append($stepContainer);
-    $('body').append($tempForm);  // Append the form to the body
-    $tempForm.validate(jquery_validation_schemas[`step_${step}`]);
-    const isValid = $tempForm.valid();
-    //$tempForm.remove();  // Remove the form from the body
-    return isValid;
-}
 
 const pageManager = {
     totalSteps: 5,
@@ -105,6 +78,22 @@ function showWarning(alertContainerId, msg) {
             $(alertContainerId).hide(200)
         }, 2000)
     })
+}
+
+function validateStepInputs(step) {
+    let isValid = true;
+    $(`#step_${step} input`).each((index, element) => {
+        // first check if the input is required
+        if ($(element).attr('required')) {
+            if (!$(element).val()) {
+                $(element).addClass('is-invalid');
+            } else {
+                $(element).removeClass('is-invalid');
+            }
+        }
+        // if any input has a data-nullxactlength attribute, check if the input has the exact length
+    });
+    return isValid;
 }
 
 function isValidEmail(email) {
@@ -205,8 +194,8 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
-        console.log(validateStep(pageManager.page));
-//        pageManager.goNext();
+        validateStepInputs(pageManager.page);
+        //pageManager.goNext();
     });
     $(PREV_BTN_ID).on('click', () => {
         pageManager.goBack();

@@ -72,11 +72,14 @@
                                 <div class="card-body" id="steps_container">
                                     <div id="step_1" class="step" >
                                         <div class="row mb-3">
-                                            <div class="col-md-8">
+                                            <div class="col-md-12">
                                                 <label class="form-label">Company Name *</label>
                                                 <input name="company_name" type="text" class="form-control" required=""/>
                                             </div>
-                                            <div class="col-md-4">
+                                        </div>
+
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Company Category</label>
                                                 <select class="form-select">
                                                     <option value="LLC">LLC</option>
@@ -86,13 +89,6 @@
                                                     <option value="Sole Proprietorship">Sole Proprietorship</option>
                                                     <option value="Others">Others</option>
                                                 </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label class="form-label">Email *</label>
-                                                <input type="email" class="form-control" required=""/>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Logo</label>
@@ -114,11 +110,17 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Trade License Number</label>
-                                                <input type="text" class="form-control"/>
+                                                <input type="text" class="form-control" pattern="^(?:\d{8,20}|)$"/>
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid Trade License Number. Should be a 8 to 20 digits number.
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <label class="form-label">Tax Identification Number</label>
-                                                <input type="text" class="form-control" />
+                                                <label class="form-label">Tax Identification Number (TIN)</label>
+                                                <input type="text" class="form-control" pattern="^(?:\d{16}|)$"/>
+                                                <div class="invalid-feedback">
+                                                    Please enter a valid Tax Identification Number. Should be a 16 digits number.
+                                                </div>
                                             </div>
                                         </div>
 

@@ -82,16 +82,34 @@ function showWarning(alertContainerId, msg) {
 
 function validateStepInputs(step) {
     let isValid = true;
+    const toggleIsInvalid = (element, isInvalid) => {
+        if (isInvalid) {
+            $(element).addClass('is-invalid');
+            isValid = false;            
+        } else {    
+            $(element).removeClass('is-invalid');
+        }
+        return isInvalid;
+    }
     $(`#step_${step} input`).each((index, element) => {
         // first check if the input is required
         if ($(element).attr('required')) {
-            if (!$(element).val()) {
-                $(element).addClass('is-invalid');
+            let notValid = toggleIsInvalid(element, !$(element).val());
+            if (notValid) {
+                if (!$(element).next().hasClass('invalid-feedback')) {
+                    $('<div class="invalid-feedback">This field is required</div>').insertAfter($(element));
+                }
             } else {
-                $(element).removeClass('is-invalid');
+                if ($(element).next().hasClass('invalid-feedback')) {
+                    $(element).next().remove();
+                }
             }
         }
-        // if any input has a data-nullxactlength attribute, check if the input has the exact length
+        // check for pattern
+        if ($(element).attr('pattern')) {
+            const pattern = new RegExp($(element).attr('pattern'));
+            toggleIsInvalid(element, !pattern.test($(element).val()));
+        }
     });
     return isValid;
 }

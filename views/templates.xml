@@ -69,12 +69,12 @@
                         </div>
                         <div class="col-md-12">
                             <div class="card my-5">
-                                <div class="card-body">
-                                    <div id="form_step_1">
+                                <div class="card-body" id="steps_container">
+                                    <div id="step_1" class="step" >
                                         <div class="row mb-3">
                                             <div class="col-md-8">
                                                 <label class="form-label">Company Name *</label>
-                                                <input type="text" class="form-control" required=""/>
+                                                <input name="company_name" type="text" class="form-control" required=""/>
                                             </div>
                                             <div class="col-md-4">
                                                 <label class="form-label">Company Category</label>
@@ -155,8 +155,22 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="step" style="display: none;" >
+                                        <h3>Step 2</h3>
+                                    </div>
+                                    <div class="step" style="display: none;">
+                                        <h3>Step 3</h3>
+                                    </div>
+                                    <div class="step" style="display: none;">
+                                        <h3>Step 4</h3>
+                                    </div>
+                                    <div class="step" style="display: none;">
+                                        <h3>Step 5</h3>
+                                    </div>
                                     <div class="d-flex justify-content-end" id="form_action">
-                                        <button class="btn btn-primary">Next</button>
+                                        <button id="prev_btn" class="btn btn-secondary rounded px-3 me-3" style="display: none;">Previous</button>
+                                        <button id="next_btn" class="btn btn-primary rounded px-3">Next</button>
+                                        <button id="submit_btn" class="btn btn-primary px-3" style="display: none;">Submit</button>
                                     </div>
                                 </div>
                             </div>

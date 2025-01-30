@@ -4,10 +4,86 @@ const SEND_OTP_BTN_ID = '#send_otp_btn';
 const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
 const ALERT_CONTAINER_ID = '#alert_container';
-
+const STEPS_CONTAINER_ID = '#steps_container';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
+const NEXT_BTN_ID = '#next_btn';
+const PREV_BTN_ID = '#prev_btn';
+const SUBMIT_BTN_ID = '#submit_btn';
+
+
+const jquery_validation_schemas = {
+    step_1: {
+        rules: {
+            company_name: {
+                required: true,
+                minlength: 3,
+            }
+        },
+        messages: {
+            company_name: {
+                required: 'Company Name is required',
+                minlength: 'Company Name should be at least 3 characters',
+            }
+        }
+    }
+}
+
+function validateStep(step) {
+    const $stepContainer = $(`${STEPS_CONTAINER_ID} .step:nth-child(${step})`).html();
+    const $tempForm = $('<form></form>');
+    $tempForm.append($stepContainer);
+    $('body').append($tempForm);  // Append the form to the body
+    $tempForm.validate(jquery_validation_schemas[`step_${step}`]);
+    const isValid = $tempForm.valid();
+    //$tempForm.remove();  // Remove the form from the body
+    return isValid;
+}
+
+const pageManager = {
+    totalSteps: 5,
+    page: 1,
+    email: '',
+    otp: '',
+    goNext: function () {
+        if (this.page < this.totalSteps) {
+            this.page += 1;
+            this.showStep();
+        }
+        return this.page;
+    },
+    goBack: function () {
+        if (this.page > 1) {
+            this.page -= 1;
+            this.showStep();
+        }
+        return this.page;
+    },
+    showStep: function () {
+        $(`${STEPS_CONTAINER_ID} .step`).each((index, element) => {
+            if (index + 1 === this.page) {
+                $(element).show();
+            } else {
+                $(element).hide();
+            }
+        });
+        if (this.page === 1) {
+            $(PREV_BTN_ID).hide();
+        } else {
+            $(PREV_BTN_ID).show();
+        }
+        if (this.page === this.totalSteps) {
+            $(NEXT_BTN_ID).hide();
+            $(SUBMIT_BTN_ID).show();
+        } else {
+            $(NEXT_BTN_ID).show();
+            $(SUBMIT_BTN_ID).hide();
+        }
+
+    }
+
+}
 
 function showError(alertContainerId, msg) {
     $(alertContainerId).removeClass("alert-warning");
@@ -127,4 +203,12 @@ function verify_otp() {
 $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
+    $(NEXT_BTN_ID).on('click', () => {
+        console.log('Next Button Clicked');
+        console.log(validateStep(pageManager.page));
+//        pageManager.goNext();
+    });
+    $(PREV_BTN_ID).on('click', () => {
+        pageManager.goBack();
+    });
 });

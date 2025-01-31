@@ -116,6 +116,17 @@ function validateStepInputs(step) {
             const pattern = new RegExp($(element).attr('pattern'));
             toggleIsInvalid(element, !pattern.test($(element).val()));
         }
+        // validate date input min and max set
+        if ($(element).attr('type') === 'date' && $(element).val()) {
+            const min = $(element).attr('min');
+            const max = $(element).attr('max');
+            if (min) {
+                toggleIsInvalid(element, $(element).val() < min);
+            }
+            if (max) {
+                toggleIsInvalid(element, $(element).val() > max);
+            }
+        }
     });
     return isValid;
 }
@@ -218,9 +229,9 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
-        // validateStepInputs(pageManager.page);
-        showToast();
-        //pageManager.goNext();
+        // console.log(validateStepInputs(pageManager.page))
+        // showToast();
+        pageManager.goNext();
     });
     $(PREV_BTN_ID).on('click', () => {
         pageManager.goBack();

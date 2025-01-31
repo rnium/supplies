@@ -36,7 +36,7 @@
         </template>
         <template id="portal_supplier_registration">
             <t t-call="website.layout">
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"/>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 offset-md-3">
@@ -71,7 +71,7 @@
                         <div class="col-md-12">
                             <div class="card my-5">
                                 <div class="card-body" id="steps_container">
-                                    <div id="step_1" class="step" >
+                                    <div class="step" id="step_1">
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <label class="form-label">Company Name *</label>
@@ -128,11 +128,25 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Commencement Date</label>
-                                                <input type="date" class="form-control"/>
+                                                <input
+                                                        type="date"
+                                                        class="form-control"
+                                                        t-att-max="(datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
+                                                />
+                                                <div class="invalid-feedback">
+                                                    Commencement date should be a past date.
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Expiry Date</label>
-                                                <input type="date" class="form-control"/>
+                                                <input
+                                                    type="date"
+                                                    class="form-control"
+                                                    t-att-min="(datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
+                                                />
+                                                <div class="invalid-feedback">
+                                                    Expiry date should be a future date.
+                                                </div>
                                             </div>
                                         </div>
 
@@ -185,7 +199,7 @@
                             <img src="..." class="rounded me-2" alt="..."/>
                             <strong class="me-auto">Bootstrap</strong>
                             <small>11 mins ago</small>
-                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"/>
                             </div>
                             <div class="toast-body">
                                 Hello, world! This is a toast message.

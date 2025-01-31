@@ -62,7 +62,7 @@ const pageManager = {
     },
     _saveData: function () {
         $(`#step_${this.page} input`).each((index, element) => {
-            name = $(element).attr('name');
+            let name = $(element).attr('name');
             if (name) {
                 this.data[name] = $(element).val();
             }

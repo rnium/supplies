@@ -44,15 +44,20 @@
                 <input type="text"
                        t-att-id="'client-%s-name' % contact_id"
                        t-att-name="'client-%s-name' % contact_id"
-                       class="form-control"
+                       class="form-control name"
+                       data-requires-if="email,phone,address"
+                       t-att-data-container-class="container_class or 'client'"
                        placeholder="Name"
                 />
+                <div class="invalid-feedback">
+                    Name is required if any of email, phone, or address is provided.
+                </div>
             </div>
             <div class="mb-2">
                 <input type="email"
                        t-att-id="'client-%s-email' % contact_id"
                        t-att-name="'client-%s-email' % contact_id"
-                       class="form-control"
+                       class="form-control email"
                        placeholder="Email"
                 />
             </div>
@@ -60,7 +65,7 @@
                 <input type="tel"
                        t-att-id="'client-%s-phone' % contact_id"
                        t-att-name="'client-%s-phone' % contact_id"
-                       class="form-control"
+                       class="form-control phone"
                        placeholder="Phone"
                 />
             </div>
@@ -68,7 +73,7 @@
                 <input type="text"
                        t-att-id="'client-%s-address' % contact_id"
                        t-att-name="'client-%s-address' % contact_id"
-                       class="form-control"
+                       class="form-control address"
                        placeholder="Address"
                 />
             </div>
@@ -244,7 +249,7 @@
                                     </div>
                                     <div class="step" id="step_3">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 3: Client References</h5>
-                                        <div class="mb-3 client" >
+                                        <div class="mb-3 client">
                                             <t t-call="bjit_supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="1"/>
                                                 <t t-set="title">Client Reference 1</t>

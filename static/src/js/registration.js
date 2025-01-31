@@ -110,6 +110,7 @@ function validateStepInputs(step) {
         }
         return isInvalid;
     }
+    // Check all input fields of the step
     $(`#step_${step} input`).each((index, element) => {
         // first check if the input is required
         if ($(element).attr('required')) {
@@ -141,6 +142,25 @@ function validateStepInputs(step) {
             }
         }
     });
+    // Check dependent fields
+    // First it catches all the fields which is required if some other field is filled. Their classes are set on the data attribute "data-requires-if"
+    // Then it checks from the `data-container-class` of the dependent field for the required fields.
+    $(`#step_${step} input[data-requires-if]`).each((index, element) => {
+        const dependentField = $(element);
+        if (dependentField.val()) {
+            toggleIsInvalid(element, false);
+            return;
+        }
+        const requiredFieldClasses = dependentField.data('requires-if').split(',');
+        const parent = dependentField.closest(`.${dependentField.data('container-class')}`);
+        let requiredFields = parent.find(
+            requiredFieldClasses.map((className) => `.${className}`).join(',')
+        )
+        console.log(typeof requiredFields);
+        const any_field_filled = requiredFields.map((index, field) => $(field).val().length > 0).get().some((val) => val);
+        toggleIsInvalid(element, any_field_filled);
+    });
+
     return isValid;
 }
 
@@ -261,7 +281,9 @@ $(document).ready(function () {
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
         if (validateStepInputs(pageManager.page)) {
-            pageManager.goNext();
+            // pageManager.goNext();
+            console.log('Going Next');
+            
         }
     });
     $(PREV_BTN_ID).on('click', () => {

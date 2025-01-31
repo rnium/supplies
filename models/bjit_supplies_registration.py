@@ -44,5 +44,11 @@ class BJITSuppliesRegistration(models.Model):
     branch_address = fields.Char(string='Branch Address', required=True) # custom field
     acc_holder_name = fields.Char(string='Account Name')
     acc_number = fields.Char(string='Account Number', required=True)
+    # Certification fields
+    certification_name = fields.Char(string='Certification')
+    certificate_number = fields.Char(string='Certificate Number')
+    certifying_body = fields.Char(string='Certifying Body')
+    certification_award_date = fields.Date(string='Award Date')
+    certification_expiry_date = fields.Date(string='Expiry Date')
 
 

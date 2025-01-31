@@ -247,7 +247,7 @@
                                             <input type="text" class="form-control" name="acc_holder_name"/>
                                         </div>
                                     </div>
-                                    <div class="step" id="step_3">
+                                    <div class="step" style="display: none;" id="step_3">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 3: Client References</h5>
                                         <div class="mb-3 client">
                                             <t t-call="bjit_supplies.client-reference-sub-form">
@@ -281,8 +281,35 @@
                                         </div>
                                         <button class="btn btn-outline-primary" id="add_client_reference">Add More Client Reference</button>
                                     </div>
-                                    <div class="step" style="display: none;">
-                                        <h3>Step 4</h3>
+                                    <div class="step" id="step_4">
+                                        <h5 class="mb-4 text-primary border-bottom pb-3">Step 4: Certification</h5>
+                                        <div class="mb-3">
+                                            <label class="form-label">Certification</label>
+                                            <input type="text" class="form-control" name="certification_name"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Certificate Number</label>
+                                            <input type="text" class="form-control" name="certificate_number"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Certifying Body</label>
+                                            <input type="text" class="form-control" name="certifying_body"/>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Award Date</label>
+                                                <input type="date" class="form-control" name="certification_award_date"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Expiry Date</label>
+                                                <input 
+                                                    type="date"
+                                                    class="form-control"
+                                                    name="certification_expiry_date"
+                                                    t-att-min="(datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="step" style="display: none;">
                                         <h3>Step 5</h3>

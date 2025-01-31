@@ -182,8 +182,9 @@ function addMoreClientReference() {
                 return false;
             }
         });
-    } else {
-        alert('You have reached the maximum number of clients');
+        if (visible_clients + 1 === total_clients) {
+            $(ADD_MORE_CLIENT_BTN_ID).hide();
+        }
     }
 }
 

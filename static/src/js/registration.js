@@ -5,6 +5,8 @@ const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
 const ALERT_CONTAINER_ID = '#alert_container';
 const STEPS_CONTAINER_ID = '#steps_container';
+const CLIENT_REF_CONTAINER_ID = '#step_3';
+const ADD_MORE_CLIENT_BTN_ID = '#add_client_reference';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
@@ -16,13 +18,16 @@ const SUBMIT_BTN_ID = '#submit_btn';
 
 const pageManager = {
     totalSteps: 5,
-    page: 1,
+    page: 3,
     email: '',
     otp: '',
+    data: {},
     goNext: function () {
         if (this.page < this.totalSteps) {
+            this._saveData();
             this.page += 1;
             this.showStep();
+            console.log(this.data);
         }
         return this.page;
     },
@@ -54,6 +59,14 @@ const pageManager = {
             $(SUBMIT_BTN_ID).hide();
         }
 
+    },
+    _saveData: function () {
+        $(`#step_${this.page} input`).each((index, element) => {
+            name = $(element).attr('name');
+            if (name) {
+                this.data[name] = $(element).val();
+            }
+        });
     }
 
 }
@@ -134,6 +147,24 @@ function validateStepInputs(step) {
 function isValidEmail(email) {
     const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     return emailPattern.test(email);
+}
+
+function addMoreClientReference() {
+    const total_clients = $(`${CLIENT_REF_CONTAINER_ID} .client`).length;
+    const visible_clients = $(`${CLIENT_REF_CONTAINER_ID} .client`).filter(function () {
+        return $(this).css("display") !== "none";
+    }).length;
+    // show the next client with display=none if visible clients are less than total clients
+    if (visible_clients < total_clients) {
+        $(`${CLIENT_REF_CONTAINER_ID} .client`).each(function () {
+            if ($(this).css("display") === "none") {
+                $(this).show();
+                return false;
+            }
+        });
+    } else {
+        alert('You have reached the maximum number of clients');
+    }
 }
 
 function get_csrf_token() {
@@ -229,11 +260,13 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
-        // console.log(validateStepInputs(pageManager.page))
-        // showToast();
-        pageManager.goNext();
+        if (validateStepInputs(pageManager.page)) {
+            pageManager.goNext();
+        }
     });
     $(PREV_BTN_ID).on('click', () => {
         pageManager.goBack();
     });
+    $(ADD_MORE_CLIENT_BTN_ID).on('click', addMoreClientReference);
+
 });

@@ -37,4 +37,12 @@ class BJITSuppliesRegistration(models.Model):
     finance_contact_id = fields.Many2one('bjit_supplies.registration.contact', string='Finance Contact', required=True)
     authorized_contact_id = fields.Many2one('bjit_supplies.registration.contact', string='Authorized Contact', required=True)
     expiry_date = fields.Date(string='Expiry Date')
+    # Bank info fields
+    bank_name = fields.Char(string='Bank Name', required=True)
+    swift_code = fields.Char(string='Bank SWIFT Code') # custom field
+    iban = fields.Char(string='IBAN') # custom field
+    branch_address = fields.Char(string='Branch Address', required=True) # custom field
+    acc_holder_name = fields.Char(string='Account Name')
+    acc_number = fields.Char(string='Account Number', required=True)
+
 

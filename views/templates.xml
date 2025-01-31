@@ -5,6 +5,7 @@
             <div class="mb-2">
                 <input type="text"
                        t-att-id="'contact-%s-name' % contact_id"
+                       t-att-name="'contact-%s-name' % contact_id"
                        class="form-control"
                        placeholder="Name"
                        required=""
@@ -13,6 +14,7 @@
             <div class="mb-2">
                 <input type="email"
                        t-att-id="'contact-%s-email' % contact_id"
+                       t-att-name="'contact-%s-email' % contact_id"
                        class="form-control"
                        placeholder="Email"
                        required=""
@@ -21,6 +23,7 @@
             <div class="mb-2">
                 <input type="tel"
                        t-att-id="'contact-%s-phone' % contact_id"
+                       t-att-name="'contact-%s-phone' % contact_id"
                        class="form-control"
                        placeholder="Phone"
                        required=""
@@ -29,6 +32,42 @@
             <div >
                 <input type="text"
                        t-att-id="'contact-%s-address' % contact_id"
+                       t-att-name="'contact-%s-address' % contact_id"
+                       class="form-control"
+                       placeholder="Address"
+                />
+            </div>
+        </template>
+        <template id="client-reference-sub-form">
+            <h6 t-esc="title"/>
+            <div class="mb-2">
+                <input type="text"
+                       t-att-id="'client-%s-name' % contact_id"
+                       t-att-name="'client-%s-name' % contact_id"
+                       class="form-control"
+                       placeholder="Name"
+                />
+            </div>
+            <div class="mb-2">
+                <input type="email"
+                       t-att-id="'client-%s-email' % contact_id"
+                       t-att-name="'client-%s-email' % contact_id"
+                       class="form-control"
+                       placeholder="Email"
+                />
+            </div>
+            <div class="mb-2">
+                <input type="tel"
+                       t-att-id="'client-%s-phone' % contact_id"
+                       t-att-name="'client-%s-phone' % contact_id"
+                       class="form-control"
+                       placeholder="Phone"
+                />
+            </div>
+            <div >
+                <input type="text"
+                       t-att-id="'client-%s-address' % contact_id"
+                       t-att-name="'client-%s-address' % contact_id"
                        class="form-control"
                        placeholder="Address"
                 />
@@ -71,7 +110,8 @@
                         <div class="col-md-12">
                             <div class="card my-5">
                                 <div class="card-body" id="steps_container">
-                                    <div class="step" id="step_1">
+                                    <div class="step" style="display: none;" id="step_1">
+                                        <h5 class="mb-4 text-primary border-bottom pb-3">Step 1: Company Information</h5>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <label class="form-label">Company Name *</label>
@@ -81,7 +121,7 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label class="form-label">Company Category</label>
+                                                <label name="company_category_type" class="form-label">Company Category</label>
                                                 <select class="form-select">
                                                     <option value="LLC">LLC</option>
                                                     <option value="PLC">PLC</option>
@@ -93,32 +133,32 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Logo</label>
-                                                <input type="file" class="form-control"/>
+                                                <input type="file" class="form-control" name="image_1920"/>
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Address Line 1 *</label>
-                                                <input type="text" class="form-control" required=""/>
+                                                <input type="text" class="form-control" name="address_line_1" required=""/>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Address Line 2</label>
-                                                <input type="text" class="form-control" />
+                                                <input type="text" class="form-control" name="address_line_2" />
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Trade License Number</label>
-                                                <input type="text" class="form-control" pattern="^(?:\d{8,20}|)$"/>
+                                                <input type="text" class="form-control" pattern="^(?:\d{8,20}|)$" name="trade_license_number"/>
                                                 <div class="invalid-feedback">
                                                     Please enter a valid Trade License Number. Should be a 8 to 20 digits number.
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Tax Identification Number (TIN)</label>
-                                                <input type="text" class="form-control" pattern="^(?:\d{16}|)$"/>
+                                                <input type="text" class="form-control" pattern="^(?:\d{16}|)$" name="tax_identification_number"/>
                                                 <div class="invalid-feedback">
                                                     Please enter a valid Tax Identification Number. Should be a 16 digits number.
                                                 </div>
@@ -132,6 +172,7 @@
                                                         type="date"
                                                         class="form-control"
                                                         t-att-max="(datetime.datetime.now() - datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
+                                                        name="commencement_date"
                                                 />
                                                 <div class="invalid-feedback">
                                                     Commencement date should be a past date.
@@ -143,6 +184,7 @@
                                                     type="date"
                                                     class="form-control"
                                                     t-att-min="(datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
+                                                    name="expiry_date"
                                                 />
                                                 <div class="invalid-feedback">
                                                     Expiry date should be a future date.
@@ -156,6 +198,7 @@
                                                 <t t-call="bjit_supplies.contact-sub-form">
                                                     <t t-set="contact_id" t-value="1"/>
                                                     <t t-set="title">Primary Contact</t>
+                                                    <t t-set="prefix">company</t>
                                                 </t>
                                             </div>
                                             <div class="col-md-4">
@@ -172,11 +215,66 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step" style="display: none;" >
-                                        <h3>Step 2</h3>
+                                    <div class="step" style="display: none;" id="step_2"  >
+                                        <h5 class="mb-4 text-primary border-bottom pb-3">Step 2: Bank Information</h5>
+                                         <div class="mb-3">
+                                            <label for="bank_name" class="form-label">Bank Name <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="bank_name" required=""/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="swift_code" class="form-label">Bank SWIFT Code</label>
+                                            <input type="text" class="form-control" name="swift_code" placeholder="E.g., BOFAUS3N"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="iban" class="form-label">IBAN</label>
+                                            <input type="text" class="form-control" name="iban" placeholder="E.g., DE44500105175407324931"/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="branch_address" class="form-label">Branch Address <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="branch_address" required=""/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="acc_number" class="form-label">Account Number <span class="text-danger">*</span></label>
+                                            <input type="text" class="form-control" name="acc_number" required=""/>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="acc_holder_name" class="form-label">Account Name</label>
+                                            <input type="text" class="form-control" name="acc_holder_name"/>
+                                        </div>
                                     </div>
-                                    <div class="step" style="display: none;">
-                                        <h3>Step 3</h3>
+                                    <div class="step" id="step_3">
+                                        <h5 class="mb-4 text-primary border-bottom pb-3">Step 3: Client References</h5>
+                                        <div class="mb-3 client" >
+                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                                <t t-set="contact_id" t-value="1"/>
+                                                <t t-set="title">Client Reference 1</t>
+                                            </t>
+                                        </div>
+                                        <div class="mb-3 client">
+                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                                <t t-set="contact_id" t-value="2"/>
+                                                <t t-set="title">Client Reference 2</t>
+                                            </t>
+                                        </div>
+                                        <div class="mb-3 client">
+                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                                <t t-set="contact_id" t-value="3"/>
+                                                <t t-set="title">Client Reference 3</t>
+                                            </t>
+                                        </div>
+                                        <div class="mb-3 client" style="display: none;">
+                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                                <t t-set="contact_id" t-value="4"/>
+                                                <t t-set="title">Client Reference 4</t>
+                                            </t>
+                                        </div>
+                                        <div class="mb-3 client" style="display: none;">
+                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                                <t t-set="contact_id" t-value="5"/>
+                                                <t t-set="title">Client Reference 5</t>
+                                            </t>
+                                        </div>
+                                        <button class="btn btn-outline-primary" id="add_client_reference">Add More Client Reference</button>
                                     </div>
                                     <div class="step" style="display: none;">
                                         <h3>Step 4</h3>

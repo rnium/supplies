@@ -104,6 +104,8 @@ const pageManager = {
                 formData.append(key, this.data[key]);
             }
         }
+        const csrf_token = get_csrf_token();
+        formData.append('csrf_token', csrf_token);
         return formData;
     },
     handleSubmitForm: function (handler) {
@@ -115,7 +117,7 @@ const pageManager = {
         }
         this._saveData();
         console.log(this.getFormData());
-        // handler(this.getFormData());
+        handler(this.getFormData());
     }
 }
 
@@ -329,8 +331,7 @@ function submit_form(formData) {
         url: SUBMIT_FORM_API,
         contentType: false,
         processData: false,
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader('X-CSRFToken', get_csrf_token());
+        beforeSend: function () {
             $(SUBMIT_BTN_ID).prop('disabled', true);
         },
         data: formData,

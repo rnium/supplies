@@ -82,6 +82,7 @@
             <t t-call="website.layout">
                 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"/>
                 <div class="container">
+                    <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="row">
                         <div class="col-md-6 offset-md-3">
                             <div class="card my-5 d-none">
@@ -90,7 +91,6 @@
                                 </div>
                                  <div class="card-body">
                                     <div class="form-group my-3" >
-                                        <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="'${csrf_token}'"/>
                                         <div class="form-floating">
                                         <input type="email" class="form-control mb-2" id="email" placeholder="name@example.com"/>
                                         <label for="floatingInput">Company Email address</label>

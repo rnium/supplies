@@ -281,7 +281,7 @@
                                         </div>
                                         <button class="btn btn-outline-primary" id="add_client_reference">Add More Client Reference</button>
                                     </div>
-                                    <div class="step" id="step_4">
+                                    <div class="step" style="display: none;" id="step_4">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 4: Certification</h5>
                                         <div class="mb-3">
                                             <label class="form-label">Certification</label>
@@ -311,8 +311,86 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step" style="display: none;">
-                                        <h3>Step 5</h3>
+                                    <div class="step" id="step_5">
+                                        <h5 class="mb-4 text-primary border-bottom pb-3">Step 5: Documents</h5>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Trade License / Business Registration</label>
+                                                <input type="file" class="form-control" name="trade_license_doc"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Certificate of Incorporation</label>
+                                                <input type="file" class="form-control" name="certificate_of_incorporation_doc"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Certificate of Good Standing</label>
+                                                <input type="file" class="form-control" name="certificate_of_good_standing_doc"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Establishment Card</label>
+                                                <input type="file" class="form-control" name="establishment_card_doc"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">VAT / Tax Certificate</label>
+                                                <input type="file" class="form-control" name="vat_tax_certificate_doc"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Memorandum of Association</label>
+                                                <input type="file" class="form-control" name="memorandum_of_association_doc"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Identification of Authorised Person</label>
+                                                <input type="file" class="form-control" name="identification_of_authorised_person_doc"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Bank Letter indicating Bank Account Information</label>
+                                                <input type="file" class="form-control" name="bank_letter_doc"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label class="form-label">Past 2 Years of Financial Statement</label>
+                                                <input type="file" class="form-control" name="past_2_years_financial_statement_doc"/>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Other Certification / Accreditation</label>
+                                                <input type="file" class="form-control" name="other_certification_doc"/>
+                                            </div>
+                                        </div>
+                                        <div class="mt-4 mb-3 pt-3 border-top">
+                                            <h5 class="fw-bold text-primary">Declaration</h5>
+                                            <p class="text-muted">
+                                                Before submitting your documents, please read and confirm the following statement:
+                                            </p>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="declarationCheckbox" required="" />
+                                                <label class="form-check-label fst-italic" for="declarationCheckbox">
+                                                    I confirm that all information and documents supplied are true and accurate to the best of my 
+                                                    knowledge, and I understand that this information may be considered material in the evaluation 
+                                                    of quotations, bids, and/or proposals.
+                                                </label>
+                                            </div>
+                                            <div class="row g-3 mt-3">
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold">Name of Signatory</label>
+                                                    <input type="text" class="form-control" placeholder="Enter full name" required="" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold">Authorized Signatory</label>
+                                                    <input type="text" class="form-control" placeholder="Enter title or role" required="" />
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label class="form-label fw-semibold">Company Stamp</label>
+                                                    <input type="file" class="form-control" required=""/>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="d-flex justify-content-end" id="form_action">
                                         <button id="prev_btn" class="btn btn-secondary rounded px-3 me-3" style="display: none;">Previous</button>

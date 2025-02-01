@@ -44,11 +44,21 @@ class BJITSuppliesRegistration(models.Model):
     branch_address = fields.Char(string='Branch Address', required=True) # custom field
     acc_holder_name = fields.Char(string='Account Name')
     acc_number = fields.Char(string='Account Number', required=True)
-    # Certification fields
+    # Certification fields (all are custom fields)
     certification_name = fields.Char(string='Certification')
     certificate_number = fields.Char(string='Certificate Number')
     certifying_body = fields.Char(string='Certifying Body')
     certification_award_date = fields.Date(string='Award Date')
     certification_expiry_date = fields.Date(string='Expiry Date')
-
+    # Document fields (all are custom fields)
+    trade_license_doc = fields.Binary(string='Trade License / Business Registration')
+    certificate_of_incorporation_doc = fields.Binary(string='Certificate of Incorporation')
+    certificate_of_good_standing_doc = fields.Binary(string='Certificate of Good Standing')
+    establishment_card_doc = fields.Binary(string='Establishment Card')
+    vat_tax_certificate_doc = fields.Binary(string='VAT / Tax Certificate')
+    memorandum_of_association_doc = fields.Binary(string='Memorandum of Association')
+    identification_of_authorised_person_doc = fields.Binary(string='Identification of Authorised Person')
+    bank_letter_doc = fields.Binary(string='Bank Letter indicating Bank Account Information')
+    past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years of Financial Statement')
+    other_certification_doc = fields.Binary(string='Other Certification / Accreditation')
 

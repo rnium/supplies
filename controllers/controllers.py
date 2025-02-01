@@ -2,8 +2,11 @@
 from odoo import http
 from odoo.http import request, route
 from ..utils import controller_utils as utils
+from ..utils import schemas
+from pydantic import ValidationError
 from odoo import fields
 import json
+
 
 class SupplierRegistration(http.Controller):
     @http.route(['/supplies/register'], type='http', auth='public', website=True)

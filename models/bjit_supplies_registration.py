@@ -5,9 +5,9 @@ class BJITSuppliesRegistrationContact(models.Model):
     _name = 'bjit_supplies.registration.contact'
     _description = 'BJIT Supplies Registration Contact'
 
-    name = fields.Char(string='Name', required=True)
-    email = fields.Char(string='Email', required=True)
-    phone = fields.Char(string='Phone', required=True)
+    name = fields.Char(string='Name')
+    email = fields.Char(string='Email')
+    phone = fields.Char(string='Phone')
     address = fields.Char(string='Address')
 
 

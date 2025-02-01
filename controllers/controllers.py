@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 from odoo import http
 from odoo.http import request, route
-from . import utils
+from ..utils import controller_utils as utils
 from odoo import fields
+import json
 
 class SupplierRegistration(http.Controller):
     @http.route(['/supplies/register'], type='http', auth='public', website=True)
@@ -54,5 +55,7 @@ class SupplierRegistration(http.Controller):
         
         print("Form Data: ", form_data)
         print("Files: ", files)
-
-        return utils.format_response('success', 'Registration submitted successfully')
+        print("Post Data: ", post)
+        
+        data = json.dumps(utils.format_response('success', 'Registration submitted successfully'))
+        return request.make_response(data, headers={'Content-Type': 'application/json'})

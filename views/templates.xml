@@ -113,7 +113,7 @@
                             </div>
                         </div>
                         <div class="col-md-12">
-                            <div class="card my-5">
+                            <div class="card shadow-sm my-5">
                                 <div class="card-body" id="steps_container">
                                     <div class="step" style="display: none;" id="step_1">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 1: Company Information</h5>
@@ -281,7 +281,7 @@
                                         </div>
                                         <button class="btn btn-outline-primary" id="add_client_reference">Add More Client Reference</button>
                                     </div>
-                                    <div class="step" style="display: none;" id="step_4">
+                                    <div class="step" id="step_4">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 4: Certification</h5>
                                         <div class="mb-3">
                                             <label class="form-label">Certification</label>
@@ -311,7 +311,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="step" id="step_5">
+                                    <div class="step" style="display: none;" id="step_5">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 5: Documents</h5>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
@@ -379,15 +379,15 @@
                                             <div class="row g-3 mt-3">
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Name of Signatory</label>
-                                                    <input type="text" class="form-control" placeholder="Enter full name" required="" />
+                                                    <input name="name_of_signatory" type="text" class="form-control" placeholder="Enter full name" required="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Authorized Signatory</label>
-                                                    <input type="text" class="form-control" placeholder="Enter title or role" required="" />
+                                                    <input name="authorized_signatory" type="text" class="form-control" placeholder="Enter title or role" required="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Company Stamp</label>
-                                                    <input type="file" class="form-control" required=""/>
+                                                    <input name="company_stamp" type="file" class="form-control" required=""/>
                                                 </div>
                                             </div>
                                         </div>
@@ -395,7 +395,7 @@
                                     <div class="d-flex justify-content-end" id="form_action">
                                         <button id="prev_btn" class="btn btn-secondary rounded px-3 me-3" style="display: none;">Previous</button>
                                         <button id="next_btn" class="btn btn-primary rounded px-3">Next</button>
-                                        <button id="submit_btn" class="btn btn-primary px-3" style="display: none;">Submit</button>
+                                        <button id="submit_btn" class="btn btn-primary rounded px-3" style="display: none;" disabled="">Submit</button>
                                     </div>
                                 </div>
                             </div>

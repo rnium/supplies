@@ -43,3 +43,16 @@ class SupplierRegistration(http.Controller):
         if not otp_obj or not otp_obj.verify_otp():
             return utils.format_response('error', 'Invalid OTP')
         return utils.format_response('success', 'OTP verified successfully')
+
+    @http.route(['/supplies/register/submit'], type='http', auth='public', methods=['POST'])
+    def submit_registration(self, **post):
+        """
+        Handles the submission of the supplier registration form
+        """
+        form_data = request.httprequest.form
+        files = request.httprequest.files
+        
+        print("Form Data: ", form_data)
+        print("Files: ", files)
+
+        return utils.format_response('success', 'Registration submitted successfully')

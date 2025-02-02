@@ -80,7 +80,7 @@ class SupplierRegistrationSchema(BaseModel):
             match = re.match(r"([a-zA-Z]+)_(\d+)_(.+)", key)
             if match:
                 group, index, field = match.groups()
-                if group in groups_types:  # Only include specified models
+                if group in groups_types:
                     group_collections[f"{group}_{index}"][field] = values[key]
         grouped_data = dict(group_collections)
         contact_mapping = {

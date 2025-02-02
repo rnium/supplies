@@ -84,8 +84,8 @@
                 <div class="container">
                     <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="row">
-                        <div class="col-md-6 offset-md-3">
-                            <div class="card my-5 d-none">
+                        <div class="col-md-6 offset-md-3" id="otp_container">
+                            <div class="card my-5">
                                 <div class="card-header">
                                     <h4 class="text-center">Register As Our Supplier</h4>
                                 </div>
@@ -112,7 +112,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" id="registration_form_container" style="display: none;">
                             <div class="card shadow-sm my-5">
                                 <div class="card-body" id="steps_container">
                                     <div class="step" id="step_1">
@@ -126,8 +126,8 @@
 
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label name="company_category_type" class="form-label">Company Category</label>
-                                                <select class="form-select">
+                                                <label class="form-label">Company Category</label>
+                                                <select class="form-select" name="company_category_type">
                                                     <option value="LLC">LLC</option>
                                                     <option value="PLC">PLC</option>
                                                     <option value="Limited">Limited</option>

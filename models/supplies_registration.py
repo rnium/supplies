@@ -1,9 +1,9 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 
-class BJITSuppliesRegistrationContact(models.Model):
-    _name = 'bjit_supplies.contact'
-    _description = 'BJIT Supplies Registration Contact'
+class SuppliesRegistrationContact(models.Model):
+    _name = 'supplies.contact'
+    _description = 'Supplies Registration Contact'
 
     name = fields.Char(string='Name')
     email = fields.Char(string='Email')
@@ -11,9 +11,9 @@ class BJITSuppliesRegistrationContact(models.Model):
     address = fields.Char(string='Address')
 
 
-class BJITSuppliesRegistration(models.Model):
-    _name = 'bjit_supplies.registration'
-    _description = 'BJIT Supplies Registration'
+class SuppliesRegistration(models.Model):
+    _name = 'supplies.registration'
+    _description = 'Supplies Registration'
     _rec_name = 'company_name'
     state = fields.Selection(
         [
@@ -45,9 +45,9 @@ class BJITSuppliesRegistration(models.Model):
     trade_license_number = fields.Char(string='Trade License Number')
     tax_identification_number = fields.Char(string='Tax Identification Number')
     commencement_date = fields.Date(string='Commencement Date')
-    primary_contact_id = fields.Many2one('bjit_supplies.contact', string='Primary Contact', required=True)
-    finance_contact_id = fields.Many2one('bjit_supplies.contact', string='Finance Contact', required=True)
-    authorized_contact_id = fields.Many2one('bjit_supplies.contact', string='Authorized Contact', required=True)
+    primary_contact_id = fields.Many2one('supplies.contact', string='Primary Contact', required=True)
+    finance_contact_id = fields.Many2one('supplies.contact', string='Finance Contact', required=True)
+    authorized_contact_id = fields.Many2one('supplies.contact', string='Authorized Contact', required=True)
     expiry_date = fields.Date(string='Expiry Date')
     # Bank info fields
     bank_name = fields.Char(string='Bank Name', required=True)
@@ -63,7 +63,7 @@ class BJITSuppliesRegistration(models.Model):
     certification_award_date = fields.Date(string='Certification Award Date')
     certification_expiry_date = fields.Date(string='Certification Expiry Date')
     # Client References
-    client_ref_ids = fields.Many2many('bjit_supplies.contact', string='Client References')
+    client_ref_ids = fields.Many2many('supplies.contact', string='Client References')
     # Document fields (all are custom fields)
     trade_license_doc = fields.Binary(string='Trade License / Business Registration')
     certificate_of_incorporation_doc = fields.Binary(string='Certificate of Incorporation')

@@ -2,8 +2,8 @@ from odoo import models, fields, api
 import random
 
 class RegistrationOTP(models.Model):
-    _name = 'bjit_supplies.registration.otp'
-    _description = 'BJIT Supplies Registration OTP'
+    _name = 'supplies.registration.otp'
+    _description = 'Supplies Registration OTP'
 
     email = fields.Char(string='Email', required=True)
     otp = fields.Char(
@@ -20,7 +20,7 @@ class RegistrationOTP(models.Model):
     
     def send_otp_email(self):
         self.env.ref(
-            'bjit_supplies.email_template_model_bjit_supplies_registration_otp'
+            'supplies.email_template_model_bjit_supplies_registration_otp'
         ).send_mail(self.id, force_send=True)
         
 

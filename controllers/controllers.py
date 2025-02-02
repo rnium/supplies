@@ -14,7 +14,7 @@ class SupplierRegistration(http.Controller):
         """
         Renders the supplier registration page
         """
-        return request.render('bjit_supplies.portal_supplier_registration')
+        return request.render('supplies.portal_supplier_registration')
 
     @http.route(['/supplies/register/send-otp'], type='json', auth='none', methods=['POST'])
     def send_otp(self):
@@ -25,7 +25,7 @@ class SupplierRegistration(http.Controller):
         is_valid, message = utils.validate_email_address(request, email)
         if not is_valid:
             return utils.format_response('error', message)
-        otp_obj = request.env['bjit_supplies.registration.otp'].sudo().create(
+        otp_obj = request.env['supplies.registration.otp'].sudo().create(
             {'email': email}
         )
         print("OTP: ", otp_obj.otp)
@@ -42,7 +42,7 @@ class SupplierRegistration(http.Controller):
         """
         email = request.params.get('email')
         otp = request.params.get('otp')
-        otp_obj = request.env['bjit_supplies.registration.otp'].sudo().search(
+        otp_obj = request.env['supplies.registration.otp'].sudo().search(
             [('email', '=', email), ('otp', '=', otp), ('expiry_time', '>=', fields.Datetime.now())]
         )
         if not otp_obj or not otp_obj.verify_otp():

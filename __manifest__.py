@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "BJIT Supplies",
+    'name': "Supplies",
 
-    'summary': "Manage suppliers and RFPs for BJIT",
+    'summary': "Manage RFPs and suppliers",
 
     'description': """
-        This module is used to manage suppliers and RFPs for BJIT.
+        This module is used to manage suppliers and RFPs.
     """,
 
     'author': "Md. Saiful Islam Roni",
@@ -15,10 +15,9 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
-    'application': True,
-
     # any module necessary for this one to work correctly
     'depends': ['base', 'website'],
+    'license': 'LGPL-3',
 
     # always loaded
     'data': [
@@ -34,7 +33,7 @@
     'assets': {
         'web.assets_frontend': [
             'web/static/lib/jquery/jquery.js',
-            'bjit_supplies/static/src/js/registration.js',
+            'supplies/static/src/js/registration.js',
         ]
     }
 }

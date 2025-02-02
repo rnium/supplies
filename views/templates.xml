@@ -199,20 +199,20 @@
                                         <h4 class="mt-4">Contacts</h4>
                                         <div class="row mb-3">
                                             <div class="col-md-4">
-                                                <t t-call="bjit_supplies.contact-sub-form">
+                                                <t t-call="supplies.contact-sub-form">
                                                     <t t-set="contact_id" t-value="1"/>
                                                     <t t-set="title">Primary Contact</t>
                                                     <t t-set="prefix">company</t>
                                                 </t>
                                             </div>
                                             <div class="col-md-4">
-                                                <t t-call="bjit_supplies.contact-sub-form">
+                                                <t t-call="supplies.contact-sub-form">
                                                     <t t-set="contact_id" t-value="2"/>
                                                     <t t-set="title">Finance Contact</t>
                                                 </t>
                                             </div>
                                             <div class="col-md-4">
-                                                <t t-call="bjit_supplies.contact-sub-form">
+                                                <t t-call="supplies.contact-sub-form">
                                                     <t t-set="contact_id" t-value="3"/>
                                                     <t t-set="title">Authorized Contact</t>
                                                 </t>
@@ -249,31 +249,31 @@
                                     <div class="step" style="display: none;" id="step_3">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 3: Client References</h5>
                                         <div class="mb-3 client">
-                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                            <t t-call="supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="1"/>
                                                 <t t-set="title">Client Reference 1</t>
                                             </t>
                                         </div>
                                         <div class="mb-3 client">
-                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                            <t t-call="supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="2"/>
                                                 <t t-set="title">Client Reference 2</t>
                                             </t>
                                         </div>
                                         <div class="mb-3 client">
-                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                            <t t-call="supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="3"/>
                                                 <t t-set="title">Client Reference 3</t>
                                             </t>
                                         </div>
                                         <div class="mb-3 client" style="display: none;">
-                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                            <t t-call="supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="4"/>
                                                 <t t-set="title">Client Reference 4</t>
                                             </t>
                                         </div>
                                         <div class="mb-3 client" style="display: none;">
-                                            <t t-call="bjit_supplies.client-reference-sub-form">
+                                            <t t-call="supplies.client-reference-sub-form">
                                                 <t t-set="contact_id" t-value="5"/>
                                                 <t t-set="title">Client Reference 5</t>
                                             </t>

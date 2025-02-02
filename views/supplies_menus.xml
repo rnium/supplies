@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem
+            id="supplies_menu"
+            name="Supplies"
+            sequence="10"
+            web_icon="supplies,static/description/icon.png"
+    />
+    <menuitem id="supplies_registration_menu" name="Registration" parent="supplies_menu"
+                action="supplies_registration_action" sequence="5"/>
+</odoo>

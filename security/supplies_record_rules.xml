@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="supplies_rule_reviewer" model="ir.rule">
+        <field name="name">Reviewer</field>
+        <field name="model_id" ref="model_supplies_registration"/>
+        <field name="domain_force">[('state', '=', 'draft')]</field>
+        <field name="groups" eval="[(4, ref('supplies.group_supplies_reviewer'))]"/>
+    </record>
+    <record id="supplies_rule_approver" model="ir.rule">
+        <field name="name">Approver</field>
+        <field name="model_id" ref="model_supplies_registration"/>
+        <field name="domain_force">[('state', '=', 'approved')]</field>
+        <field name="groups" eval="[(4, ref('supplies.group_supplies_approver'))]"/>
+    </record>
+</odoo>

@@ -6,8 +6,23 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,approved,finalized"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,finalized"/>
+                    <button
+                        name="action_approve"
+                        string="Approve"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'draft'"
+                        groups="supplies.group_supplies_reviewer"
+                    />
+                    <button
+                        name="action_finalize"
+                        string="Finalize and Create Vendor"
+                        type="object"
+                        class="btn-primary"
+                        invisible="state != 'approved'"
+                        groups="supplies.group_supplies_approver"
+                    />
                 </header>
                 <sheet>
                     <div class="oe_title">

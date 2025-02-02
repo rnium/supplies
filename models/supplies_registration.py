@@ -76,3 +76,14 @@ class SuppliesRegistration(models.Model):
     past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years of Financial Statement')
     other_certification_doc = fields.Binary(string='Other Certification / Accreditation')
 
+    def action_approve(self):
+        if self.state == 'draft':
+            return self.write({'state': 'approved'})
+        else:
+            raise ValidationError('Invalid state change')
+
+    def action_finalize(self):
+        if self.state == 'approved':
+            return self.write({'state': 'finalized'})
+        else:
+            raise ValidationError('Invalid state change')

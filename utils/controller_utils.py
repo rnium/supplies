@@ -1,4 +1,5 @@
 from typing import List, Tuple
+from odoo.api import Environment
 
 def format_response(status: str, message: str, data: dict = None) -> dict:
     """
@@ -29,7 +30,7 @@ def validate_email_address(request, email: str) -> Tuple[bool, str]:
     return True, ''
 
 
-def create_supplier_registration(env, data: dict) -> Tuple[bool, str]:
+def create_supplier_registration(env: Environment, data: dict):
     # create the contacts first
     contact_names = ['primary_contact_id', 'finance_contact_id', 'authorized_contact_id']
     for name in contact_names:

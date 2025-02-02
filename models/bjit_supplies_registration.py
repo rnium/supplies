@@ -14,7 +14,19 @@ class BJITSuppliesRegistrationContact(models.Model):
 class BJITSuppliesRegistration(models.Model):
     _name = 'bjit_supplies.registration'
     _description = 'BJIT Supplies Registration'
-
+    _rec_name = 'company_name'
+    state = fields.Selection(
+        [
+            ('draft', 'Draft'),
+            ('approved', 'Approved'),
+            ('finalized', 'Finalized'),
+            ('rejected', 'Rejected'),
+            ('blacklisted', 'Blacklisted'),
+        ],
+        default='draft',
+        string='Application State',
+    )
+    # company info fields
     company_name = fields.Char(string='Company Name', required=True)
     company_category_type = fields.Selection(
         [

@@ -31,10 +31,8 @@ const pageManager = {
     data: {},
     goNext: function () {
         if (this.page < this.totalSteps) {
-            this._saveData();
             this.page += 1;
             this.showStep();
-            console.log(this.data);
         }
         return this.page;
     },
@@ -67,9 +65,9 @@ const pageManager = {
         }
 
     },
-    _saveData: function () {
-        console.log(`Saving data for step ${this.page}`);
-        $(`#step_${this.page}`).find('input, select').each((index, element) => {
+    getRegData: function () {
+        const data = {};
+        $(REG_FORM_CONTAINER_ID).find('input, select').each((index, element) => {
             let name = $(element).attr('name');
             let type = $(element).attr('type');
             if (!name) {
@@ -81,37 +79,42 @@ const pageManager = {
                     // If the input allows multiple files
                     if ($(element).prop('multiple')) {
                         // Convert FileList to an array.
-                        this.data[name] = Array.from(files);
+                        data[name] = Array.from(files);
                     } else {
                         // Otherwise, store the first file.
-                        this.data[name] = files[0];
+                        data[name] = files[0];
                     }
                 }
             } else {
                 let value = $(element).val();
                 if (value) {
-                    this.data[name] = value;
+                    data[name] = value;
                 }
             }
         });
+        return data;
     },
     getFormData: function () {
         const formData = new FormData();
-        for (const key in this.data) {
-            if (Array.isArray(this.data[key])) {
-                this.data[key].forEach((file, index) => {
+        const regData = this.getRegData();
+        
+        for (const key in regData) {
+            console.log(key, regData[key]);
+            if (Array.isArray(regData[key])) {
+                regData[key].forEach((file, index) => {
                     formData.append(`${key}_${index}`, file);
                 });
             } else {
-                formData.append(key, this.data[key]);
+                formData.append(key, regData[key]);
             }
         }
         const csrf_token = get_csrf_token();
         formData.append('csrf_token', csrf_token);
         formData.append('email', this.email);
         formData.append('otp', this.otp);
-        return formData;
-    },
+        console.log("Returning Form Data", formData);
+        return formData;        
+    }, 
     handleSubmitForm: function (handler) {
         if (typeof handler !== 'function') {
             return;
@@ -119,9 +122,10 @@ const pageManager = {
         if (this.page !== this.totalSteps) {
             return;
         }
-        this._saveData();
-        console.log(this.getFormData());
-        handler(this.getFormData());
+        const formData = this.getFormData();
+        console.log("Got Form Data", formData);
+        
+        // handler(this.getFormData());
     }
 }
 

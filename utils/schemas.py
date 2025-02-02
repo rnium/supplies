@@ -59,6 +59,8 @@ class SupplierRegistrationSchema(BaseModel):
     certifying_body: str = None
     certification_award_date: str = None
     certification_expiry_date: str = None
+    # clients
+    clients: List[ClientContactSchema] = []
     # docs
     trade_license_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     certificate_of_incorporation_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
@@ -91,6 +93,11 @@ class SupplierRegistrationSchema(BaseModel):
         for key in contact_mapping.keys():
             if key in grouped_data:
                 values[contact_mapping[key]] = grouped_data[key]
+        clients = []
+        for key in grouped_data.keys():
+            if 'client' in key:
+                clients.append(grouped_data[key])
+        values['clients'] = clients
         return values
 
 

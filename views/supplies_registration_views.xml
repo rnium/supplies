@@ -1,5 +1,111 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <record id="supplies_registration_view_form" model="ir.ui.view">
+        <field name="name">supplies.registration.form</field>
+        <field name="model">supplies.registration</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar"
+                           statusbar_visible="draft,approved,finalized"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="company_name"/>
+                        </h1>
+                        <field name="image_1920" widget="image" class="oe_avatar"/>
+                    </div>
+
+                    <notebook>
+                        <!-- Company Information Page -->
+                        <page string="Company Information">
+                            <group>
+                                <group string="Basic Details">
+                                    <field name="company_name"/>
+                                    <field name="company_category_type"/>
+                                    <field name="email"/>
+                                </group>
+                                <group string="Address">
+                                    <field name="address_line_1"/>
+                                    <field name="address_line_2"/>
+                                </group>
+                            </group>
+
+                            <group string="Trade Information">
+                                <field name="trade_license_number"/>
+                                <field name="tax_identification_number"/>
+                                <field name="commencement_date"/>
+                                <field name="expiry_date"/>
+                            </group>
+
+                            <group string="Contacts" colspan="2">
+                                <group>
+                                    <field name="primary_contact_id"/>
+                                    <field name="finance_contact_id"/>
+                                    <field name="authorized_contact_id"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Bank Information Page -->
+                        <page string="Bank Details">
+                            <group>
+                                <group string="Bank Information">
+                                    <field name="bank_name"/>
+                                    <field name="swift_code"/>
+                                    <field name="iban"/>
+                                </group>
+                                <group string="Branch Details">
+                                    <field name="branch_address"/>
+                                    <field name="acc_holder_name"/>
+                                    <field name="acc_number"/>
+                                </group>
+                            </group>
+                        </page>
+
+                        <!-- Certifications Page -->
+                        <page string="Certifications">
+                            <group>
+                                <field name="certification_name"/>
+                                <field name="certificate_number"/>
+                                <field name="certifying_body"/>
+                                <field name="certification_award_date"/>
+                                <field name="certification_expiry_date"/>
+                            </group>
+                        </page>
+
+                        <!-- Client References Page -->
+                        <page string="Client References">
+                            <field name="client_ref_ids" widget="many2many_tags"/>
+                        </page>
+
+                        <!-- Documents Page -->
+                        <page string="Documents">
+                            <group string="Legal Documents">
+                                <field name="trade_license_doc"/>
+                                <field name="certificate_of_incorporation_doc"/>
+                                <field name="certificate_of_good_standing_doc"/>
+                                <field name="establishment_card_doc"/>
+                            </group>
+
+                            <group string="Financial Documents">
+                                <field name="vat_tax_certificate_doc"/>
+                                <field name="memorandum_of_association_doc"/>
+                                <field name="past_2_years_financial_statement_doc"/>
+                            </group>
+
+                            <group string="Identification Documents">
+                                <field name="identification_of_authorised_person_doc"/>
+                                <field name="bank_letter_doc"/>
+                                <field name="other_certification_doc"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
     <record id="supplies_registration_action" model="ir.actions.act_window">
         <field name="name">Registration</field>
         <field name="res_model">supplies.registration</field>

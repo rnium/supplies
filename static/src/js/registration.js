@@ -23,7 +23,7 @@ function get_csrf_token() {
 
 const pageManager = {
     totalSteps: 5,
-    page: 3,
+    page: 1,
     email: '',
     otp: '',
     data: {},

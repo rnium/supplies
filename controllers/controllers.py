@@ -28,10 +28,11 @@ class SupplierRegistration(http.Controller):
         otp_obj = request.env['bjit_supplies.registration.otp'].sudo().create(
             {'email': email}
         )
-        try:
-            otp_obj.send_otp_email()
-        except Exception as e:
-            return utils.format_response('error', str(e))
+        print("OTP: ", otp_obj.otp)
+        # try:
+        #     otp_obj.send_otp_email()
+        # except Exception as e:
+        #     return utils.format_response('error', str(e))
         return utils.format_response('success', 'OTP sent successfully to your email address')
 
     @http.route(['/supplies/register/verify-otp'], type='json', auth='none', methods=['POST'])
@@ -59,6 +60,15 @@ class SupplierRegistration(http.Controller):
         print("Form Data: ", form_data)
         print("Files: ", files)
         print("Post Data: ", post)
-        
         data = json.dumps(utils.format_response('success', 'Registration submitted successfully'))
+        try:
+            reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
+        except ValidationError as e:
+            data = json.dumps(
+                utils.format_response(
+                    'error',
+                    'Data validation failed',
+                    e.errors(include_input=False, include_context=False, include_url=False)
+                )
+            )
         return request.make_response(data, headers={'Content-Type': 'application/json'})

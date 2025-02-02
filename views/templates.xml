@@ -4,8 +4,8 @@
             <h6 t-esc="title"/>
             <div class="mb-2">
                 <input type="text"
-                       t-att-id="'contact-%s-name' % contact_id"
-                       t-att-name="'contact-%s-name' % contact_id"
+                       t-att-id="'contact_%s_name' % contact_id"
+                       t-att-name="'contact_%s_name' % contact_id"
                        class="form-control"
                        placeholder="Name"
                        required=""
@@ -13,8 +13,8 @@
             </div>
             <div class="mb-2">
                 <input type="email"
-                       t-att-id="'contact-%s-email' % contact_id"
-                       t-att-name="'contact-%s-email' % contact_id"
+                       t-att-id="'contact_%s_email' % contact_id"
+                       t-att-name="'contact_%s_email' % contact_id"
                        class="form-control"
                        placeholder="Email"
                        required=""
@@ -22,8 +22,8 @@
             </div>
             <div class="mb-2">
                 <input type="tel"
-                       t-att-id="'contact-%s-phone' % contact_id"
-                       t-att-name="'contact-%s-phone' % contact_id"
+                       t-att-id="'contact_%s_phone' % contact_id"
+                       t-att-name="'contact_%s_phone' % contact_id"
                        class="form-control"
                        placeholder="Phone"
                        required=""
@@ -31,8 +31,8 @@
             </div>
             <div >
                 <input type="text"
-                       t-att-id="'contact-%s-address' % contact_id"
-                       t-att-name="'contact-%s-address' % contact_id"
+                       t-att-id="'contact_%s_address' % contact_id"
+                       t-att-name="'contact_%s_address' % contact_id"
                        class="form-control"
                        placeholder="Address"
                 />
@@ -42,8 +42,8 @@
             <h6 t-esc="title"/>
             <div class="mb-2">
                 <input type="text"
-                       t-att-id="'client-%s-name' % contact_id"
-                       t-att-name="'client-%s-name' % contact_id"
+                       t-att-id="'client_%s_name' % contact_id"
+                       t-att-name="'client_%s_name' % contact_id"
                        class="form-control name"
                        data-requires-if="email,phone,address"
                        t-att-data-container-class="container_class or 'client'"
@@ -55,24 +55,24 @@
             </div>
             <div class="mb-2">
                 <input type="email"
-                       t-att-id="'client-%s-email' % contact_id"
-                       t-att-name="'client-%s-email' % contact_id"
+                       t-att-id="'client_%s_email' % contact_id"
+                       t-att-name="'client_%s_email' % contact_id"
                        class="form-control email"
                        placeholder="Email"
                 />
             </div>
             <div class="mb-2">
                 <input type="tel"
-                       t-att-id="'client-%s-phone' % contact_id"
-                       t-att-name="'client-%s-phone' % contact_id"
+                       t-att-id="'client_%s_phone' % contact_id"
+                       t-att-name="'client_%s_phone' % contact_id"
                        class="form-control phone"
                        placeholder="Phone"
                 />
             </div>
             <div >
                 <input type="text"
-                       t-att-id="'client-%s-address' % contact_id"
-                       t-att-name="'client-%s-address' % contact_id"
+                       t-att-id="'client_%s_address' % contact_id"
+                       t-att-name="'client_%s_address' % contact_id"
                        class="form-control address"
                        placeholder="Address"
                 />
@@ -115,7 +115,7 @@
                         <div class="col-md-12">
                             <div class="card shadow-sm my-5">
                                 <div class="card-body" id="steps_container">
-                                    <div class="step" style="display: none;" id="step_1">
+                                    <div class="step" id="step_1">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 1: Company Information</h5>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
@@ -281,7 +281,7 @@
                                         </div>
                                         <button class="btn btn-outline-primary" id="add_client_reference">Add More Client Reference</button>
                                     </div>
-                                    <div class="step" id="step_4">
+                                    <div class="step" style="display: none;" id="step_4">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 4: Certification</h5>
                                         <div class="mb-3">
                                             <label class="form-label">Certification</label>

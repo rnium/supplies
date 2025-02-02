@@ -112,7 +112,6 @@ const pageManager = {
         formData.append('csrf_token', csrf_token);
         formData.append('email', this.email);
         formData.append('otp', this.otp);
-        console.log("Returning Form Data", formData);
         return formData;        
     }, 
     handleSubmitForm: function (handler) {
@@ -122,10 +121,8 @@ const pageManager = {
         if (this.page !== this.totalSteps) {
             return;
         }
-        const formData = this.getFormData();
-        console.log("Got Form Data", formData);
-        
-        // handler(this.getFormData());
+        const formData = this.getFormData();        
+        handler(formData);
     }
 }
 
@@ -147,7 +144,7 @@ function showWarning(alertContainerId, msg) {
     $(alertContainerId).show(200,()=>{
         setTimeout(()=>{
             $(alertContainerId).hide(200)
-        }, 2000)
+        }, 20000)
     })
 }
 
@@ -319,12 +316,14 @@ function verify_otp() {
         success: function (data) {
             console.log(data);
             if (data?.result?.status === 'success') {
-                showWarning(ALERT_CONTAINER_ID, 'OTP Verified Successfully');
-                $(OTP_FORM_CONTAINER_ID).hide(200, () => {
-                    $(REG_FORM_CONTAINER_ID).show(200);
-                    pageManager.email = email;
-                    pageManager.otp = otp;
-                });
+                showWarning(ALERT_CONTAINER_ID, 'OTP verified. Proceeding to registration.');
+                setTimeout(() => {
+                    $(OTP_FORM_CONTAINER_ID).hide(0, () => {
+                        $(REG_FORM_CONTAINER_ID).show(0);
+                        pageManager.email = email;
+                        pageManager.otp = otp;
+                    });
+                }, 3000);
             } else {
                 showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
             }

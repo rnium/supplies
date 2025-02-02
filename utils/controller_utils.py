@@ -1,4 +1,5 @@
 from typing import List, Tuple
+
 def format_response(status: str, message: str, data: dict = None) -> dict:
     """
     Formats the response
@@ -26,3 +27,36 @@ def validate_email_address(request, email: str) -> Tuple[bool, str]:
     if user:
         return False, 'Email address is already registered'
     return True, ''
+
+
+def create_supplier_registration(env, data: dict) -> Tuple[bool, str]:
+    """
+    Creates a new supplier registration
+    """
+    # create the contacts first
+    contact_names = ['primary_contact_id', 'finance_contact_id', 'authorized_contact_id']
+    for name in contact_names:
+        contact_data = data.pop(name, {})
+        existing_contact = env['bjit_supplies.registration.contact'].sudo().search(
+            [('email', '=', contact_data.get('email'))]
+        )
+        if existing_contact:
+            data[name] = existing_contact.id
+        else:
+            new_contact = env['bjit_supplies.registration.contact'].sudo().create(contact_data)
+            data[name] = new_contact.id
+    # create the client references
+    client_refs = data.pop('client_ref_ids', [])
+    client_ref_ids = []
+    for client_ref in client_refs:
+        existing_client_ref = env['bjit_supplies.registration.contact'].sudo().search(
+            [('email', '=', client_ref.get('email'))]
+        )
+        if existing_client_ref:
+            client_ref_ids.append((4, existing_client_ref.id))
+        else:
+            client_ref_ids.append((0, 0, client_ref))
+    data['client_ref_ids'] = client_ref_ids
+    # create the registration
+    env['bjit_supplies.registration'].sudo().create(data)
+        

@@ -50,6 +50,8 @@ class BJITSuppliesRegistration(models.Model):
     certifying_body = fields.Char(string='Certifying Body')
     certification_award_date = fields.Date(string='Certification Award Date')
     certification_expiry_date = fields.Date(string='Certification Expiry Date')
+    # Client References
+    client_ref_ids = fields.Many2many('bjit_supplies.registration.contact', string='Client References')
     # Document fields (all are custom fields)
     trade_license_doc = fields.Binary(string='Trade License / Business Registration')
     certificate_of_incorporation_doc = fields.Binary(string='Certificate of Incorporation')

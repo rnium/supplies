@@ -71,4 +71,5 @@ class SupplierRegistration(http.Controller):
                     e.errors(include_input=False, include_context=False, include_url=False)
                 )
             )
+
         return request.make_response(data, headers={'Content-Type': 'application/json'})

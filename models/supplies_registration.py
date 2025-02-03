@@ -14,20 +14,20 @@ class SuppliesRegistrationContact(models.Model):
 class SuppliesRegistration(models.Model):
     _name = 'supplies.registration'
     _description = 'Supplies Registration'
-    _rec_name = 'company_name'
+
     state = fields.Selection(
         [
-            ('draft', 'Draft'),
+            ('submitted', 'Submitted'),
             ('approved', 'Approved'),
             ('finalized', 'Finalized'),
             ('rejected', 'Rejected'),
             ('blacklisted', 'Blacklisted'),
         ],
-        default='draft',
+        default='submitted',
         string='Application State',
     )
     # company info fields
-    company_name = fields.Char(string='Company Name', required=True)
+    name = fields.Char(string='Company Name', required=True)
     company_category_type = fields.Selection(
         [
             ('LLC', 'LLC'),

@@ -34,7 +34,7 @@ class ClientContactSchema(BaseModel):
 
 
 class SupplierRegistrationSchema(BaseModel):
-    company_name: str
+    name: str
     company_category_type: str
     email: EmailStr
     address_line_1: str

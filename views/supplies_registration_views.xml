@@ -121,9 +121,16 @@
             </form>
         </field>
     </record>
-    <record id="supplies_registration_action" model="ir.actions.act_window">
-        <field name="name">Registration</field>
+    <record id="supplies_registration_reviewer_action" model="ir.actions.act_window">
+        <field name="name">Registration Reviewer</field>
         <field name="res_model">supplies.registration</field>
         <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ('draft',))]</field>
+    </record>
+    <record id="supplies_registration_approver_action" model="ir.actions.act_window">
+        <field name="name">Registration Approver</field>
+        <field name="res_model">supplies.registration</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('state', 'in', ('approved',))]</field>
     </record>
 </odoo>

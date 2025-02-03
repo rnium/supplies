@@ -14,7 +14,24 @@ class ContactSchema(BaseModel):
     email: EmailStr
     phone: str
     address: str
-    
+
+class ContactOutSchema(BaseModel):
+    name: str
+    email: EmailStr
+    phone: str
+    street: str = Field(alias='address')
+    company_type: str = 'person'
+    type: str = 'contact'
+
+    class Config:
+        from_attributes = True
+        populate_by_name = True
+
+    def model_dump(self, **kwargs):
+        data = super().model_dump()
+        data['function'] = kwargs.get('function')
+        return data
+
 class ClientContactSchema(BaseModel):
     name: str = None
     email: EmailStr = None
@@ -33,6 +50,14 @@ class ClientContactSchema(BaseModel):
             raise ValueError("If email, phone, or address is provided, name must also be provided.")
         return values
 
+class ClientContactOutSchema(BaseModel):
+    name: str
+    email: EmailStr | bool
+    phone: str | bool
+    street: str | bool = Field(alias='address')
+
+    class Config:
+        from_attributes = True
 
 class SupplierRegistrationSchema(BaseModel):
     name: str
@@ -122,21 +147,43 @@ class SupplierRegistrationSchema(BaseModel):
 
 
 class BankSchema(BaseModel):
-    bank_name: str
+    name: str = Field(alias='bank_name')
     swift_code: str = None
     iban: str = None
 
     class Config:
         from_attributes = True
+        populate_by_name = True
 
 
 class BankAccountSchema(BaseModel):
-    branch_address: str
-    acc_holder_name: str = None
+    branch_address: str | bool
+    acc_holder_name: str | bool
     acc_number: str
-    bank_id: int
-    partner_id: int
 
+    class Config:
+        from_attributes = True
+
+    def model_dump(self, **kwargs):
+        data = super().model_dump()
+        bank_id = kwargs.get('bank_id')
+        if bank_id:
+            data['bank_id'] = bank_id
+        return data
+
+class UserSchema(BaseModel):
+    login: EmailStr = Field(alias='email')
+    password: str = Field(alias='email')
+
+    class Config:
+        from_attributes = True
+
+    def model_dump(self, **kwargs):
+        data = super().model_dump()
+        data['partner_id'] = kwargs.get('partner_id')
+        data['company_id'] = kwargs.get('company_id')
+        data['groups_id'] = kwargs.get('groups_id')
+        return data
 
 class CompanySchema(BaseModel):
     name: str
@@ -147,16 +194,12 @@ class CompanySchema(BaseModel):
     trade_license_number: Optional[str] | bool
     tax_identification_number: Optional[str] | bool
     commencement_date: Optional[date] | bool
-    primary_contact_id: int
-    finance_contact_id: int
-    authorized_contact_id: int
     expiry_date: Optional[date] | bool
     certification_name: Optional[str] | bool
     certificate_number: Optional[str] | bool
     certifying_body: Optional[str] | bool
     certification_award_date: Optional[date] | bool
     certification_expiry_date: Optional[date] | bool
-    client_ref_ids: List[int] = []
     trade_license_doc: Optional[bytes] | bool
     certificate_of_incorporation_doc: Optional[bytes] | bool
     certificate_of_good_standing_doc: Optional[bytes] | bool
@@ -167,28 +210,9 @@ class CompanySchema(BaseModel):
     bank_letter_doc: Optional[bytes] | bool
     past_2_years_financial_statement_doc: Optional[bytes] | bool
     other_certification_doc: Optional[bytes] | bool
-    bank_ids: List[int] = []
     supplier_rank: int = 1
     company_type: str = 'company'
 
     class Config:
         from_attributes = True
 
-    @field_validator(
-        'primary_contact_id',
-        'finance_contact_id',
-        'authorized_contact_id',
-        mode='before'
-    )
-    @classmethod
-    def validate_contact_ids(cls, value):
-        if not isinstance(value, int):
-            return value.id
-        return value
-
-    @field_validator('client_ref_ids', mode='before')
-    @classmethod
-    def validate_client_ref_ids(cls, value):
-        if not isinstance(value, list):
-            return value.ids
-        return value

@@ -13,12 +13,18 @@ class ResPartner(models.Model):
             ('Others', 'Others'),
         ]
     )
-    trade_license_doc = fields.Binary(string='Trade License Document')
     trade_license_number = fields.Char(string='Trade License Number')
     tax_identification_number = fields.Char(string='Tax Identification Number')
     commencement_date = fields.Date(string='Commencement Date')
     expiry_date = fields.Date(string='Expiry Date')
-    client_ref_ids = fields.Many2many('res.partner', string='Client References')
+    trade_license_doc = fields.Binary(string='Trade License Document')
+    # certification fields
+    certification_name = fields.Char(string='Certification')
+    certificate_number = fields.Char(string='Certificate Number')
+    certifying_body = fields.Char(string='Certifying Body')
+    certification_award_date = fields.Date(string='Certification Award Date')
+    certification_expiry_date = fields.Date(string='Certification Expiry Date')
+    # docs
     certificate_of_incorporation_doc = fields.Binary(string='Certificate of Incorporation Document')
     certificate_of_good_standing_doc = fields.Binary(string='Certificate of Good Standing Document')
     establishment_card_doc = fields.Binary(string='Establishment Card Document')

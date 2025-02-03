@@ -1,6 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from ..utils import schemas
+from ..utils import supplier_registration_utils as utils
 
 class SuppliesRegistrationContact(models.Model):
     _name = 'supplies.contact'
@@ -84,18 +85,24 @@ class SuppliesRegistration(models.Model):
             raise ValidationError('Invalid state change')
 
     def action_finalize(self):
-        res_data = schemas.CompanySchema.model_validate(self)
-        print(res_data.model_dump())
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Registration Details',
-                'message': f'Registration details seen',
-                'sticky': False,
-            }
-        }
-        # if self.state == 'approved':
-        #     return self.write({'state': 'finalized'})
-        # else:
-        #     raise ValidationError('Invalid state change')
+        if self.state != 'approved':
+            raise ValidationError('Invalid state change')
+        company_schema = schemas.CompanySchema.model_validate(self)
+        bank_schema = schemas.BankSchema.model_validate(self)
+        bank_ids_schema = schemas.BankAccountSchema.model_validate(self)
+        user_schema = schemas.UserSchema.model_validate(self)
+        company_data = company_schema.model_dump()
+        bank = utils.get_or_create_bank(self.env, bank_schema.model_dump())
+        bank_data = bank_ids_schema.model_dump(bank_id=bank.id)
+        child_ids = utils.get_child_contacts(self)
+        company_data['bank_ids'] = [(0, 0, bank_data)]
+        company_data['child_ids'] = child_ids
+        company = self.env['res.partner'].sudo().create(company_data)
+        user_data = user_schema.model_dump(
+            partner_id=company.id,
+            company_id=self.env.company.id,
+            groups_id=[(6, 0, self.env.ref('base.group_portal').ids)]
+        )
+        self.env['res.users'].sudo().create(user_data)
+        return self.write({'state': 'finalized'})
+

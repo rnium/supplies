@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import ValidationError
+from ..utils import schemas
 
 class SuppliesRegistrationContact(models.Model):
     _name = 'supplies.contact'
@@ -40,8 +41,8 @@ class SuppliesRegistration(models.Model):
     )
     image_1920 = fields.Binary(string='Logo')
     email = fields.Char(string='Email', required=True)
-    address_line_1 = fields.Char(string='Address Line 1', required=True)
-    address_line_2 = fields.Char(string='Address Line 2')
+    street = fields.Char(string='Address Line 1', required=True)
+    street2 = fields.Char(string='Address Line 2')
     trade_license_number = fields.Char(string='Trade License Number')
     tax_identification_number = fields.Char(string='Tax Identification Number')
     commencement_date = fields.Date(string='Commencement Date')
@@ -83,7 +84,18 @@ class SuppliesRegistration(models.Model):
             raise ValidationError('Invalid state change')
 
     def action_finalize(self):
-        if self.state == 'approved':
-            return self.write({'state': 'finalized'})
-        else:
-            raise ValidationError('Invalid state change')
+        res_data = schemas.CompanySchema.model_validate(self)
+        print(res_data.model_dump())
+        return {
+            'type': 'ir.actions.client',
+            'tag': 'display_notification',
+            'params': {
+                'title': 'Registration Details',
+                'message': f'Registration details seen',
+                'sticky': False,
+            }
+        }
+        # if self.state == 'approved':
+        #     return self.write({'state': 'finalized'})
+        # else:
+        #     raise ValidationError('Invalid state change')

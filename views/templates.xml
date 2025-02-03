@@ -144,11 +144,11 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Address Line 1 *</label>
-                                                <input type="text" class="form-control" name="address_line_1" required=""/>
+                                                <input type="text" class="form-control" name="street" required=""/>
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Address Line 2</label>
-                                                <input type="text" class="form-control" name="address_line_2" />
+                                                <input type="text" class="form-control" name="street2" />
                                             </div>
                                         </div>
 

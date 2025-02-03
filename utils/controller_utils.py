@@ -10,7 +10,7 @@ def format_response(status: str, message: str, data: dict = None) -> dict:
         'message': message,
         'data': data
     }
-    
+
 def validate_email_address(request, email: str) -> Tuple[bool, str]:
     """
     Validates the given email address
@@ -28,7 +28,6 @@ def validate_email_address(request, email: str) -> Tuple[bool, str]:
     if user:
         return False, 'Email address is already registered'
     return True, ''
-
 
 def create_supplier_registration(env: Environment, data: dict):
     # create the contacts first

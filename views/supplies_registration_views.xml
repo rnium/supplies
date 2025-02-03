@@ -6,13 +6,13 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="draft,approved,finalized"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted,approved,finalized"/>
                     <button
                         name="action_approve"
                         string="Approve"
                         type="object"
                         class="btn-primary"
-                        invisible="state != 'draft'"
+                        invisible="state != 'submitted'"
                         groups="supplies.group_supplies_reviewer"
                     />
                     <button
@@ -42,8 +42,8 @@
                                     <field name="email"/>
                                 </group>
                                 <group string="Address">
-                                    <field name="address_line_1"/>
-                                    <field name="address_line_2"/>
+                                    <field name="street"/>
+                                    <field name="street2"/>
                                 </group>
                             </group>
 
@@ -125,7 +125,7 @@
         <field name="name">Registration Reviewer</field>
         <field name="res_model">supplies.registration</field>
         <field name="view_mode">tree,form</field>
-        <field name="domain">[('state', 'in', ('draft',))]</field>
+        <field name="domain">[('state', 'in', ('submitted',))]</field>
     </record>
     <record id="supplies_registration_approver_action" model="ir.actions.act_window">
         <field name="name">Registration Approver</field>

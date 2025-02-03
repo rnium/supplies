@@ -2,8 +2,9 @@ from pydantic import (
     BaseModel, Field, field_validator,
     model_validator, EmailStr, conbytes
 )
-from typing import List
+from typing import List, Optional
 from collections import defaultdict
+from datetime import date
 import re
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
@@ -37,8 +38,8 @@ class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
     email: EmailStr
-    address_line_1: str
-    address_line_2: str = None
+    street: str
+    street2: str = None
     trade_license_number: str = None
     tax_identification_number: str = None
     commencement_date: str = None
@@ -118,4 +119,76 @@ class SupplierRegistrationSchema(BaseModel):
     def transform_binary_fields(cls, value):
         if value and hasattr(value, 'read'):
             return value.read()
-    
+
+
+class BankSchema(BaseModel):
+    bank_name: str
+    swift_code: str = None
+    iban: str = None
+
+    class Config:
+        from_attributes = True
+
+
+class BankAccountSchema(BaseModel):
+    branch_address: str
+    acc_holder_name: str = None
+    acc_number: str
+    bank_id: int
+    partner_id: int
+
+
+class CompanySchema(BaseModel):
+    name: str
+    company_category_type: str
+    email: EmailStr
+    street: str
+    street2: Optional[str] | bool
+    trade_license_number: Optional[str] | bool
+    tax_identification_number: Optional[str] | bool
+    commencement_date: Optional[date] | bool
+    primary_contact_id: int
+    finance_contact_id: int
+    authorized_contact_id: int
+    expiry_date: Optional[date] | bool
+    certification_name: Optional[str] | bool
+    certificate_number: Optional[str] | bool
+    certifying_body: Optional[str] | bool
+    certification_award_date: Optional[date] | bool
+    certification_expiry_date: Optional[date] | bool
+    client_ref_ids: List[int] = []
+    trade_license_doc: Optional[bytes] | bool
+    certificate_of_incorporation_doc: Optional[bytes] | bool
+    certificate_of_good_standing_doc: Optional[bytes] | bool
+    establishment_card_doc: Optional[bytes] | bool
+    vat_tax_certificate_doc: Optional[bytes] | bool
+    memorandum_of_association_doc: Optional[bytes] | bool
+    identification_of_authorised_person_doc: Optional[bytes] | bool
+    bank_letter_doc: Optional[bytes] | bool
+    past_2_years_financial_statement_doc: Optional[bytes] | bool
+    other_certification_doc: Optional[bytes] | bool
+    bank_ids: List[int] = []
+    supplier_rank: int = 1
+    company_type: str = 'company'
+
+    class Config:
+        from_attributes = True
+
+    @field_validator(
+        'primary_contact_id',
+        'finance_contact_id',
+        'authorized_contact_id',
+        mode='before'
+    )
+    @classmethod
+    def validate_contact_ids(cls, value):
+        if not isinstance(value, int):
+            return value.id
+        return value
+
+    @field_validator('client_ref_ids', mode='before')
+    @classmethod
+    def validate_client_ref_ids(cls, value):
+        if not isinstance(value, list):
+            return value.ids
+        return value

@@ -1,5 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
+    <record id="supplies_registration_tree_view" model="ir.ui.view">
+        <field name="name">supplies.registration.tree</field>
+        <field name="model">supplies.registration</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="create_date" string="Submitted Date"/>
+                <field name="state" widget="badge" decoration-success="state == 'finalized'" decoration-warning="state == 'submitted'" decoration-info="state == 'approved'" decoration-danger="state == 'blacklisted' or state == 'rejected'"/>
+            </tree>
+        </field>
+    </record>
+
     <record id="supplies_registration_view_form" model="ir.ui.view">
         <field name="name">supplies.registration.form</field>
         <field name="model">supplies.registration</field>
@@ -156,7 +169,7 @@
         <field name="name">supplies.registration.kanban</field>
         <field name="model">supplies.registration</field>
         <field name="arch" type="xml">
-            <kanban class="o_hr_employee_kanban" js_class="hr_employee_kanban" sample="1" records_draggable="false" create="false" delete="false">
+            <kanban class="o_hr_employee_kanban" js_class="hr_employee_kanban" sample="1" records_draggable="false" create="false" delete="false" default_group_by="state">
                 <field name="id" modifiers="{&quot;readonly&quot;: true}"/>
                 <field name="name" modifiers="{&quot;readonly&quot;: true}"/>
                 <field name="email" modifiers="{&quot;readonly&quot;: true}"/>
@@ -195,24 +208,29 @@
         </field>
     </record>
 
-    <record id="supplies_registration_tree_view" model="ir.ui.view">
-        <field name="name">supplies.registration.tree</field>
+    <record id="supplies_registration_view_search" model="ir.ui.view">
+        <field name="name">supplies.registration.search</field>
         <field name="model">supplies.registration</field>
         <field name="arch" type="xml">
-            <tree>
+            <search string="Supplier Registration">
                 <field name="name"/>
                 <field name="email"/>
-                <field name="create_date" string="Submitted Date"/>
-                <field name="state" widget="badge" decoration-success="state == 'finalized'" decoration-warning="state == 'submitted'" decoration-info="state == 'approved'" decoration-danger="state == 'blacklisted' or state == 'rejected'"/>
-            </tree>
+                <field name="trade_license_number"/>
+                <field name="tax_identification_number"/>
+                <field name="commencement_date"/>
+                <field name="expiry_date"/>
+                <filter string="Waiting for approval" name="submission" domain="[('state','=','submitted')]"/>
+                <filter string="Waiting for finalization" name="finalization" domain="[('state','=','approved')]"/>
+            </search>
         </field>
     </record>
 
     <record id="supplies_registration_reviewer_action" model="ir.actions.act_window">
         <field name="name">Registration Reviewer</field>
         <field name="res_model">supplies.registration</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="domain">[('state', 'in', ('submitted','finalized','blacklisted','rejected'))]</field>
+        <field name="context" eval="{'search_default_submission': True}"/>
         <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 No Registrations
@@ -222,12 +240,13 @@
     <record id="supplies_registration_approver_action" model="ir.actions.act_window">
         <field name="name">Registration Approver</field>
         <field name="res_model">supplies.registration</field>
-        <field name="view_mode">kanban,tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
         <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 No Registrations
               </p>
         </field>
+        <field name="context" eval="{'search_default_finalization': True}"/>
         <field name="domain">[('state', 'in', ('approved','finalized','blacklisted','rejected'))]</field>
     </record>
 </odoo>

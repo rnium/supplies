@@ -63,6 +63,7 @@ class SupplierRegistration(http.Controller):
         data = json.dumps(utils.format_response('success', 'Registration submitted successfully'))
         try:
             reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
+            utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
         except ValidationError as e:
             data = json.dumps(
                 utils.format_response(
@@ -71,5 +72,4 @@ class SupplierRegistration(http.Controller):
                     e.errors(include_input=False, include_context=False, include_url=False)
                 )
             )
-        utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
         return request.make_response(data, headers={'Content-Type': 'application/json'})

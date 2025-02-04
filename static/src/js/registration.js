@@ -13,6 +13,7 @@ const NEXT_BTN_ID = '#next_btn';
 const PREV_BTN_ID = '#prev_btn';
 const SUBMIT_BTN_ID = '#submit_btn';
 const DECLARATION_CHECKBOX_ID = '#declarationCheckbox';
+const MODAL_1 = 'modal_1';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
@@ -124,6 +125,12 @@ const pageManager = {
         const formData = this.getFormData();        
         handler(formData);
     }
+}
+
+function showModal(id) {
+    const elem = document.getElementById(id)
+    const mBootstrap = new bootstrap.Modal(elem);
+    mBootstrap.show()
 }
 
 function showError(alertContainerId, msg) {
@@ -350,6 +357,7 @@ function submit_form(formData) {
         data: formData,
         success: function (data) {
             console.log(data);
+            showModal(MODAL_1);
         },
         error: function (xhr, status, error) {
             showError(ALERT_CONTAINER_ID, 'Failed to submit form');
@@ -374,7 +382,6 @@ $(document).ready(function () {
     });
     $(ADD_MORE_CLIENT_BTN_ID).on('click', addMoreClientReference);
     $(SUBMIT_BTN_ID).on('click', () => {
-        console.log('Submit Button Clicked');
         if (validateStepInputs(pageManager.page)) {
             pageManager.handleSubmitForm(submit_form);
         }

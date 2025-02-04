@@ -20,10 +20,10 @@ class SuppliesRegistration(models.Model):
     state = fields.Selection(
         [
             ('submitted', 'Submitted'),
-            ('approved', 'Approved'),
-            ('finalized', 'Finalized'),
             ('rejected', 'Rejected'),
             ('blacklisted', 'Blacklisted'),
+            ('approved', 'Approved'),
+            ('finalized', 'Finalized'),
         ],
         default='submitted',
         string='Application State',
@@ -105,4 +105,15 @@ class SuppliesRegistration(models.Model):
         )
         self.env['res.users'].sudo().create(user_data)
         return self.write({'state': 'finalized'})
+
+    def action_blacklist(self):
+        wizard = self.env['blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
+        return {
+            'name': 'Blacklist',
+            'type': 'ir.actions.act_window',
+            'res_model': 'blacklist.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
 

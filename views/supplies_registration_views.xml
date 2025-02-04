@@ -6,7 +6,8 @@
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <field name="state" widget="statusbar" statusbar_visible="submitted,approved,finalized"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted,approved,finalized" invisible="state in ('blacklisted','rejected')"/>
+                    <field name="state" widget="statusbar" statusbar_visible="submitted" invisible="state not in ('blacklisted','rejected')"/>
                     <button
                         name="action_approve"
                         string="Approve"
@@ -22,6 +23,13 @@
                         class="btn-primary"
                         invisible="state != 'approved'"
                         groups="supplies.group_supplies_approver"
+                    />
+                    <button
+                        name="action_blacklist"
+                        string="Blacklist"
+                        type="object"
+                        class="btn-danger"
+                        invisible="state != 'submitted'"
                     />
                 </header>
                 <sheet>

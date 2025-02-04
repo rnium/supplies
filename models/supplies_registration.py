@@ -77,6 +77,7 @@ class SuppliesRegistration(models.Model):
     bank_letter_doc = fields.Binary(string='Bank Letter indicating Bank Account Information')
     past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years of Financial Statement')
     other_certification_doc = fields.Binary(string='Other Certification / Accreditation')
+    comments = fields.Text(string='Comments')
 
     def action_approve(self):
         if self.state == 'draft':
@@ -117,3 +118,13 @@ class SuppliesRegistration(models.Model):
             'target': 'new',
         }
 
+    def action_reject(self):
+        wizard = self.env['supplies.reject.application.wizard'].create({'registration_id': self.id})
+        return {
+            'name': 'Reject Application',
+            'type': 'ir.actions.act_window',
+            'res_model': 'supplies.reject.application.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }

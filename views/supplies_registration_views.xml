@@ -25,11 +25,19 @@
                         groups="supplies.group_supplies_approver"
                     />
                     <button
+                        name="action_reject"
+                        string="Reject"
+                        type="object"
+                        class="btn-outline-primary"
+                        invisible="state not in ('submitted','approved')"
+                    />
+                    <button
                         name="action_blacklist"
                         string="Blacklist"
                         type="object"
-                        class="btn-danger"
-                        invisible="state != 'submitted'"
+                        class="btn-outline-primary"
+                        invisible="state not in ('submitted','approved')"
+                        groups="supplies.group_supplies_reviewer"
                     />
                 </header>
                 <sheet>
@@ -123,6 +131,11 @@
                                 <field name="bank_letter_doc"/>
                                 <field name="other_certification_doc"/>
                             </group>
+                        </page>
+
+                        <!-- Comments Page -->
+                        <page string="Comments">
+                            <field name="comments" widget="html"/>
                         </page>
                     </notebook>
                 </sheet>

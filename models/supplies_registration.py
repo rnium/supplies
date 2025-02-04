@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from ..utils import schemas
 from ..utils import supplier_registration_utils as utils
+import random
 
 class SuppliesRegistrationContact(models.Model):
     _name = 'supplies.contact'
@@ -105,6 +106,13 @@ class SuppliesRegistration(models.Model):
             groups_id=[(6, 0, self.env.ref('base.group_portal').ids)]
         )
         self.env['res.users'].sudo().create(user_data)
+        contexts = {
+            'email': self.email,
+            'password': self.email,
+        }
+        self.env.ref(
+            'supplies.email_template_model_supplies_vendor_registration_confirmation'
+        ).with_context(**contexts).send_mail(self.id, force_send=True)
         return self.write({'state': 'finalized'})
 
     def action_blacklist(self):

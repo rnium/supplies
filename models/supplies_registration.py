@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from ..utils import schemas
 from ..utils import supplier_registration_utils as utils
+import random
 
 class SuppliesRegistrationContact(models.Model):
     _name = 'supplies.contact'
@@ -20,10 +21,10 @@ class SuppliesRegistration(models.Model):
     state = fields.Selection(
         [
             ('submitted', 'Submitted'),
-            ('approved', 'Approved'),
-            ('finalized', 'Finalized'),
             ('rejected', 'Rejected'),
             ('blacklisted', 'Blacklisted'),
+            ('approved', 'Approved'),
+            ('finalized', 'Finalized'),
         ],
         default='submitted',
         string='Application State',
@@ -77,9 +78,10 @@ class SuppliesRegistration(models.Model):
     bank_letter_doc = fields.Binary(string='Bank Letter indicating Bank Account Information')
     past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years of Financial Statement')
     other_certification_doc = fields.Binary(string='Other Certification / Accreditation')
+    comments = fields.Text(string='Comments')
 
     def action_approve(self):
-        if self.state == 'draft':
+        if self.state == 'submitted':
             return self.write({'state': 'approved'})
         else:
             raise ValidationError('Invalid state change')
@@ -104,5 +106,33 @@ class SuppliesRegistration(models.Model):
             groups_id=[(6, 0, self.env.ref('base.group_portal').ids)]
         )
         self.env['res.users'].sudo().create(user_data)
+        contexts = {
+            'email': self.email,
+            'password': self.email,
+        }
+        self.env.ref(
+            'supplies.email_template_model_supplies_vendor_registration_confirmation'
+        ).with_context(**contexts).send_mail(self.id, force_send=True)
         return self.write({'state': 'finalized'})
 
+    def action_blacklist(self):
+        wizard = self.env['blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
+        return {
+            'name': 'Blacklist',
+            'type': 'ir.actions.act_window',
+            'res_model': 'blacklist.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
+
+    def action_reject(self):
+        wizard = self.env['supplies.reject.application.wizard'].create({'registration_id': self.id})
+        return {
+            'name': 'Reject Application',
+            'type': 'ir.actions.act_window',
+            'res_model': 'supplies.reject.application.wizard',
+            'res_id': wizard.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }

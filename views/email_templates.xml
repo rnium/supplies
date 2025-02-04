@@ -15,4 +15,28 @@
             <p>My Company</p>
         </field>
     </record>
+    <record id="email_template_model_supplies_vendor_registration_confirmation" model="mail.template">
+        <field name="name">Supplier Registration OTP Reminder</field>
+        <field name="model_id" ref="model_supplies_registration"/>
+        <field name="subject">Supplier Account Confirmation</field>
+        <field name="email_from">saiful.islam@bjitacademy.com</field>
+        <field name="email_to">{{object.email}}</field>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+               Congratulations! Your registration is reviewed and confirmed. You can now login to your account. Here is your login credentials.
+            </p>
+            <p>
+                Email: <t t-out="ctx.get('email') or not_available"/>
+            </p>
+            <p>
+                Password: <t t-out="ctx.get('password') or not_available"/>
+            </p>
+            <p>
+                Please change your password after first login. Please keep your credentials safe and let us know if you have any queries or issues.
+            </p>
+            <p>Regards</p>
+            <p>My Company</p>
+        </field>
+    </record>
 </odoo>

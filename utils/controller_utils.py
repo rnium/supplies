@@ -16,7 +16,7 @@ def validate_email_address(request, email: str) -> Tuple[bool, str]:
     Validates the given email address
     """
     # First check if its blacklisted
-    blacklist = request.env['supplies.registration.blacklist'].sudo().search(
+    blacklist = request.env['mail.blacklist'].sudo().search(
         [('email', '=', email), ('active', '=', True)]
     )
     if blacklist:

@@ -3,3 +3,5 @@ access_supplies_registration_reviewer,access.supplies.registration.reviewer,mode
 access_supplies_registration_approver,access.supplies.registration.approver,model_supplies_registration,supplies.group_supplies_approver,1,1,0,0
 access_supplies_contact_reviewer,access.supplies.contact.reviewer,model_supplies_contact,supplies.group_supplies_reviewer,1,0,0,0
 access_supplies_contact_approver,access.supplies.contact.approver,model_supplies_contact,supplies.group_supplies_approver,1,0,0,0
+access_blacklist_wizard,access.blacklist.wizard,model_blacklist_wizard,base.group_system,1,1,1,1
+access_supplies_reject_application_wizard,access.supplies.reject.application.wizard,model_supplies_reject_application_wizard,base.group_system,1,1,1,1

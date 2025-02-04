@@ -29,6 +29,9 @@
         'views/email_templates.xml',
         'views/supplies_registration_views.xml',
         'views/supplies_menus.xml',
+        'views/mai_blacklist_inherit.xml',
+        'wizard/blacklist_wizard_view.xml',
+        'wizard/reject_application_wizard.xml',
 
     ],
     # only loaded in demonstration mode

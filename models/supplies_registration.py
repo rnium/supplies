@@ -80,7 +80,7 @@ class SuppliesRegistration(models.Model):
     comments = fields.Text(string='Comments')
 
     def action_approve(self):
-        if self.state == 'draft':
+        if self.state == 'submitted':
             return self.write({'state': 'approved'})
         else:
             raise ValidationError('Invalid state change')

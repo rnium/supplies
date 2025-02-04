@@ -284,7 +284,7 @@ function send_otp() {
                 $(VERIFY_OTP_BTN_ID).show();
                 $('#email').prop('readonly', true);
             } else {
-                showError(ALERT_CONTAINER_ID, data?.result?.error || 'Failed to send OTP');
+                showError(ALERT_CONTAINER_ID, data?.result?.message || 'Failed to send OTP');
             }
         },
         error: function (xhr, status, error) {
@@ -314,21 +314,22 @@ function verify_otp() {
         },
         data: JSON.stringify(format_rpc_data({email: email, otp: otp})),
         success: function (data) {
-            console.log(data);
             if (data?.result?.status === 'success') {
                 showWarning(ALERT_CONTAINER_ID, 'OTP verified. Proceeding to registration.');
                 setTimeout(() => {
-                    $(OTP_FORM_CONTAINER_ID).hide(0, () => {
-                        $(REG_FORM_CONTAINER_ID).show(0);
+                    $(OTP_FORM_CONTAINER_ID).hide(200, () => {
+                        $(REG_FORM_CONTAINER_ID).show(200);
                         pageManager.email = email;
                         pageManager.otp = otp;
                     });
-                }, 3000);
+                }, 1500);
             } else {
-                showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
+                const error_msg = data?.result?.message || 'Invalid OTP. Please try again.';
+                showError(ALERT_CONTAINER_ID, error_msg);
             }
         },
         error: function (xhr, status, error) {
+            console.log(xhr, status, error);
             showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
         },
         complete: function () {

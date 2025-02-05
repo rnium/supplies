@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 class SuppliesRfp(models.Model):
     _name = 'supplies.rfp'
@@ -20,6 +21,7 @@ class SuppliesRfp(models.Model):
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs')
     num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
+    submitted_date = fields.Date(string='Submitted On', readonly=True)
 
 
     def create(self, vals_list):
@@ -31,3 +33,29 @@ class SuppliesRfp(models.Model):
     def _compute_num_rfq(self):
         for rfp in self:
             rfp.num_rfq = len(rfp.rfq_ids)
+
+    def action_submit(self):
+        if not self.product_line_ids:
+            raise UserError('Please add product lines before submitting.')
+        return self.write({'state': 'submitted', 'submitted_date': fields.Date.today()})
+
+    def action_return_to_draft(self):
+        if self.state == 'submitted':
+            return self.write({'state': 'draft'})
+        else:
+            raise UserError('Only submitted RFPs can be returned to draft.')
+
+    def action_approve(self):
+        return self.write({'state': 'approved'})
+
+    def action_reject(self):
+        return self.write({'state': 'rejected'})
+
+    def action_close(self):
+        return self.write({'state': 'closed'})
+
+    def action_recommendation(self):
+        return self.write({'state': 'recommendation'})
+
+    def action_accept(self):
+        return self.write({'state': 'accepted'})

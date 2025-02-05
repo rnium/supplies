@@ -8,7 +8,7 @@
     />
     <menuitem
         id="supplies_rfp_menu"
-        name="RFQ"
+        name="Request for Purchases"
         parent="supplies_menu"
         action="supplies_rfp_action"
         sequence="5"

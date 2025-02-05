@@ -6,6 +6,7 @@
         <field name="arch" type="xml">
             <tree string="Request for Purchases">
                 <field name="rfp_number" string="Reference"/>
+                <field name="create_uid" string="Requested By"/>
                 <field name="required_date" />
                 <field
                     name="state"
@@ -16,7 +17,6 @@
                     decoration-primary="state in ('recommendation',)"
                     decoration-success="state in ('approved',)"
                 />
-                <field name="num_rfq" string="RFQ's Received"/>
             </tree>
         </field>
     </record>
@@ -29,6 +29,42 @@
                 <header>
                     <field name="state" widget="statusbar"
                            statusbar_visible="draft,submitted,approved,closed,recommendation,approved"/>
+                    <button
+                        name="action_submit"
+                        string="Submit"
+                        class="oe_highlight"
+                        type="object"
+                        icon="fa-paper-plane"
+                        groups="supplies.group_supplies_reviewer"
+                        invisible="state != 'draft'"
+                    />
+                    <button
+                        name="action_return_to_draft"
+                        string="Return to Draft"
+                        type="object"
+                        icon="fa-undo"
+                        groups="supplies.group_supplies_reviewer"
+                        invisible="state != 'submitted'"
+                    />
+                    <button
+                        name="action_approve"
+                        string="Approve"
+                        class="oe_highlight"
+                        type="object"
+                        icon="fa-check"
+                        groups="supplies.group_supplies_approver"
+                        invisible="state != 'submitted'"
+                    />
+                    <button
+                        name="action_reject"
+                        string="Reject"
+                        class="btn-warning"
+                        type="object"
+                        icon="fa-close"
+                        groups="supplies.group_supplies_approver"
+                        invisible="state != 'submitted'"
+                    />
+
                 </header>
                 <sheet>
                     <div class="oe_title">
@@ -38,21 +74,28 @@
                     </div>
                     <group>
                         <group>
-                            <field name="required_date"/>
+                            <field name="create_uid" string="Requested By"/>
+                            <field name="submitted_date" invisible="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="required_date" readonly="state != 'draft'"/>
                             <field
                                 name="approved_supplier_id"
                                 context="{'search_default_supplier': 1}"
                                 options="{'no_open': True}"
                                 groups="supplies.group_supplies_approver"
-                                invisible="not id or state != 'approved'"/>
+                                invisible="not id or state != 'approved'"
                             />
                         </group>
                     </group>
 
                     <notebook>
                         <page string="Product Lines">
-                            <field name="product_line_ids"
-                                   context="{'default_rfp_id': id}">
+                            <field
+                                name="product_line_ids"
+                                context="{'default_rfp_id': id}"
+                                readonly="state != 'draft'"
+                            >
                                 <tree editable="bottom">
                                     <field name="product_id" string="Product"/>
                                     <field name="description" string="Description"/>
@@ -80,7 +123,7 @@
     </record>
 
     <record id="supplies_rfp_action" model="ir.actions.act_window">
-        <field name="name">Supplies RFP</field>
+        <field name="name">Request For Purchases</field>
         <field name="res_model">supplies.rfp</field>
         <field name="view_mode">tree,form</field>
     </record>

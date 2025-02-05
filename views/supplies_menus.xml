@@ -7,11 +7,18 @@
             web_icon="supplies,static/description/icon.png"
     />
     <menuitem
+        id="supplies_rfp_menu"
+        name="RFQ"
+        parent="supplies_menu"
+        action="supplies_rfp_action"
+        sequence="5"
+    />
+    <menuitem
         id="supplies_registration_reviewer_menu"
         name="Registration"
         parent="supplies_menu"
         action="supplies_registration_reviewer_action"
-        sequence="5"
+        sequence="10"
         groups="supplies.group_supplies_reviewer"
     />
     <menuitem
@@ -19,7 +26,7 @@
         name="Registration"
         parent="supplies_menu"
         action="supplies_registration_approver_action"
-        sequence="5"
+        sequence="10"
         groups="supplies.group_supplies_approver"
     />
 </odoo>

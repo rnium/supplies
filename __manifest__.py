@@ -28,6 +28,7 @@
         'views/templates.xml',
         'views/email_templates.xml',
         'views/supplies_registration_views.xml',
+        'views/supplies_rfp_views.xml',
         'views/supplies_menus.xml',
         'views/mai_blacklist_inherit.xml',
         'views/ir_sequence.xml',

@@ -3,6 +3,7 @@ from odoo import models, fields, api
 class SuppliesRfp(models.Model):
     _name = 'supplies.rfp'
     _description = 'Request for Purchase'
+    _rec_name = 'rfp_number'
 
     state = fields.Selection([
         ('draft', 'Draft'),
@@ -11,6 +12,7 @@ class SuppliesRfp(models.Model):
         ('approved', 'Approved'),
         ('closed', 'Closed'),
         ('recommendation', 'Recommendation'),
+        ('accepted', 'Accepted'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=True, default='draft')
     rfp_number = fields.Char(string='RFP Number', readonly=True, index=True, copy=False, default='New')
     required_date = fields.Date(string='Required Date', default=lambda self: fields.Date.add(fields.Date.today(), days=7))

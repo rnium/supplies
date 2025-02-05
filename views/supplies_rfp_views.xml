@@ -101,7 +101,8 @@
                                 context="{'search_default_supplier': 1}"
                                 options="{'no_open': True}"
                                 groups="supplies.group_supplies_approver"
-                                invisible="not id or state != 'approved'"
+                                invisible="not id or state != 'accepted'"
+                                readonly="1"
                             />
                         </group>
                     </group>
@@ -123,11 +124,14 @@
                         </page>
 
                         <page string="RFQs">
-                            <field name="rfq_ids"
-                                   context="{'default_rfp_id': id, 'create': False}">
+                            <field
+                                name="rfq_ids"
+                                context="{'default_rfp_id': id, 'create': False}"
+                                readonly="1"
+                            >
                                 <tree>
-                                    <field name="partner_id" string="Vendor"/>
-                                    <field name="date_order" string="Order Date"/>
+                                    <field name="partner_id" string="Supplier"/>
+                                    <field name="create_date" string="Posted On"/>
                                     <field name="amount_total" string="Total"/>
                                     <field name="state" string="Status"/>
                                 </tree>

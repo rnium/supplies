@@ -33,6 +33,7 @@
         'views/supplies_menus.xml',
         'views/mai_blacklist_inherit.xml',
         'views/ir_sequence.xml',
+        'views/portal_templates.xml',
         'wizard/blacklist_wizard_view.xml',
         'wizard/reject_application_wizard.xml',
     ],

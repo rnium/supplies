@@ -47,6 +47,15 @@
                         invisible="state != 'submitted'"
                     />
                     <button
+                        name="action_recommendation"
+                        string="Recommend"
+                        type="object"
+                        class="btn-primary"
+                        icon="fa-paper-plane-o"
+                        groups="supplies.group_supplies_reviewer"
+                        invisible="state != 'closed'"
+                    />
+                    <button
                         name="action_approve"
                         string="Approve"
                         class="oe_highlight"
@@ -63,6 +72,14 @@
                         icon="fa-close"
                         groups="supplies.group_supplies_approver"
                         invisible="state != 'submitted'"
+                    />
+                    <button
+                        name="action_close"
+                        string="Close This RFP"
+                        type="object"
+                        class="btn-primary"
+                        groups="supplies.group_supplies_approver"
+                        invisible="state != 'approved'"
                     />
 
                 </header>
@@ -118,6 +135,10 @@
                         </page>
                     </notebook>
                 </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" />
+                    <field name="message_ids" />
+                </div>
             </form>
         </field>
     </record>

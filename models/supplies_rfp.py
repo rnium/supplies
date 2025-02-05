@@ -3,6 +3,7 @@ from odoo.exceptions import UserError
 
 class SuppliesRfp(models.Model):
     _name = 'supplies.rfp'
+    _inherit = ['mail.thread']
     _description = 'Request for Purchase'
     _rec_name = 'rfp_number'
 
@@ -16,7 +17,7 @@ class SuppliesRfp(models.Model):
         ('accepted', 'Accepted'),
     ], string='Status', readonly=True, copy=False, index=True, tracking=True, default='draft')
     rfp_number = fields.Char(string='RFP Number', readonly=True, index=True, copy=False, default='New')
-    required_date = fields.Date(string='Required Date', default=lambda self: fields.Date.add(fields.Date.today(), days=7))
+    required_date = fields.Date(string='Required Date', tracking=True, default=lambda self: fields.Date.add(fields.Date.today(), days=7))
     approved_supplier_id = fields.Many2one('res.partner', string='Approved Supplier')
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs')
@@ -55,7 +56,7 @@ class SuppliesRfp(models.Model):
         return self.write({'state': 'closed'})
 
     def action_recommendation(self):
-        return self.write({'state': 'recommendation'})
+        raise UserError('There is no recommended RFQ for this RFP.')
 
     def action_accept(self):
         return self.write({'state': 'accepted'})

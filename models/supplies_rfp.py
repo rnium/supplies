@@ -19,8 +19,15 @@ class SuppliesRfp(models.Model):
     approved_supplier_id = fields.Many2one('res.partner', string='Approved Supplier')
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs')
+    num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
+
 
     def create(self, vals_list):
         if vals_list.get('rfp_number', 'New') == 'New':
             vals_list['rfp_number'] = self.env['ir.sequence'].next_by_code('supplies.rfp.number') or 'New'
         return super(SuppliesRfp, self).create(vals_list)
+
+    @api.depends('rfq_ids')
+    def _compute_num_rfq(self):
+        for rfp in self:
+            rfp.num_rfq = len(rfp.rfq_ids)

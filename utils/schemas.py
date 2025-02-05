@@ -1,6 +1,6 @@
 from pydantic import (
     BaseModel, Field, field_validator,
-    model_validator, EmailStr, conbytes
+    model_validator, EmailStr, conbytes, ConfigDict
 )
 from typing import List, Optional
 from collections import defaultdict
@@ -16,16 +16,16 @@ class ContactSchema(BaseModel):
     address: str
 
 class ContactOutSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     name: str
     email: EmailStr
     phone: str
     street: str = Field(alias='address')
     company_type: str = 'person'
     type: str = 'contact'
-
-    class Config:
-        from_attributes = True
-        populate_by_name = True
 
     def model_dump(self, **kwargs):
         data = super().model_dump()
@@ -51,13 +51,15 @@ class ClientContactSchema(BaseModel):
         return values
 
 class ClientContactOutSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     name: str
     email: EmailStr | bool
     phone: str | bool
     street: str | bool = Field(alias='address')
 
-    class Config:
-        from_attributes = True
 
 class SupplierRegistrationSchema(BaseModel):
     name: str
@@ -147,22 +149,23 @@ class SupplierRegistrationSchema(BaseModel):
 
 
 class BankSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     name: str = Field(alias='bank_name')
     swift_code: str = None
     iban: str = None
 
-    class Config:
-        from_attributes = True
-        populate_by_name = True
-
 
 class BankAccountSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     branch_address: str | bool
     acc_holder_name: str | bool
     acc_number: str
-
-    class Config:
-        from_attributes = True
 
     def model_dump(self, **kwargs):
         data = super().model_dump()
@@ -171,12 +174,14 @@ class BankAccountSchema(BaseModel):
             data['bank_id'] = bank_id
         return data
 
+
 class UserSchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     login: EmailStr = Field(alias='email')
     password: str = Field(alias='email')
-
-    class Config:
-        from_attributes = True
 
     def model_dump(self, **kwargs):
         data = super().model_dump()
@@ -186,6 +191,10 @@ class UserSchema(BaseModel):
         return data
 
 class CompanySchema(BaseModel):
+    model_config = ConfigDict(
+        from_attributes=True,
+        populate_by_name=True
+    )
     name: str
     company_category_type: str
     email: EmailStr
@@ -212,7 +221,4 @@ class CompanySchema(BaseModel):
     other_certification_doc: Optional[bytes] | bool
     supplier_rank: int = 1
     company_type: str = 'company'
-
-    class Config:
-        from_attributes = True
 

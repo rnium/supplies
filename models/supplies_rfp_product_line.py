@@ -11,7 +11,7 @@ class SuppliesRfpProductLine(models.Model):
     description = fields.Text(string='Description')
     product_qty = fields.Integer(string='Quantity')
     unit_price = fields.Monetary(string='Price')
-    uom_id = fields.Many2one('uom.uom', string='UOM')
+    product_uom = fields.Many2one('uom.uom', string='UOM')
     subtotal_price = fields.Monetary(string='Subtotal', compute='_compute_subtotal_price', store=True)
     delivery_charge = fields.Monetary(string='Delivery Charge')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)

@@ -222,3 +222,45 @@ class CompanySchema(BaseModel):
     supplier_rank: int = 1
     company_type: str = 'company'
 
+class PurchaseOrderLineSchema(BaseModel):
+    product_id: int
+    product_qty: int
+    product_uom: Optional[int] | None = None
+    price_unit: float
+    delivery_charge: float
+    name: str # description
+
+class PurchaseOrderSchema(BaseModel):
+    rfp_id: int
+    partner_id: int
+    warrenty_period: int
+    date_planned: date
+    notes: str
+    order_line: List[PurchaseOrderLineSchema]
+
+    @model_validator(mode='before')
+    @classmethod
+    def preprocess_data(cls, values):
+        groups_types = {'line'}
+        group_collections = defaultdict(dict)
+        for key in values.keys():
+            match = re.match(r"([a-zA-Z]+)-(\d+)-(.+)", key)
+            if match:
+                group, index, field = match.groups()
+                if group in groups_types:
+                    group_collections[f"{group}_{index}"][field] = values[key]
+        grouped_data = dict(group_collections)
+        order_line = list(grouped_data.values())
+        values['order_line'] = order_line
+        return values
+
+    def get_new_purchase_order_data(self):
+        data = self.model_dump()
+        order_line = data.pop('order_line')
+        data['order_line'] = []
+        for line in order_line:
+            data['order_line'].append(
+                (0, 0, line)
+            )
+        return data
+

@@ -28,7 +28,7 @@
             <form string="Request for Purchase">
                 <header>
                     <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,approved,closed,recommendation,approved"/>
+                           statusbar_visible="draft,submitted,approved,closed,recommendation,accepted"/>
                     <button
                         name="action_submit"
                         string="Submit"
@@ -118,7 +118,7 @@
                                     <field name="product_id" string="Product"/>
                                     <field name="description" string="Description"/>
                                     <field name="product_qty" string="Quantity"/>
-                                    <field name="uom_id" string="UoM"/>
+                                    <field name="product_uom" string="UoM"/>
                                 </tree>
                             </field>
                         </page>

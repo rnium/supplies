@@ -3,7 +3,7 @@ from odoo import models, fields, api
 class ResPartnerBank(models.Model):
     _inherit = 'res.partner.bank'
 
-    branch_address = fields.Char(string='Branch Address', required=True) # custom field
+    branch_address = fields.Char(string='Branch Address')
 
 
 

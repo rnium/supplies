@@ -10,3 +10,4 @@ from . import res_partner_bank
 from . import purchase_order
 from . import supplies_rfp_product_line
 from . import supplies_rfp
+from . import purchase_order_line

@@ -6,7 +6,7 @@ from pydantic import ValidationError
 class SuppliesPortal(http.Controller):
     @http.route('/my/supplies', auth='user', website=True)
     def supplies_portal(self, **kw):
-        rfps = request.env['supplies.rfp'].search([('state', '=', 'approved')])
+        rfps = request.env['supplies.rfp'].sudo().search([('state', '=', 'approved')])
         return request.render(
             'supplies.portal_supplies_rfp_tree_view',
             {
@@ -17,7 +17,7 @@ class SuppliesPortal(http.Controller):
 
     @http.route('/my/supplies/<string:rfp_number>', auth='user', website=True)
     def supplies_portal_rfp(self, rfp_number, **kw):
-        rfp = request.env['supplies.rfp'].search([('rfp_number', '=', rfp_number)])
+        rfp = request.env['supplies.rfp'].sudo().search([('rfp_number', '=', rfp_number)])
         success_list = []
         error_list = []
 
@@ -35,7 +35,12 @@ class SuppliesPortal(http.Controller):
                 for error in errors:
                     error_list.append(error['msg'])
             else:
-                rfq = request.env['purchase.order'].create(rfq_schema.get_new_purchase_order_data())
+                data = rfq_schema.model_dump(exclude_none=True)
+                order_line = data.pop('order_line')
+                rfq = request.env['purchase.order'].sudo().create(data)
+                for line in order_line:
+                    line['order_id'] = rfq.id
+                    request.env['purchase.order.line'].sudo().create(line)
                 success_list.append('RFQ submitted successfully.')
         return request.render(
             'supplies.portal_supplies_rfp_form_view',

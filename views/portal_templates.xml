@@ -50,6 +50,24 @@
     <template id="portal_supplies_rfp_form_view" name="Supplier RFP Portal Form View">
         <t t-call="portal.portal_layout">
             <div class="container">
+                <t t-if="success_list">
+                    <div class="alert alert-success" role="alert">
+                        <ul>
+                            <t t-foreach="success_list" t-as="success">
+                                <li><t t-esc="success"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
+                <t t-if="error_list">
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            <t t-foreach="error_list" t-as="error">
+                                <li><t t-esc="error"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
                 <form method="post" t-attf-action="/my/supplies/{{rfp.rfp_number}}">
                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <input type="hidden" name="rfp_id" t-att-value="rfp.id"/>

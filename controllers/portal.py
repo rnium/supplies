@@ -11,7 +11,7 @@ class SuppliesPortal(http.Controller):
             'supplies.portal_supplies_rfp_tree_view',
             {
                 'rfps': rfps,
-                'page_title': 'rfp_list'
+                'page_name': 'rfp_list'
             }
         )
 
@@ -46,7 +46,7 @@ class SuppliesPortal(http.Controller):
             'supplies.portal_supplies_rfp_form_view',
             {
                 'rfp': rfp,
-                'page_title': 'rfp_view',
+                'page_name': 'rfp_view',
                 'success_list': success_list,
                 'error_list': error_list
             }

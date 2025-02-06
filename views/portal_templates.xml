@@ -4,7 +4,7 @@
         <xpath expr="//div[@id='portal_vendor_category']" position="inside">
             <t t-call="portal.portal_docs_entry">
                 <t t-set="icon" t-value="'/sale/static/src/img/bag.svg'" />
-                <t t-set="title" t-value="'Supplies'" />
+                <t t-set="title" t-value="'RFP'" />
                 <t t-set="description" t-value="'View RFQs'" />
                 <t t-set="url" t-value="'/my/supplies'" />
                 <t t-set="text">View Request for Purchases</t>
@@ -203,4 +203,15 @@
             </div>
         </t>
     </template>
+
+    <template id="portal_supplies_breadcrumb" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('breadcrumb')]" position="inside">
+            <li t-if="page_name == 'rfp_list'" class="breadcrumb-item">Request for Purchases</li>
+            <li t-if="page_name in ['rfp_view']" class="breadcrumb-item">
+                <a t-att-href="'/my/supplies'">Request for Purchases</a>
+            </li>
+            <li t-if="page_name == 'rfp_view'" class="breadcrumb-item"><t t-esc="rfp.rfp_number"/></li>
+        </xpath>
+    </template>
+
 </odoo>

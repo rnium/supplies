@@ -31,7 +31,7 @@
         'views/supplies_registration_views.xml',
         'views/supplies_rfp_views.xml',
         'views/supplies_menus.xml',
-        'views/mai_blacklist_inherit.xml',
+        'views/mail_blacklist_inherit.xml',
         'views/ir_sequence.xml',
         'views/portal_templates.xml',
         'wizard/blacklist_wizard_view.xml',

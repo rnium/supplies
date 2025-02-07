@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
-from odoo.fields import apply_required
 
 
 class SuppliesRfp(models.Model):

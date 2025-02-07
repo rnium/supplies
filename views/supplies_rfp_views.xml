@@ -130,7 +130,7 @@
                                 options="{'create': 0, 'delete': 0}"
                                 readonly="state in ('recommendation', 'accepted')"
                             >
-                                <tree >
+                                <tree default_order="score desc">
                                     <field name="company_id" column_invisible="1"/>
                                     <field name="currency_id" column_invisible="1"/>
                                     <field name="partner_id" string="Supplier"/>
@@ -142,6 +142,17 @@
                                     <field name="recommended"/>
                                 </tree>
                                 <form string="RFQ">
+                                    <header>
+                                        <field name="rfp_state" invisible="1"/>
+                                        <button
+                                            name="action_accept"
+                                            string="Accept"
+                                            type="object"
+                                            class="btn-primary"
+                                            groups="supplies.group_supplies_approver"
+                                            invisible="rfp_state != 'recommendation'"
+                                        />
+                                    </header>
                                     <group>
                                         <group>
                                             <field name="partner_id" options="{'no_open': True}" readonly="1"/>

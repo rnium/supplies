@@ -1,4 +1,6 @@
 from odoo import models, fields, api
+from odoo.exceptions import UserError
+
 
 class PurchaseOrder(models.Model):
     _inherit = 'purchase.order'
@@ -19,3 +21,18 @@ class PurchaseOrder(models.Model):
             'res_id': self.rfp_id.id,
             'target': 'current',
         }
+
+    @api.onchange('recommended')
+    def _onchange_recommended(self):
+        if not self.recommended:
+            return
+        existing_recommendation = self.env['purchase.order'].search(
+            [
+                ('recommended', '=', True),
+                ('rfp_id', '=', self.rfp_id.id.origin),
+                ('partner_id', '=', self.partner_id.id),
+                ('id', '!=', self.id.origin),
+            ]
+        )
+        if len(existing_recommendation):
+            raise UserError('This supplier is already recommended for this RFP.')

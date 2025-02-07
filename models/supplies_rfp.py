@@ -1,5 +1,7 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from odoo.fields import apply_required
+
 
 class SuppliesRfp(models.Model):
     _name = 'supplies.rfp'
@@ -20,10 +22,16 @@ class SuppliesRfp(models.Model):
     required_date = fields.Date(string='Required Date', tracking=True, default=lambda self: fields.Date.add(fields.Date.today(), days=7))
     approved_supplier_id = fields.Many2one('res.partner', string='Approved Supplier')
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
-    rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs')
+    rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs', domain=lambda self: self._get_rfq_domain())
     num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
     submitted_date = fields.Date(string='Submitted On', readonly=True)
 
+    @api.model
+    def _get_rfq_domain(self):
+        aprrover_states = ['recommendation', 'accepted']
+        if self.env.user.has_group('supplies.group_supplies_approver'):
+            return [('recommended', '=', True)] if self.state in aprrover_states else [('id', '=', -1)]
+        return []
 
     def create(self, vals_list):
         if vals_list.get('rfp_number', 'New') == 'New':
@@ -56,7 +64,12 @@ class SuppliesRfp(models.Model):
         return self.write({'state': 'closed'})
 
     def action_recommendation(self):
-        raise UserError('There is no recommended RFQ for this RFP.')
+        if self.state != 'closed':
+            raise UserError('Only closed RFPs can be recommended.')
+        approved_rfqs = self.rfq_ids.filtered(lambda rfq: rfq.recommended)
+        if not approved_rfqs:
+            raise UserError('Please approve at least one RFQ before recommending.')
+        return self.write({'state': 'recommendation'})
 
     def action_accept(self):
         return self.write({'state': 'accepted'})

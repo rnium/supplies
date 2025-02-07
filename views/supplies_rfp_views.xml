@@ -138,10 +138,11 @@
                                 <tree default_order="score desc">
                                     <field name="company_id" column_invisible="1"/>
                                     <field name="currency_id" column_invisible="1"/>
+                                    <field name="name" string="Reference"/>
                                     <field name="partner_id" string="Supplier"/>
                                     <field name="create_date" string="Posted On"/>
-                                    <field name="warrenty_period" string="Warrenty Period (Month)"/>
                                     <field name="date_planned" string="Delivery Date"/>
+                                    <field name="warrenty_period" string="Warrenty Period (Month)"/>
                                     <field name="amount_total" string="Total"/>
                                     <field name="score"/>
                                     <field name="recommended"/>

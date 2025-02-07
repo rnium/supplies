@@ -22,17 +22,18 @@ class PurchaseOrder(models.Model):
             'target': 'current',
         }
 
-    @api.onchange('recommended')
-    def _onchange_recommended(self):
-        if not self.recommended:
-            return
-        existing_recommendation = self.env['purchase.order'].search(
-            [
-                ('recommended', '=', True),
-                ('rfp_id', '=', self.rfp_id.id.origin),
-                ('partner_id', '=', self.partner_id.id),
-                ('id', '!=', self.id.origin),
-            ]
-        )
-        if len(existing_recommendation):
-            raise UserError('This supplier is already recommended for this RFP.')
+    @api.constrains('recommended')
+    def _check_recommended(self):
+        for order in self:
+            if order.recommended:
+                existing_recommendation = self.env['purchase.order'].search(
+                    [
+                        ('recommended', '=', True),
+                        ('rfp_id', '=', order.rfp_id.id),
+                        ('partner_id', '=', order.partner_id.id),
+                        ('id', '!=', order.id),
+                    ]
+                )
+                if len(existing_recommendation):
+                    raise UserError('The supplier %s is already recommended for this RFP (%s).' % (order.partner_id.name, order.name))
+

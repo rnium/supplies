@@ -10,6 +10,13 @@
                 <t t-set="text">View Request for Purchases</t>
                 <t t-set="config_card" t-value="True"/>
             </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/purchase/static/src/img/rfq.svg'"/>
+                <t t-set="title">My RFQ</t>
+                <t t-set="text">Requests for Quotation</t>
+                <t t-set="url" t-value="'/my/supplies/rfq'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
         </xpath>
     </template>
 
@@ -204,6 +211,55 @@
         </t>
     </template>
 
+    <template id="portal_supplies_rfq_tree_view">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>My Requests for Quotation</h4>
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>RFP Ref</th>
+                                    <th>Posted On</th>
+                                    <th>Delivery Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="rfqs" t-as="rfq">
+                                    <tr>
+                                        <td>
+                                            <a t-attf-href="/my/supplies/{{rfq.name}}">
+                                                <t t-esc="rfq.name"/>
+                                            </a>
+                                        </td>
+                                        <td><t t-esc="rfq.rfp_id.rfp_number"/></td>
+                                        <td>
+                                            <span t-field="rfq.create_date" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
+                                        </td>
+                                        <td>
+                                            <span t-field="rfq.date_planned" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-primary" t-if="rfq.state == 'draft'">Draft</span>
+                                            <span class="badge rounded-pill bg-warning" t-if="rfq.state == 'sent'">Sent</span>
+                                            <span class="badge rounded-pill bg-success" t-if="rfq.state == 'done'">Done</span>
+                                            <span class="badge rounded-pill bg-info" t-if="rfq.state == 'purchase'">Purchase Order</span>
+                                        </td>
+
+
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
     <template id="portal_supplies_breadcrumb" inherit_id="portal.portal_breadcrumbs">
         <xpath expr="//ol[hasclass('breadcrumb')]" position="inside">
             <li t-if="page_name == 'rfp_list'" class="breadcrumb-item">Request for Purchases</li>
@@ -211,6 +267,7 @@
                 <a t-att-href="'/my/supplies'">Request for Purchases</a>
             </li>
             <li t-if="page_name == 'rfp_view'" class="breadcrumb-item"><t t-esc="rfp.rfp_number"/></li>
+            <li t-if="page_name == 'rfq_list'" class="breadcrumb-item">Request for Purchases</li>
         </xpath>
     </template>
 

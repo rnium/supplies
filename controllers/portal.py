@@ -51,3 +51,14 @@ class SuppliesPortal(http.Controller):
                 'error_list': error_list
             }
         )
+
+    @http.route('/my/supplies/rfq', auth='user', website=True)
+    def supplies_portal_rfq(self, **kw):
+        rfqs = request.env['purchase.order'].sudo().search([('partner_id', '=', request.env.user.partner_id.id)])
+        return request.render(
+            'supplies.portal_supplies_rfq_tree_view',
+            {
+                'rfqs': rfqs,
+                'page_name': 'rfq_list'
+            }
+        )

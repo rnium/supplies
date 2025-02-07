@@ -27,8 +27,13 @@
         <field name="arch" type="xml">
             <form string="Request for Purchase">
                 <header>
-                    <field name="state" widget="statusbar"
-                           statusbar_visible="draft,submitted,approved,closed,recommendation,accepted"/>
+                    <field
+                        name="state"
+                        widget="statusbar"
+                        statusbar_visible="draft,submitted,approved,closed,recommendation,accepted"
+                        invisible="state == 'rejected'"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="draft,submitted" invisible="state != 'rejected'"/>
                     <button
                         name="action_submit"
                         string="Submit"

@@ -130,6 +130,8 @@
                                 options="{'create': 0, 'delete': 0}"
                             >
                                 <tree >
+                                    <field name="company_id" column_invisible="1"/>
+                                    <field name="currency_id" column_invisible="1"/>
                                     <field name="partner_id" string="Supplier"/>
                                     <field name="create_date" string="Posted On"/>
                                     <field name="warrenty_period" string="Warrenty Period (Month)"/>
@@ -154,13 +156,23 @@
                                         <page string="RFQ Lines">
                                             <field name="order_line" readonly="1">
                                                 <tree>
+                                                    <field name="currency_id" column_invisible="1"/>
                                                     <field name="product_id"/>
                                                     <field name="product_qty"/>
                                                     <field name="product_uom"/>
                                                     <field name="price_unit"/>
+                                                    <field name="delivery_charge"/>
                                                     <field name="price_subtotal"/>
                                                 </tree>
                                             </field>
+                                            <group>
+                                                <group>
+                                                    <field colspan="2" name="notes" nolabel="1" readonly="1"/>
+                                                </group>
+                                                <group class="oe_subtotal_footer">
+                                                    <field name="tax_totals" widget="account-tax-totals-field" nolabel="1" colspan="2" readonly="1"/>
+                                                </group>
+                                            </group>
                                         </page>
                                     </notebook>
                                 </form>

@@ -15,6 +15,7 @@
             <p>My Company</p>
         </field>
     </record>
+
     <record id="email_template_model_supplies_vendor_registration_confirmation" model="mail.template">
         <field name="name">Supplier Registration OTP Reminder</field>
         <field name="model_id" ref="model_supplies_registration"/>
@@ -39,4 +40,33 @@
             <p>My Company</p>
         </field>
     </record>
+
+    <record id="email_template_test" model="mail.template">
+        <field name="name">Test Email Template</field>
+        <field name="model_id" ref="model_res_partner"/>
+        <field name="subject">Test Email Template</field>
+        <field name="body_html" type="html">
+            <h3>Dear User Its me <t t-out="ctx.get('name') or not_available"/></h3>
+            <p>
+                This is a test email template.
+            </p>
+            <p>Regards</p>
+            <p>My Company</p>
+        </field>
+    </record>
+
+    <record id="email_template_model_purchase_order_rfq_submission" model="mail.template">
+        <field name="name">RFQ Submission Reviewer Notification</field>
+        <field name="model_id" ref="purchase.model_purchase_order"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                A new RFQ is submitted for your Request for Purchase <t t-esc="ctx.get('rfp_number') or not_available"/>.
+                Please review the RFQ and take necessary actions.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
 </odoo>

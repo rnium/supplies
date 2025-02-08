@@ -1,6 +1,7 @@
 from odoo import http
 from odoo.http import request, route
 from ..utils import schemas
+from ..utils import mail_utils
 from pydantic import ValidationError
 
 class SuppliesPortal(http.Controller):
@@ -48,6 +49,16 @@ class SuppliesPortal(http.Controller):
                     line['order_id'] = rfq.id
                     request.env['purchase.order.line'].sudo().create(line)
                 success_list.append('RFQ submitted successfully.')
+                # send email to reviewer
+                template = request.env.ref('supplies.email_template_model_purchase_order_rfq_submission').sudo()
+                email_values = {
+                    'email_from': mail_utils.get_smtp_server_email(request.env),
+                    'email_to': rfp.create_uid.login,
+                    'subject': f'New RFQ Submission for {rfp.rfp_number}',
+                }
+                contexts = {'rfp_number': rfp.rfp_number, 'company_name': rfq.company_id.name}
+                template.with_context(**contexts).send_mail(rfq.id, email_values=email_values)
+
         return request.render(
             'supplies.portal_supplies_rfp_form_view',
             {

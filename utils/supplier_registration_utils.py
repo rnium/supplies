@@ -27,8 +27,12 @@ def get_child_contacts(self):
                 [('email', '=', email)]
             )
             if existing_contact:
-                child_ids.append((4, existing_contact.id))
-                child_ids.append((1, existing_contact.id, contact_data)) # update the contact
+                child_ids.extend(
+                    [(4, c.id) for c in existing_contact]
+                )
+                child_ids.extend(
+                    [(1, c.id, contact_data) for c in existing_contact]
+                )
             else:
                 child_ids.append((0, 0, contact_data))
     # client references
@@ -39,8 +43,12 @@ def get_child_contacts(self):
         )
         client_ref_data = client_ref_schema.model_dump()
         if existing_client_ref:
-            child_ids.append((4, existing_client_ref.id))
-            child_ids.append((1, existing_client_ref.id, client_ref_data))
+            child_ids.extend(
+                [(4, c.id) for c in existing_client_ref]
+            )
+            child_ids.extend(
+                [(1, c.id, client_ref_data) for c in existing_client_ref]
+            )
         else:
             child_ids.append((0, 0, client_ref_data))
     return child_ids

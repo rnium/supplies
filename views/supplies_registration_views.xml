@@ -191,11 +191,11 @@
                                        </strong>
                                        <span class="o_kanban_record_subtitle"><field name="email"/></span>
                                        <span class="o_kanban_record_subtitle mt-1">
-                                           <i class="fa fa-map-marker me-2"/>
+                                           <i class="fa fa-map-marker me-2" title="Address"/>
                                            <field name="street"/>
                                        </span>
                                        <span>
-                                           <i class="fa fa-clock-o me-2"/>
+                                           <i class="fa fa-clock-o me-2" title="Submitted Date"/>
                                            <field name="create_date"/>
                                        </span>
                                    </div>

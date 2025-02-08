@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="portal_supplies" inherit_id="portal.portal_my_home">
+        <xpath expr="//div[@id='portal_vendor_category']" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/sale/static/src/img/bag.svg'" />
+                <t t-set="title" t-value="'RFP'" />
+                <t t-set="description" t-value="'View RFQs'" />
+                <t t-set="url" t-value="'/my/supplies'" />
+                <t t-set="text">View Request for Purchases</t>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/purchase/static/src/img/rfq.svg'"/>
+                <t t-set="title">My RFQ</t>
+                <t t-set="text">Requests for Quotation</t>
+                <t t-set="url" t-value="'/my/supplies/rfq'"/>
+                <t t-set="config_card" t-value="True"/>
+            </t>
+        </xpath>
+    </template>
+
+    <template id="portal_supplies_rfp_tree_view">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Request for Purchases</h4>
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Requested On</th>
+                                    <th>Required Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="rfps" t-as="rfp">
+                                    <tr>
+                                        <td>
+                                            <a t-attf-href="/my/supplies/{{rfp.rfp_number}}">
+                                                <t t-esc="rfp.rfp_number"/>
+                                            </a>
+                                        </td>
+                                        <td><t t-esc="rfp.submitted_date"/></td>
+                                        <td><t t-esc="rfp.required_date"/></td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_supplies_rfp_form_view" name="Supplier RFP Portal Form View">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <t t-if="success_list">
+                    <div class="alert alert-success" role="alert">
+                        <ul>
+                            <t t-foreach="success_list" t-as="success">
+                                <li><t t-esc="success"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
+                <t t-if="error_list">
+                    <div class="alert alert-danger" role="alert">
+                        <ul>
+                            <t t-foreach="error_list" t-as="error">
+                                <li><t t-esc="error"/></li>
+                            </t>
+                        </ul>
+                    </div>
+                </t>
+                <form method="post" t-attf-action="/my/supplies/{{rfp.rfp_number}}">
+                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                    <input type="hidden" name="rfp_id" t-att-value="rfp.id"/>
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fa fa-shopping-cart mr-2" title="Request for Purchase"/>
+                                    Request for Purchase:
+                                <span t-field="rfp.rfp_number"/>
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-md-4">
+                                    <h6>
+                                        Required Date: <t t-esc="rfp.required_date"/>
+                                    </h6>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Warranty Period (Months)</label>
+                                        <input type="number" class="form-control" name="warrenty_period"
+                                               required="required" min="0" step="1"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="font-weight-bold">Delivery Date</label>
+                                        <input
+                                            type="date"
+                                            class="form-control"
+                                            name="date_planned"
+                                            required="required"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="font-weight-bold">Terms and Conditions</label>
+                                <textarea class="form-control" name="notes"
+                                          rows="4" required="required"
+                                          placeholder="Enter your terms and conditions..."
+                                />
+                            </div>
+
+                            <!-- Product Lines Section -->
+                            <div class="card mt-3">
+                                <div class="card-header bg-white text-info">
+                                    <h5 class="mb-0">
+                                        <i class="fa fa-cubes mr-2" title="products" />
+                                        Requested Products
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-hover table-bordered">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th style="width: 120px">Photo</th>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th class="text-right">Unit Price</th>
+                                                <th class="text-right">Delivery Charge</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="rfp.product_line_ids" t-as="line">
+                                                <tr>
+                                                    <input
+                                                        type="hidden"
+                                                        t-att-name="'line-' + str(line.id) + '-product_id'"
+                                                        t-att-value="line.product_id.id"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        t-att-name="'line-' + str(line.id) + '-product_qty'"
+                                                        t-att-value="line.product_qty"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        t-if="line.product_uom"
+                                                        t-att-name="'line-' + str(line.id) + '-product_uom'"
+                                                        t-att-value="line.product_uom.id"
+                                                    />
+                                                    <input
+                                                        type="hidden"
+                                                        t-att-name="'line-' + str(line.id) + '-name'"
+                                                        t-att-value="line.description"
+                                                    />
+
+                                                    <td>
+                                                        <img t-if="line.product_id.image_1920"
+                                                             t-att-src="image_data_uri(line.product_id.image_1920)"
+                                                             class="img-thumbnail" alt="Product image" style="max-width: 100px;"/>
+                                                        <div t-else="" class="text-muted">No image</div>
+                                                    </td>
+                                                    <td>
+                                                        <span t-field="line.product_id.name"/><br/>
+                                                        <small class="text-muted" t-field="line.description"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="line.product_qty"/>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control text-right"
+                                                                   t-att-name="'line-' + str(line.id) + '-price_unit'"
+                                                                   step="0.01" min="0" required="required"/>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="input-group">
+                                                            <input type="number" class="form-control text-right"
+                                                                   t-att-name="'line-' + str(line.id) + '-delivery_charge'"
+                                                                   step="0.01" min="0" required="required"/>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                        <div class="mt-4 d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fa fa-paper-plane mr-2" />
+                                            Submit Proposal
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_supplies_rfq_tree_view">
+        <t t-call="portal.portal_layout">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>My Requests for Quotation</h4>
+                        <table class="table table-bordered align-middle">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>RFP Ref</th>
+                                    <th>Posted On</th>
+                                    <th>Delivery Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="rfqs" t-as="rfq">
+                                    <tr>
+                                        <td>
+                                            <a t-attf-href="/my/supplies/{{rfq.name}}">
+                                                <t t-esc="rfq.name"/>
+                                            </a>
+                                        </td>
+                                        <td><t t-esc="rfq.rfp_id.rfp_number"/></td>
+                                        <td>
+                                            <span t-field="rfq.create_date" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
+                                        </td>
+                                        <td>
+                                            <span t-field="rfq.date_planned" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
+                                        </td>
+                                        <td>
+                                            <span class="badge rounded-pill bg-primary" t-if="rfq.state == 'draft'">Draft</span>
+                                            <span class="badge rounded-pill bg-warning" t-if="rfq.state == 'sent'">Sent</span>
+                                            <span class="badge rounded-pill bg-success" t-if="rfq.state == 'done'">Done</span>
+                                            <span class="badge rounded-pill bg-info" t-if="rfq.state == 'purchase'">Purchase Order</span>
+                                        </td>
+
+
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="portal_supplies_breadcrumb" inherit_id="portal.portal_breadcrumbs">
+        <xpath expr="//ol[hasclass('breadcrumb')]" position="inside">
+            <li t-if="page_name == 'rfp_list'" class="breadcrumb-item">Request for Purchases</li>
+            <li t-if="page_name in ['rfp_view']" class="breadcrumb-item">
+                <a t-att-href="'/my/supplies'">Request for Purchases</a>
+            </li>
+            <li t-if="page_name == 'rfp_view'" class="breadcrumb-item"><t t-esc="rfp.rfp_number"/></li>
+            <li t-if="page_name == 'rfq_list'" class="breadcrumb-item">Request for Purchases</li>
+        </xpath>
+    </template>
+
+</odoo>

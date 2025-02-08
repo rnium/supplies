@@ -16,7 +16,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'website'],
+    'depends': ['base', 'website', 'mail'],
     'license': 'LGPL-3',
 
     # always loaded
@@ -24,15 +24,18 @@
         'security/supplies_security.xml',
         'security/supplies_record_rules.xml',
         'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
         'views/email_templates.xml',
         'views/supplies_registration_views.xml',
+        'views/supplies_rfp_views.xml',
         'views/supplies_menus.xml',
-        'views/mai_blacklist_inherit.xml',
+        'views/mail_blacklist_inherit.xml',
+        'views/ir_sequence.xml',
+        'views/portal_templates.xml',
         'wizard/blacklist_wizard_view.xml',
         'wizard/reject_application_wizard.xml',
-
     ],
     # only loaded in demonstration mode
     'demo': [

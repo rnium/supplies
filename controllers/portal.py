@@ -63,3 +63,19 @@ class SuppliesPortal(http.Controller):
                 'page_name': 'rfq_list'
             }
         )
+
+    @http.route('/my/supplies/rfq/<string:rfq_ref>', auth='user', website=True)
+    def supplies_portal_rfq_view(self, rfq_ref, **kw):
+        rfq = request.env['purchase.order'].sudo().search(
+            [
+                ('name', '=', rfq_ref),
+                ('partner_id', '=', request.env.user.partner_id.id)
+            ]
+        )
+        return request.render(
+            'supplies.portal_supplies_rfq_form_view',
+            {
+                'rfq': rfq,
+                'page_name': 'rfq_view'
+            }
+        )

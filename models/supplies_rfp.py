@@ -1,5 +1,6 @@
 from odoo import models, fields, api
 from odoo.exceptions import UserError
+from ..utils.rfp_utils import rfp_state_flow
 
 
 class SuppliesRfp(models.Model):
@@ -42,33 +43,31 @@ class SuppliesRfp(models.Model):
         for rfp in self:
             rfp.num_rfq = len(rfp.rfq_ids)
 
+    @rfp_state_flow('draft')
     def action_submit(self):
         if not self.product_line_ids:
             raise UserError('Please add product lines before submitting.')
         return self.write({'state': 'submitted', 'submitted_date': fields.Date.today()})
 
+    @rfp_state_flow('submitted')
     def action_return_to_draft(self):
-        if self.state == 'submitted':
-            return self.write({'state': 'draft'})
-        else:
-            raise UserError('Only submitted RFPs can be returned to draft.')
+        self.state = 'draft'
 
+    @rfp_state_flow('submitted')
     def action_approve(self):
-        return self.write({'state': 'approved'})
+        self.state = 'approved'
 
+    @rfp_state_flow('submitted')
     def action_reject(self):
-        return self.write({'state': 'rejected'})
+        self.state = 'rejected'
 
+    @rfp_state_flow('approved')
     def action_close(self):
-        return self.write({'state': 'closed'})
+        self.state = 'closed'
 
+    @rfp_state_flow('closed')
     def action_recommendation(self):
-        if self.state != 'closed':
-            raise UserError('Only closed RFPs can be recommended.')
         approved_rfqs = self.rfq_ids.filtered(lambda rfq: rfq.recommended)
         if not approved_rfqs:
             raise UserError('Please approve at least one RFQ before recommending.')
-        return self.write({'state': 'recommendation'})
-
-    def action_accept(self):
-        return self.write({'state': 'accepted'})
+        self.state = 'recommendation'

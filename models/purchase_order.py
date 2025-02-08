@@ -35,5 +35,5 @@ class PurchaseOrder(models.Model):
                     ]
                 )
                 if len(existing_recommendation):
-                    raise UserError('The supplier %s is already recommended for this RFP (%s).' % (order.partner_id.name, order.name))
+                    raise UserError(f'The supplier {order.partner_id.name} is recommended multiple times for the same RFP.')
 

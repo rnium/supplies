@@ -17,7 +17,12 @@ class SuppliesPortal(http.Controller):
 
     @http.route('/my/supplies/<string:rfp_number>', auth='user', website=True)
     def supplies_portal_rfp(self, rfp_number, **kw):
-        rfp = request.env['supplies.rfp'].sudo().search([('rfp_number', '=', rfp_number)])
+        rfp = request.env['supplies.rfp'].sudo().search(
+            [
+                ('rfp_number', '=', rfp_number),
+                ('state', '=', 'approved')
+            ]
+        )
         success_list = []
         error_list = []
 

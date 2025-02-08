@@ -236,6 +236,7 @@ class PurchaseOrderSchema(BaseModel):
     warrenty_period: int
     date_planned: date
     notes: str
+    user_id: int
     order_line: List[PurchaseOrderLineSchema]
 
     @model_validator(mode='before')

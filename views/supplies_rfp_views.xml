@@ -89,6 +89,12 @@
 
                 </header>
                 <sheet>
+                    <field name="state" invisible="1"/>
+                    <widget name="web_ribbon" title="Rejected" bg_color="text-bg-danger" invisible="state != 'rejected'"/>
+                    <widget name="web_ribbon" title="Accepted" bg_color="text-bg-success" invisible="state != 'accepted'"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_purchase_order" class="oe_stat_button" icon="fa-cube" invisible="state != 'accepted'">View Purchase Order</button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="rfp_number" readonly="1"/>

@@ -71,3 +71,8 @@ class SuppliesRfp(models.Model):
         if not approved_rfqs:
             raise UserError('Please approve at least one RFQ before recommending.')
         self.state = 'recommendation'
+
+    def action_view_purchase_order(self):
+        action = self.env.ref('purchase.purchase_rfq').read()[0]
+        action['domain'] = [('rfp_id', '=', self.id), ('recommended', '=', True), ('partner_id', '=', self.approved_supplier_id.id)]
+        return action

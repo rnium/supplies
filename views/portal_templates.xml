@@ -236,9 +236,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a t-attf-href="/my/supplies/{{rfq.rfp_id.rfp_number}}">
-                                                <t t-esc="rfq.rfp_id.rfp_number"/>
-                                            </a>
+                                            <t t-esc="rfq.rfp_id.rfp_number"/>
                                         </td>
                                         <td>
                                             <span t-field="rfq.create_date" t-options='{"format": "MMM d, y HH:mm:ss"}'/>

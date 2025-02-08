@@ -76,6 +76,6 @@ class SuppliesPortal(http.Controller):
             'supplies.portal_supplies_rfq_form_view',
             {
                 'rfq': rfq,
-                'page_name': 'rfq_view'
+                'page_name': 'rfq_detail'
             }
         )

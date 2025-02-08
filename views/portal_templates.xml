@@ -216,7 +216,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <h4>My Requests for Quotation</h4>
+                        <h4 class="text-center mb-4">My Request for Quotations</h4>
                         <table class="table table-bordered align-middle">
                             <thead class="table-primary">
                                 <tr>
@@ -235,7 +235,11 @@
                                                 <t t-esc="rfq.name"/>
                                             </a>
                                         </td>
-                                        <td><t t-esc="rfq.rfp_id.rfp_number"/></td>
+                                        <td>
+                                            <a t-attf-href="/my/supplies/{{rfq.rfp_id.rfp_number}}">
+                                                <t t-esc="rfq.rfp_id.rfp_number"/>
+                                            </a>
+                                        </td>
                                         <td>
                                             <span t-field="rfq.create_date" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
                                         </td>
@@ -376,7 +380,11 @@
                 <a t-att-href="'/my/supplies'">Request for Purchases</a>
             </li>
             <li t-if="page_name == 'rfp_view'" class="breadcrumb-item"><t t-esc="rfp.rfp_number"/></li>
-            <li t-if="page_name == 'rfq_list'" class="breadcrumb-item">Request for Purchases</li>
+            <li t-if="page_name == 'rfq_list'" class="breadcrumb-item">Request for Quotation</li>
+            <li t-if="page_name in ['rfq_detail']" class="breadcrumb-item">
+                <a t-att-href="'/my/supplies/rfq'">Request for Quotation</a>
+            </li>
+            <li t-if="page_name == 'rfq_detail'" class="breadcrumb-item"><t t-esc="rfq.name"/></li>
         </xpath>
     </template>
 

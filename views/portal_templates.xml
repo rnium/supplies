@@ -91,7 +91,20 @@
         <t t-if="not rfp" t-call="http_routing.404" />
         <t t-if="rfp" t-call="portal.portal_layout">
             <div class="container">
-                <t t-if="success_list">
+                <t t-if="submitted_rfq">
+                    <div class="d-flex justify-content-center align-items-center my-5 py-3">
+                        <div class="text-center">
+                            <img src="/supplies/static/image/cloud-check.svg" width="200" alt="Success"/>
+                            <h4 class="mt-4 text-muted">Your Request for Quotation Posted Successfully</h4>
+                            <a t-attf-href="/my/supplies/rfq/{{submitted_rfq.name}}" class="btn btn-outline-primary rounded mt-4">
+                                <i class="fa fa-list-alt mr-2" />
+                                View Request for Quotation (<t t-esc="submitted_rfq.name"/>)
+                            </a>
+                        </div>
+                    </div>
+                </t>
+                <t t-else="">
+                    <t t-if="success_list">
                     <div class="alert alert-success" role="alert">
                         <ul>
                             <t t-foreach="success_list" t-as="success">
@@ -100,147 +113,148 @@
                         </ul>
                     </div>
                 </t>
-                <t t-if="error_list">
-                    <div class="alert alert-danger" role="alert">
-                        <ul>
-                            <t t-foreach="error_list" t-as="error">
-                                <li><t t-esc="error"/></li>
-                            </t>
-                        </ul>
-                    </div>
-                </t>
-                <form method="post" t-attf-action="/my/supplies/{{rfp.rfp_number}}">
-                    <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                    <input type="hidden" name="rfp_id" t-att-value="rfp.id"/>
-                    <div class="card shadow-sm mb-4">
-                        <div class="card-header bg-primary text-white">
-                            <h5 class="mb-0">
-                                <i class="fa fa-shopping-cart mr-2" title="Request for Purchase"/>
-                                    Request for Purchase:
-                                <span t-field="rfp.rfp_number"/>
-                            </h5>
+                    <t t-if="error_list">
+                        <div class="alert alert-danger" role="alert">
+                            <ul>
+                                <t t-foreach="error_list" t-as="error">
+                                    <li><t t-esc="error"/></li>
+                                </t>
+                            </ul>
                         </div>
-                        <div class="card-body">
-                            <div class="row justify-content-center align-items-center">
-                                <div class="col-md-4">
-                                    <h6>
-                                        Required Date: <t t-esc="rfp.required_date"/>
-                                    </h6>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Warranty Period (Months)</label>
-                                        <input type="number" class="form-control" name="warrenty_period"
-                                               required="required" min="0" step="1"/>
+                    </t>
+                    <form method="post" t-attf-action="/my/supplies/{{rfp.rfp_number}}">
+                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <input type="hidden" name="rfp_id" t-att-value="rfp.id"/>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">
+                                    <i class="fa fa-shopping-cart mr-2" title="Request for Purchase"/>
+                                        Request for Purchase:
+                                    <span t-field="rfp.rfp_number"/>
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-md-4">
+                                        <h6>
+                                            Required Date: <t t-esc="rfp.required_date"/>
+                                        </h6>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Warranty Period (Months)</label>
+                                            <input type="number" class="form-control" name="warrenty_period"
+                                                   required="required" min="0" step="1"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="font-weight-bold">Delivery Date</label>
+                                            <input
+                                                type="date"
+                                                class="form-control"
+                                                name="date_planned"
+                                                required="required"
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="font-weight-bold">Delivery Date</label>
-                                        <input
-                                            type="date"
-                                            class="form-control"
-                                            name="date_planned"
-                                            required="required"
-                                        />
+
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Terms and Conditions</label>
+                                    <textarea class="form-control" name="notes"
+                                              rows="4" required="required"
+                                              placeholder="Enter your terms and conditions..."
+                                    />
+                                </div>
+
+                                <!-- Product Lines Section -->
+                                <div class="card mt-3">
+                                    <div class="card-header bg-white text-info">
+                                        <h5 class="mb-0">
+                                            <i class="fa fa-cubes mr-2" title="products" />
+                                            Requested Products
+                                        </h5>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="font-weight-bold">Terms and Conditions</label>
-                                <textarea class="form-control" name="notes"
-                                          rows="4" required="required"
-                                          placeholder="Enter your terms and conditions..."
-                                />
-                            </div>
-
-                            <!-- Product Lines Section -->
-                            <div class="card mt-3">
-                                <div class="card-header bg-white text-info">
-                                    <h5 class="mb-0">
-                                        <i class="fa fa-cubes mr-2" title="products" />
-                                        Requested Products
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <table class="table table-hover table-bordered">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th style="width: 120px">Photo</th>
-                                                <th>Product</th>
-                                                <th>Quantity</th>
-                                                <th class="text-right">Unit Price</th>
-                                                <th class="text-right">Delivery Charge</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <t t-foreach="rfp.product_line_ids" t-as="line">
+                                    <div class="card-body">
+                                        <table class="table table-hover table-bordered">
+                                            <thead class="thead-light">
                                                 <tr>
-                                                    <input
-                                                        type="hidden"
-                                                        t-att-name="'line-' + str(line.id) + '-product_id'"
-                                                        t-att-value="line.product_id.id"
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        t-att-name="'line-' + str(line.id) + '-product_qty'"
-                                                        t-att-value="line.product_qty"
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        t-if="line.product_uom"
-                                                        t-att-name="'line-' + str(line.id) + '-product_uom'"
-                                                        t-att-value="line.product_uom.id"
-                                                    />
-                                                    <input
-                                                        type="hidden"
-                                                        t-att-name="'line-' + str(line.id) + '-name'"
-                                                        t-att-value="line.description"
-                                                    />
-
-                                                    <td>
-                                                        <img t-if="line.product_id.image_1920"
-                                                             t-att-src="image_data_uri(line.product_id.image_1920)"
-                                                             class="img-thumbnail" alt="Product image" style="max-width: 100px;"/>
-                                                        <div t-else="" class="text-muted">No image</div>
-                                                    </td>
-                                                    <td>
-                                                        <span t-field="line.product_id.name"/><br/>
-                                                        <small class="text-muted" t-field="line.description"/>
-                                                    </td>
-                                                    <td>
-                                                        <t t-esc="line.product_qty"/>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" class="form-control text-right"
-                                                                   t-att-name="'line-' + str(line.id) + '-price_unit'"
-                                                                   step="0.01" min="0" required="required"/>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="number" class="form-control text-right"
-                                                                   t-att-name="'line-' + str(line.id) + '-delivery_charge'"
-                                                                   step="0.01" min="0" required="required"/>
-                                                        </div>
-                                                    </td>
+                                                    <th style="width: 120px">Photo</th>
+                                                    <th>Product</th>
+                                                    <th>Quantity</th>
+                                                    <th class="text-right">Unit Price</th>
+                                                    <th class="text-right">Delivery Charge</th>
                                                 </tr>
-                                            </t>
-                                        </tbody>
-                                    </table>
-                                        <div class="mt-4 d-flex justify-content-end">
-                                        <button type="submit" class="btn btn-success">
-                                            <i class="fa fa-paper-plane mr-2" />
-                                            Submit Proposal
-                                        </button>
+                                            </thead>
+                                            <tbody>
+                                                <t t-foreach="rfp.product_line_ids" t-as="line">
+                                                    <tr>
+                                                        <input
+                                                            type="hidden"
+                                                            t-att-name="'line-' + str(line.id) + '-product_id'"
+                                                            t-att-value="line.product_id.id"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            t-att-name="'line-' + str(line.id) + '-product_qty'"
+                                                            t-att-value="line.product_qty"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            t-if="line.product_uom"
+                                                            t-att-name="'line-' + str(line.id) + '-product_uom'"
+                                                            t-att-value="line.product_uom.id"
+                                                        />
+                                                        <input
+                                                            type="hidden"
+                                                            t-att-name="'line-' + str(line.id) + '-name'"
+                                                            t-att-value="line.description"
+                                                        />
+
+                                                        <td>
+                                                            <img t-if="line.product_id.image_1920"
+                                                                 t-att-src="image_data_uri(line.product_id.image_1920)"
+                                                                 class="img-thumbnail" alt="Product image" style="max-width: 100px;"/>
+                                                            <div t-else="" class="text-muted">No image</div>
+                                                        </td>
+                                                        <td>
+                                                            <span t-field="line.product_id.name"/><br/>
+                                                            <small class="text-muted" t-field="line.description"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="line.product_qty"/>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input type="number" class="form-control text-right"
+                                                                       t-att-name="'line-' + str(line.id) + '-price_unit'"
+                                                                       step="0.01" min="0" required="required"/>
+                                                            </div>
+                                                        </td>
+                                                        <td>
+                                                            <div class="input-group">
+                                                                <input type="number" class="form-control text-right"
+                                                                       t-att-name="'line-' + str(line.id) + '-delivery_charge'"
+                                                                       step="0.01" min="0" required="required"/>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </table>
+                                            <div class="mt-4 d-flex justify-content-end">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="fa fa-paper-plane mr-2" />
+                                                Submit Proposal
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </t>
             </div>
         </t>
     </template>

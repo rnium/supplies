@@ -73,6 +73,7 @@ class SuppliesPortal(CustomerPortal):
         )
         success_list = []
         error_list = []
+        page_contexts = {}
 
         if request.httprequest.method == 'POST':
             try:
@@ -105,6 +106,7 @@ class SuppliesPortal(CustomerPortal):
                 }
                 contexts = {'rfp_number': rfp.rfp_number, 'company_name': rfq.company_id.name}
                 template.with_context(**contexts).send_mail(rfq.id, email_values=email_values)
+                page_contexts['submitted_rfq'] = rfq
 
         return request.render(
             'supplies.portal_supplies_rfp_form_view',
@@ -112,7 +114,8 @@ class SuppliesPortal(CustomerPortal):
                 'rfp': rfp,
                 'page_name': 'rfp_view',
                 'success_list': success_list,
-                'error_list': error_list
+                'error_list': error_list,
+                **page_contexts
             }
         )
 

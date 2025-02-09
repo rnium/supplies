@@ -49,27 +49,39 @@ class SupplierRegistration(http.Controller):
             return utils.format_response('error', 'Invalid OTP')
         return utils.format_response('success', 'OTP verified successfully')
 
-    @http.route(['/supplies/register/submit'], type='http', auth='public', methods=['POST'])
+    @http.route(['/supplies/register/submit'], type='http', auth='public', methods=['POST'], csrf=False)
     def submit_registration(self, **post):
         """
         Handles the submission of the supplier registration form
         """
         form_data = request.httprequest.form
         files = request.httprequest.files
-        
-        print("Form Data: ", form_data)
-        print("Files: ", files)
-        print("Post Data: ", post)
-        data = json.dumps(utils.format_response('success', 'Registration submitted successfully'))
+
         try:
             reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
             utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
         except ValidationError as e:
+            errors = e.errors(include_input=False, include_context=False, include_url=False)
             data = json.dumps(
                 utils.format_response(
                     'error',
                     'Data validation failed',
-                    e.errors(include_input=False, include_context=False, include_url=False)
+                    {
+                        'html': utils.render_registration_error_html(request.env, errors)
+                    }
+                )
+            )
+        else:
+            data = json.dumps(
+                utils.format_response(
+                    'success',
+                    'Registration successful',
+                    {
+                        'html': utils.render_qweb_template(
+                            request.env,
+                            'supplies.supplier_registration_success'
+                        )
+                    }
                 )
             )
         return request.make_response(data, headers={'Content-Type': 'application/json'})

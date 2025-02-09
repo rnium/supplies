@@ -1,5 +1,6 @@
 from typing import List, Tuple
 from odoo.api import Environment
+import re
 
 def format_response(status: str, message: str, data: dict = None) -> dict:
     """
@@ -56,4 +57,38 @@ def create_supplier_registration(env: Environment, data: dict):
     data['client_ref_ids'] = client_ref_ids
     # create the registration
     env['supplies.registration'].sudo().create(data)
-        
+
+def render_qweb_template(env: Environment, template_name: str, data: dict = {}):
+    """
+    Renders a QWeb template
+    """
+    return env['ir.qweb']._render(template_name, data)
+
+def format_labels(*labels):
+    formatted_labels = []
+
+    for label in labels:
+        # Replace underscores with spaces and capitalize each word
+        formatted_label = re.sub(r'_', ' ', label).title()
+        formatted_labels.append(formatted_label)
+
+    return ", ".join(formatted_labels)
+
+def format_errors(errors: List[dict]):
+    out = []
+    for error_dict in errors:
+        # value: {'loc': ('field_name',), 'msg': 'Field required', 'type': 'missing'}
+        # we want to change the field_name (loc) to a more readable format
+        error_copy = error_dict.copy()
+        error_copy['loc'] = format_labels(*error_copy['loc'])
+        out.append(error_copy)
+    return out
+
+def render_registration_error_html(env: Environment, errors: List[dict]):
+    """
+    Renders the error HTML for the registration form modal
+    """
+    formatted_erros = format_errors(errors)
+    template_name = 'supplies.supplier_registration_error'
+    html = render_qweb_template(env, template_name, {'errors': formatted_erros})
+    return str(html)

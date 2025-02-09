@@ -1,18 +1,48 @@
+from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo import http
+from odoo import _
 from odoo.http import request, route
 from ..utils import schemas
 from ..utils import mail_utils
 from pydantic import ValidationError
 
-class SuppliesPortal(http.Controller):
-    @http.route('/my/supplies', auth='user', website=True)
-    def supplies_portal(self, **kw):
-        rfps = request.env['supplies.rfp'].sudo().search([('state', '=', 'approved')])
+class SuppliesPortal(CustomerPortal):
+    @http.route(['/my/supplies', '/my/supplies/page/<int:page>'], auth='user', website=True)
+    def supplies_portal(self, page=1, sortby=None, search=None, search_in=None, **kw):
+        limit = 2
+        searchbar_sortings = {
+            'date': {'label': 'Newest', 'order': 'create_date desc'},
+            'name': {'label': 'Name', 'order': 'rfp_number'},
+        }
+        search_in = search_in or 'name'
+        order = searchbar_sortings[sortby]['order'] if sortby else 'create_date desc'
+        search_list = {
+            'all': {'label': _('All'), 'input': 'all', 'domain': []},
+            'name': {'label': _('Name'), 'input': 'rfp_number', 'domain': [('rfp_number', 'ilike', search)]},
+        }
+        sortby = sortby or 'date'
+        search_domain = [('state', '=', 'approved')]
+        search_domain += search_list[search_in]['domain']
+        rfp_count = request.env['supplies.rfp'].sudo().search_count(search_domain)
+        pager = portal_pager(
+            url="/my/supplies",
+            url_args={'sortby': sortby, 'search_in': search_in, 'search': search},
+            total=rfp_count,
+            page=page,
+            step=limit
+        )
+        rfps = request.env['supplies.rfp'].sudo().search(search_domain, order=order, limit=limit, offset=pager['offset'])
         return request.render(
             'supplies.portal_supplies_rfp_tree_view',
             {
                 'rfps': rfps,
-                'page_name': 'rfp_list'
+                'page_name': 'rfp_list',
+                'pager': pager,
+                'searchbar_sortings': searchbar_sortings,
+                'searchbar_inputs': search_list,
+                'sortby': sortby,
+                'search_in': search_in,
+                'search': search,
             }
         )
 

@@ -35,15 +35,37 @@
                             </div>
                         </t>
                         <t t-if="rfps" t-call="portal.portal_table">
+                            <thead class="table-primary">
+                                <tr>
+                                    <th>Reference</th>
+                                    <th>Requested On</th>
+                                    <th>Required Date</th>
+                                </tr>
+                            </thead>
+                            <t t-set="count" t-value="0"/>
                             <t t-foreach="group_rfps" t-as="rfp_group">
-                                <thead class="table-primary">
-                                    <tr>
-                                        <th>Reference</th>
-                                        <th>Requested On</th>
-                                        <th>Required Date</th>
-                                    </tr>
-                                </thead>
+                                <t t-set="count" t-value="count + 1"/>
                                 <tbody>
+                                    <tr t-if="len(rfp_group) > 1">
+                                        <td colspan="3" class="bg-light">
+                                            <t t-if="'required_date' in rfp_group">
+                                                <div class="text-primary d-flex align-items-center justify-content-center font-weight-bold">
+                                                    <i class="fa fa-calendar mr-4" title="Required Date"/>
+                                                    <span class="ms-2">
+                                                        <t t-esc="rfp_group['required_date']"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                            <t t-elif="'state' in rfp_group">
+                                                <div class="text-primary d-flex align-items-center justify-content-center font-weight-bold">
+                                                    <i class="fa fa-cogs mr-4" title="State"/>
+                                                    <span class="ms-2">
+                                                        <t t-esc="rfp_group['state'].title()"/>
+                                                    </span>
+                                                </div>
+                                            </t>
+                                        </td>
+                                    </tr>
                                     <t t-foreach="rfp_group['rfps']" t-as="rfp">
                                         <tr>
                                             <td>

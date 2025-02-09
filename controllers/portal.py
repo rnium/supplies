@@ -1,6 +1,8 @@
 from odoo.addons.portal.controllers.portal import CustomerPortal, pager as portal_pager
 from odoo import http
 from odoo import _
+from odoo.tools import groupby as groupbyelem
+from operator import itemgetter
 from odoo.http import request, route
 from ..utils import schemas
 from ..utils import mail_utils
@@ -8,14 +10,19 @@ from pydantic import ValidationError
 
 class SuppliesPortal(CustomerPortal):
     @http.route(['/my/supplies', '/my/supplies/page/<int:page>'], auth='user', website=True)
-    def supplies_portal(self, page=1, sortby=None, search=None, search_in=None, **kw):
-        limit = 2
+    def supplies_portal(self, page=1, sortby=None, search=None, search_in=None, groupby=None, **kw):
+        limit = 5
         searchbar_sortings = {
             'date': {'label': 'Newest', 'order': 'create_date desc'},
             'name': {'label': 'Name', 'order': 'rfp_number'},
         }
+        groupby_list = {
+            'required_date': {'input': 'required_date', 'label': _('Required Date')},
+            'state': {'input': 'state', 'label': _('Status')},
+        }
         search_in = search_in or 'name'
         order = searchbar_sortings[sortby]['order'] if sortby else 'create_date desc'
+        groupby = groupby or 'state'
         search_list = {
             'all': {'label': _('All'), 'input': 'all', 'domain': []},
             'name': {'label': _('Name'), 'input': 'rfp_number', 'domain': [('rfp_number', 'ilike', search)]},
@@ -32,6 +39,12 @@ class SuppliesPortal(CustomerPortal):
             step=limit
         )
         rfps = request.env['supplies.rfp'].sudo().search(search_domain, order=order, limit=limit, offset=pager['offset'])
+        group_by_rfp = groupby_list.get(groupby, {})
+        if groupby_list[groupby]['input']:
+            rfp_group_list =  [{group_by_rfp['input']: i, 'rfps': list(j)} for i, j in groupbyelem(rfps, itemgetter(group_by_rfp['input']))]
+        else:
+            rfp_group_list = [{'rfps': rfps}]
+
         return request.render(
             'supplies.portal_supplies_rfp_tree_view',
             {
@@ -43,6 +56,10 @@ class SuppliesPortal(CustomerPortal):
                 'sortby': sortby,
                 'search_in': search_in,
                 'search': search,
+                'groupby': groupby,
+                'searchbar_groupby': groupby_list,
+                'default_url': '/my/supplies',
+                'group_rfps': rfp_group_list
             }
         )
 

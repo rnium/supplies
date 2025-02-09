@@ -35,26 +35,29 @@
                             </div>
                         </t>
                         <t t-if="rfps" t-call="portal.portal_table">
-                            <thead class="table-primary">
-                                <tr>
-                                    <th>Reference</th>
-                                    <th>Requested On</th>
-                                    <th>Required Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <t t-foreach="rfps" t-as="rfp">
+                            <t t-foreach="group_rfps" t-as="rfp_group">
+                                <thead class="table-primary">
                                     <tr>
-                                        <td>
-                                            <a t-attf-href="/my/supplies/{{rfp.rfp_number}}">
-                                                <t t-esc="rfp.rfp_number"/>
-                                            </a>
-                                        </td>
-                                        <td><t t-esc="rfp.submitted_date"/></td>
-                                        <td><t t-esc="rfp.required_date"/></td>
+                                        <th>Reference</th>
+                                        <th>Requested On</th>
+                                        <th>Required Date</th>
                                     </tr>
-                                </t>
-                            </tbody>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="rfp_group['rfps']" t-as="rfp">
+                                        <tr>
+                                            <td>
+                                                <a t-attf-href="/my/supplies/{{rfp.rfp_number}}">
+                                                    <t t-esc="rfp.rfp_number"/>
+                                                </a>
+                                            </td>
+                                            <td><t t-esc="rfp.submitted_date"/></td>
+                                            <td><t t-esc="rfp.required_date"/></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </t>
+
                         </t>
                     </div>
                 </div>

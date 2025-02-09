@@ -69,4 +69,72 @@
         </field>
     </record>
 
+    <record id="email_template_model_supplies_rfp_submission" model="mail.template">
+        <field name="name">RFP Submission Approver Notification</field>
+        <field name="model_id" ref="model_supplies_rfp"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                A new RFP is submitted by <t t-esc="ctx.get('reviwer_name') or not_available"/>. Please review the RFP and take necessary actions.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
+    <record id="email_template_model_supplies_rfp_approved_reviewer" model="mail.template">
+        <field name="name">RFP Approved Notification</field>
+        <field name="model_id" ref="model_supplies_rfp"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                Congratulations! Your Request for Purchase <t t-esc="ctx.get('rfp_number') or not_available"/> is approved.
+                It is now accessible for RFQ submission through the portal.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
+    <record id="email_template_model_supplies_rfp_rejected_reviewer" model="mail.template">
+        <field name="name">RFP Rejected Notification</field>
+        <field name="model_id" ref="model_supplies_rfp"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                Your Request for Purchase <t t-esc="ctx.get('rfp_number') or not_available"/> is rejected by <t t-esc="ctx.get('approver_name') or not_available"/>.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
+    <record id="email_template_model_supplies_rfp_approved_supplier" model="mail.template">
+        <field name="name">New RFP for Supplier</field>
+        <field name="model_id" ref="model_supplies_rfp"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                A new Request for Purchase <t t-esc="ctx.get('rfp_number') or not_available"/> is available now.
+                Please visit the portal and see if you can provide the requested items. We are looking forward to your submission.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
+    <record id="email_template_model_supplies_rfp_recommended" model="mail.template">
+        <field name="name">RFP Recommended Approver Notification</field>
+        <field name="model_id" ref="model_supplies_rfp"/>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                The Request for Purchase <t t-esc="ctx.get('rfp_number') or not_available"/> now has recommended RFQ lines.
+                Please review the recommended RFQ lines and take necessary actions.
+            </p>
+            <p>Regards</p>
+            <p><t t-esc="ctx.get('company_name') or not_available"/></p>
+        </field>
+    </record>
+
 </odoo>

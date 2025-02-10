@@ -56,7 +56,18 @@ class SupplierRegistration(http.Controller):
         """
         form_data = request.httprequest.form
         files = request.httprequest.files
-
+        otp = form_data.get('otp')
+        email = form_data.get('email')
+        otp_obj = request.env['supplies.registration.otp'].sudo().search(
+            [('email', '=', email), ('otp', '=', otp)]
+        )
+        if not otp_obj:
+            return request.make_response(
+                json.dumps(
+                    utils.format_response('error', 'Invalid OTP')
+                ),
+                headers={'Content-Type': 'application/json'}
+            )
         try:
             reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
             utils.create_supplier_registration(request.env, reg_data_schema.model_dump())

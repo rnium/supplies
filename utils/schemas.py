@@ -224,7 +224,7 @@ class CompanySchema(BaseModel):
     email: EmailStr
     street: str
     street2: Optional[str] | bool
-    image_1920: Optional[Base64Str] | bool
+    image_1920: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
     tax_identification_number: Optional[str] | bool
     commencement_date: Optional[date] | bool

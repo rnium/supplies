@@ -33,7 +33,7 @@ class SuppliesPortal(CustomerPortal):
         rfp_count = request.env['supplies.rfp'].sudo().search_count(search_domain)
         pager = portal_pager(
             url="/my/supplies",
-            url_args={'sortby': sortby, 'search_in': search_in, 'search': search},
+            url_args={'sortby': sortby, 'search_in': search_in, 'search': search, 'groupby': groupby},
             total=rfp_count,
             page=page,
             step=limit

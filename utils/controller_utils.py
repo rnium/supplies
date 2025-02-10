@@ -28,6 +28,12 @@ def validate_email_address(request, email: str) -> Tuple[bool, str]:
     )
     if user:
         return False, 'Email address is already registered'
+    # check if already applied
+    registration = request.env['supplies.registration'].sudo().search(
+        [('email', '=', email)]
+    )
+    if registration:
+        return False, 'You have already applied'
     return True, ''
 
 def create_supplier_registration(env: Environment, data: dict):

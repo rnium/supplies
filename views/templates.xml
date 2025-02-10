@@ -463,6 +463,9 @@
                             <t t-if="error['type'] == 'missing'">
                                 This field is required.
                             </t>
+                            <t t-elif="error['type'] == 'string_pattern_mismatch'">
+                                Invalid value provided. <t t-esc="error['msg']"/>.
+                            </t>
                             <t t-else="">
                                 <t t-esc="error['msg']"/>
                             </t>

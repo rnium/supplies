@@ -75,7 +75,10 @@ def format_labels(*labels):
 
     for label in labels:
         # Replace underscores with spaces and capitalize each word
-        formatted_label = re.sub(r'_', ' ', label).title()
+        if isinstance(label, str):
+            formatted_label = label.replace('_', ' ').title()
+        else:
+            formatted_label = str(label)
         formatted_labels.append(formatted_label)
 
     return ", ".join(formatted_labels)

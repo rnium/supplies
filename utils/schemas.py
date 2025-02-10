@@ -1,14 +1,17 @@
 from pydantic import (
     BaseModel, Field, field_validator,
-    model_validator, EmailStr, conbytes, ConfigDict, Base64Str, Base64Bytes
+    model_validator, EmailStr, conbytes, ConfigDict, Base64Str,
+    Base64Bytes, StringConstraints
 )
-from typing import List, Optional
+from typing import List, Optional, Annotated
 from collections import defaultdict
 from datetime import date
 import re
 import base64
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
+TRADE_LIC_TYPE = Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9]{8,20}$")]
+TINType = Annotated[str, StringConstraints(pattern=r"^\d{16}$")]
 
 class ContactSchema(BaseModel):
     name: str
@@ -62,7 +65,6 @@ class ClientContactOutSchema(BaseModel):
     street: str | bool = Field(alias='address')
 
 
-
 class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
@@ -70,13 +72,13 @@ class SupplierRegistrationSchema(BaseModel):
     image_1920: Base64Bytes | None = None
     street: str
     street2: str = None
-    trade_license_number: str = None
-    tax_identification_number: str = None
-    commencement_date: str = None
+    trade_license_number: Optional[TRADE_LIC_TYPE] = None
+    tax_identification_number: Optional[TINType] = None
+    commencement_date: Optional[date] = None
     primary_contact_id: ContactSchema
     finance_contact_id: ContactSchema
     authorized_contact_id: ContactSchema
-    expiry_date: str = None
+    expiry_date: Optional[date] = None
     # Bank info
     bank_name: str
     swift_code: str = None
@@ -88,8 +90,8 @@ class SupplierRegistrationSchema(BaseModel):
     certification_name: str = None
     certificate_number: str = None
     certifying_body: str = None
-    certification_award_date: str = None
-    certification_expiry_date: str = None
+    certification_award_date: Optional[date] = None
+    certification_expiry_date: Optional[date] = None
     # client references
     client_ref_ids: List[ClientContactSchema] = []
     # docs
@@ -153,6 +155,20 @@ class SupplierRegistrationSchema(BaseModel):
     def transform_binary_fields(cls, value):
         if value and hasattr(value, 'read'):
             return base64.b64encode(value.read())
+        return value
+
+    @field_validator('commencement_date')
+    @classmethod
+    def validate_commencement_date(cls, value):
+        if value and value >= date.today():
+            raise ValueError("Commencement date must be in the past.")
+        return value
+
+    @field_validator('expiry_date')
+    @classmethod
+    def validate_expiry_date(cls, value):
+        if value and value <= date.today():
+            raise ValueError("Expiry date must be in the future.")
         return value
 
 

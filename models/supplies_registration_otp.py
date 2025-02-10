@@ -1,9 +1,10 @@
 from odoo import models, fields, api
 import random
 
-class RegistrationOTP(models.Model):
+class RegistrationOTP(models.TransientModel):
     _name = 'supplies.registration.otp'
     _description = 'Supplies Registration OTP'
+    _transient_max_hours = 1
 
     email = fields.Char(string='Email', required=True)
     otp = fields.Char(

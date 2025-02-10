@@ -41,17 +41,21 @@
         </field>
     </record>
 
-    <record id="email_template_test" model="mail.template">
-        <field name="name">Test Email Template</field>
-        <field name="model_id" ref="model_res_partner"/>
-        <field name="subject">Test Email Template</field>
+    <record id="email_template_model_supplies_vendor_registration_rejection" model="mail.template">
+        <field name="name">Supplier Registration Rejection</field>
+        <field name="model_id" ref="model_supplies_registration"/>
         <field name="body_html" type="html">
-            <h3>Dear User Its me <t t-out="ctx.get('name') or not_available"/></h3>
+            <h3>Dear User</h3>
             <p>
-                This is a test email template.
+                We are sorry to inform you that your registration for supplier account is rejected. The reason for rejection is stated below.
+            </p>
+            <p>
+                Reason: <t t-out="ctx.get('reason') or not_available"/>
             </p>
             <p>Regards</p>
-            <p>My Company</p>
+            <p>
+                <t t-esc="ctx.get('company_name') or not_available"/>
+            </p>
         </field>
     </record>
 

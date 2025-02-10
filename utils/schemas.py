@@ -62,11 +62,12 @@ class ClientContactOutSchema(BaseModel):
     street: str | bool = Field(alias='address')
 
 
+
 class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
     email: EmailStr
-    image_1920: Base64Bytes = None
+    image_1920: Base64Bytes | None = None
     street: str
     street2: str = None
     trade_license_number: str = None
@@ -102,7 +103,7 @@ class SupplierRegistrationSchema(BaseModel):
     bank_letter_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     past_2_years_financial_statement_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     other_certification_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
-    
+
     @model_validator(mode='before')
     @classmethod
     def preprocess_data(cls, values):
@@ -116,8 +117,8 @@ class SupplierRegistrationSchema(BaseModel):
                     group_collections[f"{group}_{index}"][field] = values[key]
         grouped_data = dict(group_collections)
         contact_mapping = {
-            'contact_1': 'primary_contact_id', 
-            'contact_2': 'finance_contact_id', 
+            'contact_1': 'primary_contact_id',
+            'contact_2': 'finance_contact_id',
             'contact_3': 'authorized_contact_id'
         }
         for key in contact_mapping.keys():
@@ -128,30 +129,28 @@ class SupplierRegistrationSchema(BaseModel):
             if 'client' in key:
                 client_ref_ids.append(grouped_data[key])
         values['client_ref_ids'] = client_ref_ids
+        # Binary fields
+        binary_file_fields = [
+            'image_1920',
+            'trade_license_doc',
+            'certificate_of_incorporation_doc',
+            'certificate_of_good_standing_doc',
+            'establishment_card_doc',
+            'vat_tax_certificate_doc',
+            'memorandum_of_association_doc',
+            'identification_of_authorised_person_doc',
+            'bank_letter_doc',
+            'past_2_years_financial_statement_doc',
+            'other_certification_doc',
+        ]
+        for field in binary_file_fields:
+            if field in values:
+                file_value = values[field]
+                values[field] = cls.transform_binary_fields(file_value)
         return values
 
-
-    @field_validator(
-        'trade_license_doc',
-        'certificate_of_incorporation_doc',
-        'certificate_of_good_standing_doc',
-        'establishment_card_doc',
-        'vat_tax_certificate_doc',
-        'memorandum_of_association_doc',
-        'identification_of_authorised_person_doc',
-        'bank_letter_doc',
-        'past_2_years_financial_statement_doc',
-        'other_certification_doc',
-        mode='before'
-    )
     @classmethod
     def transform_binary_fields(cls, value):
-        if value and hasattr(value, 'read'):
-            return value.read()
-        return value
-
-    @field_validator('image_1920', mode='before')
-    def transform_image_field(cls, value):
         if value and hasattr(value, 'read'):
             return base64.b64encode(value.read())
         return value

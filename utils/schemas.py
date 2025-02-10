@@ -1,11 +1,12 @@
 from pydantic import (
     BaseModel, Field, field_validator,
-    model_validator, EmailStr, conbytes, ConfigDict
+    model_validator, EmailStr, conbytes, ConfigDict, Base64Str, Base64Bytes
 )
 from typing import List, Optional
 from collections import defaultdict
 from datetime import date
 import re
+import base64
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
 
@@ -65,6 +66,7 @@ class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
     email: EmailStr
+    image_1920: Base64Bytes = None
     street: str
     street2: str = None
     trade_license_number: str = None
@@ -146,6 +148,13 @@ class SupplierRegistrationSchema(BaseModel):
     def transform_binary_fields(cls, value):
         if value and hasattr(value, 'read'):
             return value.read()
+        return value
+
+    @field_validator('image_1920', mode='before')
+    def transform_image_field(cls, value):
+        if value and hasattr(value, 'read'):
+            return base64.b64encode(value.read())
+        return value
 
 
 class BankSchema(BaseModel):
@@ -200,6 +209,7 @@ class CompanySchema(BaseModel):
     email: EmailStr
     street: str
     street2: Optional[str] | bool
+    image_1920: Optional[Base64Str] | bool
     trade_license_number: Optional[str] | bool
     tax_identification_number: Optional[str] | bool
     commencement_date: Optional[date] | bool

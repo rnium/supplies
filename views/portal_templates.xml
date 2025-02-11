@@ -298,13 +298,21 @@
                                             <span t-field="rfq.date_planned" t-options='{"format": "MMM d, y HH:mm:ss"}'/>
                                         </td>
                                         <td>
-                                            <span class="badge rounded-pill bg-primary" t-if="rfq.state == 'draft'">Draft</span>
-                                            <span class="badge rounded-pill bg-warning" t-if="rfq.state == 'sent'">Sent</span>
-                                            <span class="badge rounded-pill bg-success" t-if="rfq.state == 'done'">Done</span>
-                                            <span class="badge rounded-pill bg-info" t-if="rfq.state == 'purchase'">Purchase Order</span>
+                                            <t t-if="rfq.state == 'draft'">
+                                                <span class="badge rounded-pill bg-primary" t-if="rfq.state == 'draft'">Draft</span>
+                                            </t>
+                                            <t t-elif="rfq.state == 'purchase'">
+                                                <span class="badge rounded-pill bg-success" t-if="rfq.state == 'purchase'">Purchase Order</span>
+                                            </t>
+                                            <t t-elif="rfq.state == 'cancel'">
+                                                <span class="badge rounded-pill bg-danger" t-if="rfq.state == 'cancel'">Cancelled</span>
+                                            </t>
+                                            <t t-else="">
+                                                <span class="badge rounded-pill bg-secondary">
+                                                    <t t-esc="rfq.state"/>
+                                                </span>
+                                            </t>
                                         </td>
-
-
                                     </tr>
                                 </t>
                             </tbody>

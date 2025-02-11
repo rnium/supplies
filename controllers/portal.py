@@ -82,7 +82,7 @@ class SuppliesPortal(CustomerPortal):
                         request.httprequest.form.items(),
                         rfp_id=rfp.id,
                         partner_id=request.env.user.partner_id.id,
-                        user_id=rfp.write_uid.id
+                        user_id=rfp.create_uid.id
                     )
                 )
             except ValidationError as e:

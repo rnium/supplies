@@ -14,6 +14,13 @@ class PurchaseOrder(models.Model):
     def action_accept(self):
         self.rfp_id.write({'state': 'accepted', 'approved_supplier_id': self.partner_id.id})
         self.write({'state': 'purchase'})
+        other_rfqs = self.env['purchase.order'].search(
+            [
+                ('rfp_id', '=', self.rfp_id.id),
+                ('id', '!=', self.id),
+            ]
+        )
+        other_rfqs.write({'state': 'cancel'})
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'supplies.rfp',

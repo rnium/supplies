@@ -29,4 +29,13 @@
         sequence="10"
         groups="supplies.group_supplies_approver"
     />
+
+    <menuitem
+        name="Reporting"
+        id="supplies_rfp_report_wizard_menu"
+        parent="supplies_menu"
+        action="supplies_rfp_report_wizard_act_window"
+        sequence="15"
+    />
+
 </odoo>

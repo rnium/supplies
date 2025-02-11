@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="supplies_rfp_report_wizard_form_view" model="ir.ui.view">
+            <field name="name">supplies.supplies_rfp_report_wizard.form</field>
+            <field name="model">supplies.rfp.report.wizard</field>
+            <field name="arch" type="xml">
+                <form string="RFP Report">
+                    <sheet>
+                        <group>
+                            <field name="supplier_id"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                        <div>
+                            <button name="action_download_excel_report" string="Excel Report" type="object" class="btn-primary"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="supplies_rfp_report_wizard_act_window" model="ir.actions.act_window">
+            <field name="name">RFP Report</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">supplies.rfp.report.wizard</field>
+            <field name="view_mode">form</field>
+        </record>
+    </data>
+</odoo>

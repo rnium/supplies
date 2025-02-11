@@ -253,6 +253,7 @@ class PurchaseOrderLineSchema(BaseModel):
     product_uom: Optional[int] | None = None
     price_unit: float
     delivery_charge: float
+    date_planned: date
     name: str # description
 
 class PurchaseOrderSchema(BaseModel):
@@ -276,7 +277,8 @@ class PurchaseOrderSchema(BaseModel):
                 if group in groups_types:
                     group_collections[f"{group}_{index}"][field] = values[key]
         grouped_data = dict(group_collections)
-        order_line = list(grouped_data.values())
+        date_planned = values.get('date_planned')
+        order_line = [{'date_planned': date_planned, **vals} for vals in grouped_data.values()]
         values['order_line'] = order_line
         return values
 

@@ -37,8 +37,8 @@
         'views/res_partner_views.xml',
         'views/res_partner_bank_views.xml',
         'views/portal_templates.xml',
-        'wizard/blacklist_wizard_view.xml',
-        'wizard/reject_application_wizard.xml',
+        'wizard/supplies_blacklist_wizard_view.xml',
+        'wizard/supplies_reject_application_wizard.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

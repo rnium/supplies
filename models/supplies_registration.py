@@ -122,11 +122,11 @@ class SuppliesRegistration(models.Model):
         return self.write({'state': 'finalized'})
 
     def action_blacklist(self):
-        wizard = self.env['blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
+        wizard = self.env['supplies.blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
         return {
             'name': 'Blacklist',
             'type': 'ir.actions.act_window',
-            'res_model': 'blacklist.wizard',
+            'res_model': 'supplies.blacklist.wizard',
             'res_id': wizard.id,
             'view_mode': 'form',
             'target': 'new',

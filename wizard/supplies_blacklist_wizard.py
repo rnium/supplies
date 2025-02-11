@@ -1,7 +1,7 @@
 from odoo import models, fields, api
 
 class BlacklistWizard(models.TransientModel):
-    _name = 'blacklist.wizard'
+    _name = 'supplies.blacklist.wizard'
     _description = 'Blacklist Wizard'
 
     email = fields.Char(string='Email', required=True)

@@ -12,5 +12,5 @@ def get_approver_emails(env: Environment) -> str:
 
 def get_supplier_emails(env: Environment) -> list:
     suppliers = env['res.users'].search([]).filtered(lambda u: u.partner_id and u.partner_id.supplier_rank >= 1)
-    email_list = suppliers.mapped('email')
+    email_list = suppliers.mapped('login')
     return email_list

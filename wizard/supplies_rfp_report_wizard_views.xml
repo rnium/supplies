@@ -5,7 +5,7 @@
             <field name="name">supplies.supplies_rfp_report_wizard.form</field>
             <field name="model">supplies.rfp.report.wizard</field>
             <field name="arch" type="xml">
-                <form string="RFP Report">
+                <form string="RFP Report" create="False">
                     <sheet>
                         <group>
                             <field name="supplier_id"/>
@@ -14,6 +14,7 @@
                         </group>
                         <div>
                             <button name="action_download_excel_report" string="Excel Report" type="object" class="btn-primary"/>
+                            <button name="action_preview_html" string="Preview Report" type="object" class="btn-secondary ms-2"/>
                         </div>
                     </sheet>
                 </form>

@@ -127,7 +127,20 @@ const pageManager = {
     }
 }
 
-function showModal(id) {
+function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=false) {
+    if (body_content) {
+        $(`#${id} .modal-body`).html(body_content);
+    }
+    if (static_backdrop) {
+        $(`#${id}`).attr('data-bs-backdrop', 'static');
+    } else {
+        $(`#${id}`).removeAttr('data-bs-backdrop');
+    }
+    if (hide_close_btn) {
+        $(`#${id} .modal-header .btn-close`).hide();
+    } else {
+        $(`#${id} .modal-header .btn-close`).show();
+    }
     const elem = document.getElementById(id)
     const mBootstrap = new bootstrap.Modal(elem);
     mBootstrap.show()
@@ -357,10 +370,22 @@ function submit_form(formData) {
         data: formData,
         success: function (data) {
             console.log(data);
-            showModal(MODAL_1);
+            if (data?.status === 'success') {
+                showModal(
+                    MODAL_1,
+                    data?.data?.html || 'Form submitted successfully',
+                    true,
+                    true
+                );
+            } else {
+                showModal(MODAL_1, data?.data?.html || 'Failed to submit form', true);
+            }
         },
         error: function (xhr, status, error) {
-            showError(ALERT_CONTAINER_ID, 'Failed to submit form');
+            showModal(
+                MODAL_1,
+                "<div class='alert alert-danger my-4'>Failed to submit form</div>",
+            )
         },
         complete: function () {
             $(SUBMIT_BTN_ID).prop('disabled', false);
@@ -373,18 +398,14 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
-        if (validateStepInputs(pageManager.page)) {
-            pageManager.goNext();
-        }
+        pageManager.goNext();
     });
     $(PREV_BTN_ID).on('click', () => {
         pageManager.goBack();
     });
     $(ADD_MORE_CLIENT_BTN_ID).on('click', addMoreClientReference);
     $(SUBMIT_BTN_ID).on('click', () => {
-        if (validateStepInputs(pageManager.page)) {
-            pageManager.handleSubmitForm(submit_form);
-        }
+        pageManager.handleSubmitForm(submit_form);
     });
     $(DECLARATION_CHECKBOX_ID).on('change', function () {
         const isChecked = $(this).is(':checked');

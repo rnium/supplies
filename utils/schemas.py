@@ -1,13 +1,17 @@
 from pydantic import (
     BaseModel, Field, field_validator,
-    model_validator, EmailStr, conbytes, ConfigDict
+    model_validator, EmailStr, conbytes, ConfigDict, Base64Str,
+    Base64Bytes, StringConstraints
 )
-from typing import List, Optional
+from typing import List, Optional, Annotated
 from collections import defaultdict
 from datetime import date
 import re
+import base64
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
+TRADE_LIC_TYPE = Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9]{8,20}$")]
+TINType = Annotated[str, StringConstraints(pattern=r"^\d{16}$")]
 
 class ContactSchema(BaseModel):
     name: str
@@ -65,15 +69,16 @@ class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
     email: EmailStr
+    image_1920: Base64Bytes | None = None
     street: str
     street2: str = None
-    trade_license_number: str = None
-    tax_identification_number: str = None
-    commencement_date: str = None
+    trade_license_number: Optional[TRADE_LIC_TYPE] = None
+    tax_identification_number: Optional[TINType] = None
+    commencement_date: Optional[date] = None
     primary_contact_id: ContactSchema
     finance_contact_id: ContactSchema
     authorized_contact_id: ContactSchema
-    expiry_date: str = None
+    expiry_date: Optional[date] = None
     # Bank info
     bank_name: str
     swift_code: str = None
@@ -85,8 +90,8 @@ class SupplierRegistrationSchema(BaseModel):
     certification_name: str = None
     certificate_number: str = None
     certifying_body: str = None
-    certification_award_date: str = None
-    certification_expiry_date: str = None
+    certification_award_date: Optional[date] = None
+    certification_expiry_date: Optional[date] = None
     # client references
     client_ref_ids: List[ClientContactSchema] = []
     # docs
@@ -100,7 +105,7 @@ class SupplierRegistrationSchema(BaseModel):
     bank_letter_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     past_2_years_financial_statement_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     other_certification_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
-    
+
     @model_validator(mode='before')
     @classmethod
     def preprocess_data(cls, values):
@@ -114,8 +119,8 @@ class SupplierRegistrationSchema(BaseModel):
                     group_collections[f"{group}_{index}"][field] = values[key]
         grouped_data = dict(group_collections)
         contact_mapping = {
-            'contact_1': 'primary_contact_id', 
-            'contact_2': 'finance_contact_id', 
+            'contact_1': 'primary_contact_id',
+            'contact_2': 'finance_contact_id',
             'contact_3': 'authorized_contact_id'
         }
         for key in contact_mapping.keys():
@@ -126,26 +131,45 @@ class SupplierRegistrationSchema(BaseModel):
             if 'client' in key:
                 client_ref_ids.append(grouped_data[key])
         values['client_ref_ids'] = client_ref_ids
+        # Binary fields
+        binary_file_fields = [
+            'image_1920',
+            'trade_license_doc',
+            'certificate_of_incorporation_doc',
+            'certificate_of_good_standing_doc',
+            'establishment_card_doc',
+            'vat_tax_certificate_doc',
+            'memorandum_of_association_doc',
+            'identification_of_authorised_person_doc',
+            'bank_letter_doc',
+            'past_2_years_financial_statement_doc',
+            'other_certification_doc',
+        ]
+        for field in binary_file_fields:
+            if field in values:
+                file_value = values[field]
+                values[field] = cls.transform_binary_fields(file_value)
         return values
 
-
-    @field_validator(
-        'trade_license_doc',
-        'certificate_of_incorporation_doc',
-        'certificate_of_good_standing_doc',
-        'establishment_card_doc',
-        'vat_tax_certificate_doc',
-        'memorandum_of_association_doc',
-        'identification_of_authorised_person_doc',
-        'bank_letter_doc',
-        'past_2_years_financial_statement_doc',
-        'other_certification_doc',
-        mode='before'
-    )
     @classmethod
     def transform_binary_fields(cls, value):
         if value and hasattr(value, 'read'):
-            return value.read()
+            return base64.b64encode(value.read())
+        return value
+
+    @field_validator('commencement_date')
+    @classmethod
+    def validate_commencement_date(cls, value):
+        if value and value >= date.today():
+            raise ValueError("Commencement date must be in the past.")
+        return value
+
+    @field_validator('expiry_date')
+    @classmethod
+    def validate_expiry_date(cls, value):
+        if value and value <= date.today():
+            raise ValueError("Expiry date must be in the future.")
+        return value
 
 
 class BankSchema(BaseModel):
@@ -200,6 +224,7 @@ class CompanySchema(BaseModel):
     email: EmailStr
     street: str
     street2: Optional[str] | bool
+    image_1920: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
     tax_identification_number: Optional[str] | bool
     commencement_date: Optional[date] | bool
@@ -228,6 +253,7 @@ class PurchaseOrderLineSchema(BaseModel):
     product_uom: Optional[int] | None = None
     price_unit: float
     delivery_charge: float
+    date_planned: date
     name: str # description
 
 class PurchaseOrderSchema(BaseModel):
@@ -236,6 +262,7 @@ class PurchaseOrderSchema(BaseModel):
     warrenty_period: int
     date_planned: date
     notes: str
+    user_id: int
     order_line: List[PurchaseOrderLineSchema]
 
     @model_validator(mode='before')
@@ -250,7 +277,8 @@ class PurchaseOrderSchema(BaseModel):
                 if group in groups_types:
                     group_collections[f"{group}_{index}"][field] = values[key]
         grouped_data = dict(group_collections)
-        order_line = list(grouped_data.values())
+        date_planned = values.get('date_planned')
+        order_line = [{'date_planned': date_planned, **vals} for vals in grouped_data.values()]
         values['order_line'] = order_line
         return values
 

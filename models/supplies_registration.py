@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from odoo.exceptions import ValidationError
 from ..utils import schemas
 from ..utils import supplier_registration_utils as utils
+from ..utils.mail_utils import get_smtp_server_email
 import random
 
 class SuppliesRegistrationContact(models.Model):
@@ -106,13 +107,18 @@ class SuppliesRegistration(models.Model):
             groups_id=[(6, 0, self.env.ref('base.group_portal').ids)]
         )
         self.env['res.users'].sudo().create(user_data)
+        email_values = {
+            'email_from': get_smtp_server_email(self.env),
+            'email_to': self.email,
+            'subject': 'Supplier Registration Confirmation',
+        }
         contexts = {
             'email': self.email,
             'password': self.email,
         }
         self.env.ref(
             'supplies.email_template_model_supplies_vendor_registration_confirmation'
-        ).with_context(**contexts).send_mail(self.id, force_send=True)
+        ).with_context(**contexts).send_mail(self.id, email_values=email_values)
         return self.write({'state': 'finalized'})
 
     def action_blacklist(self):
@@ -136,3 +142,10 @@ class SuppliesRegistration(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
+
+    @api.model
+    def cleanup_registrations(self):
+        # delete all registrations that is not in 'submitted' state and it's created more than 30 days ago
+        thirty_days_ago = fields.Date.subtract(fields.Date.today(), days=30)
+        registrations = self.search([('state', '!=', 'submitted'), ('create_date', '<', thirty_days_ago)])
+        registrations.unlink()

@@ -89,6 +89,12 @@
 
                 </header>
                 <sheet>
+                    <field name="state" invisible="1"/>
+                    <widget name="web_ribbon" title="Rejected" bg_color="text-bg-danger" invisible="state != 'rejected'"/>
+                    <widget name="web_ribbon" title="Accepted" bg_color="text-bg-success" invisible="state != 'accepted'"/>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="action_view_purchase_order" class="oe_stat_button" icon="fa-cube" invisible="state != 'accepted'">View Purchase Order</button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="rfp_number" readonly="1"/>
@@ -138,10 +144,11 @@
                                 <tree default_order="score desc">
                                     <field name="company_id" column_invisible="1"/>
                                     <field name="currency_id" column_invisible="1"/>
+                                    <field name="name" string="Reference"/>
                                     <field name="partner_id" string="Supplier"/>
                                     <field name="create_date" string="Posted On"/>
-                                    <field name="warrenty_period" string="Warrenty Period (Month)"/>
                                     <field name="date_planned" string="Delivery Date"/>
+                                    <field name="warrenty_period" string="Warrenty Period (Month)"/>
                                     <field name="amount_total" string="Total"/>
                                     <field name="score"/>
                                     <field name="recommended"/>
@@ -202,6 +209,17 @@
                     <field name="message_ids" />
                 </div>
             </form>
+        </field>
+    </record>
+
+    <record id="view_purchase_order_form_inherited" model="ir.ui.view">
+        <field name="name">purchase.order.form.inherited</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="before">
+                <field name="rfp_id" invisible="not rfp_id" readonly="1"/>
+            </xpath>
         </field>
     </record>
 

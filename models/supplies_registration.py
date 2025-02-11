@@ -146,6 +146,6 @@ class SuppliesRegistration(models.Model):
     @api.model
     def cleanup_registrations(self):
         # delete all registrations that is not in 'submitted' state and it's created more than 30 days ago
-        thirty_days_ago = fields.Date.subtract(fields.Date.today(), 30)
+        thirty_days_ago = fields.Date.subtract(fields.Date.today(), days=30)
         registrations = self.search([('state', '!=', 'submitted'), ('create_date', '<', thirty_days_ago)])
         registrations.unlink()

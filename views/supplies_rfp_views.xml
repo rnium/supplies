@@ -115,6 +115,7 @@
                                 invisible="not id or state != 'accepted'"
                                 readonly="1"
                             />
+                            <field name="total_amount" invisible="not id or state != 'accepted'" readonly="1"/>
                         </group>
                     </group>
 

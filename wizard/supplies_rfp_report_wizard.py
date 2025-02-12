@@ -61,7 +61,18 @@ class RfpReportWizard(models.TransientModel):
         check = self.check_fields_for_report()
         if isinstance(check, dict):
             return check
-        self.excel_report = utils.generate_excel_report(self.env, self.supplier_id)
+        accepted_rfps = self.env['supplies.rfp'].search([
+            ('approved_supplier_id', '=', self.supplier_id.id),
+            ('state', '=', 'accepted'),
+        ])
+        if not accepted_rfps:
+            return {
+                'warning': {
+                    'title': 'No RFPs',
+                    'message': 'No accepted RFPs found for the selected supplier.',
+                }
+            }
+        self.excel_report = utils.generate_excel_report(self.env, self.supplier_id, accepted_rfps)
         return {
             'type': 'ir.actions.act_url',
             'url': '/web/content/%s/%s/%s?download=true' % (self._name, self.id, 'excel_report'),

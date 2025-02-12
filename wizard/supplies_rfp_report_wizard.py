@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-
+from ..utils import report_utils as utils
 
 class RfpReportWizard(models.TransientModel):
     _name = 'supplies.rfp.report.wizard'
@@ -9,6 +9,7 @@ class RfpReportWizard(models.TransientModel):
     supplier_id = fields.Many2one('res.partner', string='Supplier', domain="[('supplier_rank', '>', 0)]")
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
+    excel_report = fields.Binary(string='Excel Report File', readonly=True)
 
     def _compute_display_name(self):
         for record in self:
@@ -40,6 +41,17 @@ class RfpReportWizard(models.TransientModel):
                     'sticky': False,
                 }
             }
+        if not self.env.company.logo:
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Error',
+                    'message': 'Please upload the company logo in the company settings.',
+                    'type': 'danger',
+                    'sticky': False,
+                }
+            }
         return True
 
     def action_download_excel_report(self):
@@ -49,16 +61,11 @@ class RfpReportWizard(models.TransientModel):
         check = self.check_fields_for_report()
         if isinstance(check, dict):
             return check
-        # send a notification
+        self.excel_report = utils.generate_excel_report(self.env, self.supplier_id)
         return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'Excel Report Downloaded',
-                'message': 'The excel report has been downloaded successfully.',
-                'type': 'success',
-                'sticky': False,
-            }
+            'type': 'ir.actions.act_url',
+            'url': '/web/content/%s/%s/%s?download=true' % (self._name, self.id, 'excel_report'),
+            'target': 'self',
         }
 
     def action_preview_html(self):
@@ -68,14 +75,4 @@ class RfpReportWizard(models.TransientModel):
         check = self.check_fields_for_report()
         if isinstance(check, dict):
             return check
-        # send a notification
-        return {
-            'type': 'ir.actions.client',
-            'tag': 'display_notification',
-            'params': {
-                'title': 'HTML Report Preview',
-                'message': 'The HTML report has been previewed successfully.',
-                'type': 'success',
-                'sticky': False,
-            }
-        }
+

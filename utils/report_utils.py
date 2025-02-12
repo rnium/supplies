@@ -30,10 +30,12 @@ def generate_excel_report(env: Environment, supplier) -> bytes:
         col_offset = 4
         row_offset = 1
         bank_ac = supplier.bank_ids[0] if supplier.bank_ids else None
+        bank = bank_ac.bank_id if bank_ac else None
         header_style_config = {
             **common_style_config,
             'bold': True,
             'border': 0,
+            'font_size': 12,
         }
         key_cell_style_config = {
             **common_style_config,
@@ -49,9 +51,11 @@ def generate_excel_report(env: Environment, supplier) -> bytes:
             'Phone': supplier.phone or '<N/A>',
             'Address': supplier.street or '<N/A>',
             'TIN': supplier.vat or '<N/A>',
-            'Bank': bank_ac.bank_name if bank_ac else '<N/A>',
-            'Account name': (bank_ac.acc_holder_name or '<N/A>') if bank_ac else '<N/A>',
-            'Account number': (bank_ac.acc_number or '<N/A>') if bank_ac else '<N/A>',
+            'Bank': bank_ac.bank_name if bank_ac else 'N/A',
+            'IBAN No.': (bank.iban or 'N/A') if bank else 'N/A',
+            'Swift Code': (bank.swift_code or 'N/A') if bank else 'N/A',
+            'Account name': (bank_ac.acc_holder_name or 'N/A') if bank_ac else 'N/A',
+            'Account number': (bank_ac.acc_number or 'N/A') if bank_ac else 'N/A',
         }
         worksheet.merge_range(row_offset, col_offset, row_offset, col_offset + 1, supplier.name, workbook.add_format(header_style_config))
         row_offset += 2

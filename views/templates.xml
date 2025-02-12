@@ -164,7 +164,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Tax Identification Number (TIN)</label>
-                                                <input type="text" class="form-control" pattern="^(?:\d{16}|)$" name="tax_identification_number"/>
+                                                <input type="text" class="form-control" pattern="^(?:\d{16}|)$" name="vat"/>
                                                 <div class="invalid-feedback">
                                                     Please enter a valid Tax Identification Number. Should be a 16 digits number.
                                                 </div>

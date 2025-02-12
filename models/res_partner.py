@@ -14,7 +14,6 @@ class ResPartner(models.Model):
         ]
     )
     trade_license_number = fields.Char(string='Trade License Number')
-    tax_identification_number = fields.Char(string='Tax Identification Number')
     commencement_date = fields.Date(string='Commencement Date')
     expiry_date = fields.Date(string='Expiry Date')
     trade_license_doc = fields.Binary(string='Trade License Document')

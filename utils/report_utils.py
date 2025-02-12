@@ -49,7 +49,7 @@ def get_report_data(supplier, accepted_rfps: Iterable):
     }
     return data
 
-def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable) -> bytes:
+def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, resized_logo) -> bytes:
     """
     Generate the Excel report
     """
@@ -138,7 +138,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable) -
         worksheet.set_column(COL_OFFSET, COL_OFFSET + len(header) - 1, 20)
 
     # insert elements
-    logo_data = base64.b64decode(env.company.logo)
+    logo_data = base64.b64decode(resized_logo)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_logo_file:
         temp_logo_file.write(logo_data)
         file_path = temp_logo_file.name

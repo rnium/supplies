@@ -10,6 +10,7 @@ class RfpReportWizard(models.TransientModel):
     start_date = fields.Date(string='Start Date')
     end_date = fields.Date(string='End Date')
     excel_report = fields.Binary(string='Excel Report File', readonly=True)
+    company_logo = fields.Image(max_width=200, max_height=200, string='Company Logo')
 
     def _compute_display_name(self):
         for record in self:
@@ -52,6 +53,7 @@ class RfpReportWizard(models.TransientModel):
                     'sticky': False,
                 }
             }
+        self.company_logo = self.env.company.logo
         return True
 
     def action_download_excel_report(self):
@@ -72,7 +74,7 @@ class RfpReportWizard(models.TransientModel):
                     'message': 'No accepted RFPs found for the selected supplier.',
                 }
             }
-        self.excel_report = utils.generate_excel_report(self.env, self.supplier_id, accepted_rfps)
+        self.excel_report = utils.generate_excel_report(self.env, self.supplier_id, accepted_rfps, self.company_logo)
         return {
             'type': 'ir.actions.act_url',
             'url': '/web/content/%s/%s/%s?download=true' % (self._name, self.id, 'excel_report'),

@@ -41,7 +41,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable) -
     def insert_vendor_info():
         nonlocal ROW_OFFSET
         nonlocal COL_OFFSET
-        COL_OFFSET = 4
+        COL_OFFSET = 5
         bank_ac = supplier.bank_ids[0] if supplier.bank_ids else None
         bank = bank_ac.bank_id if bank_ac else None
         nonlocal value_cell_style_config
@@ -89,7 +89,39 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable) -
             ROW_OFFSET += 1
             for j, cell in enumerate(row):
                 worksheet.write(ROW_OFFSET, COL_OFFSET + j, cell, workbook.add_format(value_cell_style_config))
+        ROW_OFFSET += 1
+        net_amount = sum([rfp.total_amount for rfp in accepted_rfps])
+        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
+        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 1, net_amount, workbook.add_format(value_cell_style_config))
         worksheet.set_column(COL_OFFSET, COL_OFFSET + len(rfp_data[0]) - 1, 20)
+
+    def insert_product_lines():
+        nonlocal ROW_OFFSET
+        nonlocal COL_OFFSET
+        ROW_OFFSET += 3
+        header = ['Product', 'Quantity', 'Unit Price', 'Delivery Charge', 'Subtotal']
+        product_data = [
+            [
+                line.product_id.name,
+                line.product_qty,
+                line.unit_price,
+                line.delivery_charge,
+                line.subtotal_price
+            ] for rfp in accepted_rfps for line in rfp.product_line_ids
+        ]
+        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 1, 'Product Lines', workbook.add_format(header_style_config))
+        ROW_OFFSET += 1
+        for i, cell in enumerate(header):
+            worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(key_cell_style_config))
+        for i, row in enumerate(product_data):
+            ROW_OFFSET += 1
+            for j, cell in enumerate(row):
+                worksheet.write(ROW_OFFSET, COL_OFFSET + j, cell, workbook.add_format(value_cell_style_config))
+        ROW_OFFSET += 1
+        net_amount = sum([line.subtotal_price for rfp in accepted_rfps for line in rfp.product_line_ids])
+        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
+        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 1, net_amount, workbook.add_format(value_cell_style_config))
+        worksheet.set_column(COL_OFFSET, COL_OFFSET + len(header) - 1, 20)
 
     # insert elements
     logo_data = base64.b64decode(env.company.logo)
@@ -102,6 +134,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable) -
         })
     insert_vendor_info()
     insert_rfps()
+    insert_product_lines()
     # close workbook and return the data
     workbook.close()
     output.seek(0)

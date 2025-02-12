@@ -37,6 +37,7 @@
         'views/res_bank_views.xml',
         'views/res_partner_views.xml',
         'views/res_partner_bank_views.xml',
+        'views/purchase_order_views.xml',
         'views/portal_templates.xml',
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',

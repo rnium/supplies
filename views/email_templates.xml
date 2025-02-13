@@ -4,15 +4,19 @@
         <field name="name">Supplier Registration OTP</field>
         <field name="model_id" ref="model_supplies_registration_otp"/>
         <field name="subject">Your OTP</field>
-        <field name="email_from">saiful.islam@bjitacademy.com</field>
         <field name="email_to">{{object.email}}</field>
         <field name="body_html" type="html">
             <h3>Dear User</h3>
             <p>
-                Thank you for registering with us. Your OTP is <strong t-field="object.otp" />.
+                Your OTP is <strong t-field="object.otp" />.
             </p>
-            <p>Regards</p>
-            <p>My Company</p>
+            <p>
+                Please Note: This OTP is valid for 5 minutes.
+            </p>
+            <p>
+                Regards<br/>
+                <strong t-field="object.company.name"/>
+            </p>
         </field>
     </record>
 

@@ -29,10 +29,11 @@ class SupplierRegistration(http.Controller):
             {'email': email}
         )
         print("OTP: ", otp_obj.otp)
-        # try:
-        #     otp_obj.send_otp_email()
-        # except Exception as e:
-        #     return utils.format_response('error', str(e))
+        try:
+            otp_obj.send_otp_email()
+        except Exception as e:
+            print(e)
+            return utils.format_response('error', 'Failed to send OTP')
         return utils.format_response('success', 'OTP sent successfully to your email address')
 
     @http.route(['/supplies/register/verify-otp'], type='json', auth='none', methods=['POST'])

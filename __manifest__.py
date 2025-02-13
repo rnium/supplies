@@ -22,8 +22,6 @@
     # always loaded
     'data': [
         'security/supplies_security.xml',
-        'security/supplies_record_rules.xml',
-        'security/ir.model.access.csv',
         'security/ir.model.access.csv',
         'wizard/supplies_rfp_report_wizard_views.xml',
         'views/views.xml',

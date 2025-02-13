@@ -7,7 +7,7 @@ from base64 import encodebytes
 from typing import Iterable
 from datetime import datetime
 
-def get_report_data(supplier, accepted_rfps: Iterable):
+def get_report_data(company, supplier, accepted_rfps: Iterable):
     """
     Get the data for the report
     """
@@ -27,25 +27,31 @@ def get_report_data(supplier, accepted_rfps: Iterable):
         },
         'rfp_headers': ['RFP Number', 'Date', 'Required Date', 'Total Amount'],
         'rfps': [
-            {
-                'rfp_number': rfp.rfp_number,
-                'submitted_date': datetime.strftime(rfp.submitted_date, '%d-%m-%Y'),
-                'required_date': datetime.strftime(rfp.required_date, '%d-%m-%Y'),
-                'total_amount': rfp.total_amount,
-            } for rfp in accepted_rfps
+            [
+                rfp.rfp_number,
+                datetime.strftime(rfp.submitted_date, '%d-%m-%Y'),
+                datetime.strftime(rfp.required_date, '%d-%m-%Y'),
+                rfp.total_amount,
+            ] for rfp in accepted_rfps
         ],
         'product_line_headers': ['Product', 'Quantity', 'Unit Price', 'Delivery Charge', 'Subtotal'],
         'product_lines': [
-            {
-                'product': line.product_id.name,
-                'quantity': line.product_qty,
-                'unit_price': line.unit_price,
-                'delivery_charge': line.delivery_charge,
-                'subtotal': line.subtotal_price,
-            } for rfp in accepted_rfps for line in rfp.product_line_ids
+            [
+                line.product_id.name,
+                line.product_qty,
+                line.unit_price,
+                line.delivery_charge,
+                line.subtotal_price,
+            ] for rfp in accepted_rfps for line in rfp.product_line_ids
         ],
         'rfp_net_amount': sum([rfp.total_amount for rfp in accepted_rfps]),
         'product_line_net_amount': sum([line.subtotal_price for rfp in accepted_rfps for line in rfp.product_line_ids]),
+        'company_data': {
+            'Email': company.email or 'N/A',
+            'Phone': company.phone or 'N/A',
+            'Address': company.street or 'N/A',
+        },
+        'company_name': company.name,
     }
     return data
 
@@ -78,7 +84,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         'border': 0,
         'font_size': 12,
     }
-    report_data = get_report_data(supplier, accepted_rfps)
+    report_data = get_report_data(env.company, supplier, accepted_rfps)
     def insert_vendor_info():
         nonlocal ROW_OFFSET
         nonlocal COL_OFFSET
@@ -137,6 +143,38 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 1, net_amount, workbook.add_format(value_cell_style_config))
         worksheet.set_column(COL_OFFSET, COL_OFFSET + len(header) - 1, 20)
 
+    def insert_company_info():
+        nonlocal ROW_OFFSET
+        nonlocal COL_OFFSET
+        ROW_OFFSET += 3
+        COL_OFFSET = 0
+        local_common_style_config = {
+            **common_style_config,
+            'align': 'left',
+            'border': 0,
+        }
+        company_info_header_style_config = {
+            **header_style_config,
+            **local_common_style_config,
+            'font_size': 14,
+        }
+        company_info_key_style_config = {
+            **key_cell_style_config,
+            **local_common_style_config,
+        }
+        company_info_value_style_config = {
+            **value_cell_style_config,
+            **local_common_style_config,
+        }
+        company_data = report_data['company_data']
+        company_name = report_data['company_name']
+        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + 2, company_name, workbook.add_format(company_info_header_style_config))
+        for i, (key, value) in enumerate(company_data.items()):
+            ROW_OFFSET += 1
+            worksheet.write(ROW_OFFSET, COL_OFFSET, key, workbook.add_format(company_info_key_style_config))
+            worksheet.merge_range(ROW_OFFSET, COL_OFFSET + 1, ROW_OFFSET, COL_OFFSET + 2, value, workbook.add_format(company_info_value_style_config))
+        worksheet.set_column(COL_OFFSET, COL_OFFSET, 15)
+
     # insert elements
     logo_data = base64.b64decode(resized_logo)
     with tempfile.NamedTemporaryFile(delete=False, suffix=".png") as temp_logo_file:
@@ -149,6 +187,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
     insert_vendor_info()
     insert_rfps()
     insert_product_lines()
+    insert_company_info()
     # close workbook and return the data
     workbook.close()
     output.seek(0)

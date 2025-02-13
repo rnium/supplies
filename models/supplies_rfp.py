@@ -26,7 +26,8 @@ class SuppliesRfp(models.Model):
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs', domain=lambda self: self._get_rfq_domain())
     num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
     submitted_date = fields.Date(string='Submitted On', readonly=True)
-    total_amount = fields.Float(string='Total Amount', compute='_compute_total_amount', store=True)
+    total_amount = fields.Monetary(string='Total Amount', compute='_compute_total_amount', store=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
 
     @api.depends('product_line_ids', 'product_line_ids.subtotal_price')
     def _compute_total_amount(self):

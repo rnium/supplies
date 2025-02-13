@@ -61,6 +61,8 @@ class RfpReportWizard(models.TransientModel):
         accepted_rfps = self.env['supplies.rfp'].search([
             ('approved_supplier_id', '=', self.supplier_id.id),
             ('state', '=', 'accepted'),
+            ('create_date', '>=', self.start_date),
+            ('create_date', '<=', self.end_date)
         ])
         return accepted_rfps
 
@@ -74,9 +76,13 @@ class RfpReportWizard(models.TransientModel):
         accepted_rfps = self._get_accepted_rfps()
         if not accepted_rfps:
             return {
-                'warning': {
-                    'title': 'No RFPs',
-                    'message': 'No accepted RFPs found for the selected supplier.',
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'title': 'Error',
+                    'message': 'No accepted RFPs found for the selected supplier for the specified interval.',
+                    'type': 'danger',
+                    'sticky': False,
                 }
             }
         self.excel_report = utils.generate_excel_report(self.env, self.supplier_id, accepted_rfps, self.company_logo)
@@ -95,20 +101,11 @@ class RfpReportWizard(models.TransientModel):
             return check
         accepted_rfps = self._get_accepted_rfps()
         if not accepted_rfps:
-            return {
-                'warning': {
-                    'title': 'No RFPs',
-                    'message': 'No accepted RFPs found for the selected supplier.',
-                }
-            }
+            self.html_preview = utils.get_error_response_html()
+            return
         try:
             self.html_preview = utils.generate_html_preview(self.env, self.supplier_id, accepted_rfps)
         except Exception as e:
             print(e)
-            return {
-                'warning': {
-                    'title': 'Error',
-                    'message': 'Failed to generate the report preview.',
-                }
-            }
+            self.html_preview = utils.get_error_response_html('Failed to generate the report')
 

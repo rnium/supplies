@@ -7,6 +7,15 @@ from base64 import encodebytes
 from typing import Iterable
 from datetime import datetime
 
+def get_error_response_html(message=None):
+    if not message:
+        message = 'No accepted RFPs found for the selected supplier for the specified interval.'
+    return f"""
+    <h3 class='mt-3 text-danger'>
+        {message}
+    </h3>
+    """
+
 def get_report_data(company, supplier, accepted_rfps: Iterable):
     """
     Get the data for the report
@@ -30,7 +39,7 @@ def get_report_data(company, supplier, accepted_rfps: Iterable):
         'rfps': [
             [
                 rfp.rfp_number,
-                datetime.strftime(rfp.submitted_date, '%d-%m-%Y'),
+                datetime.strftime(rfp.create_date, '%d-%m-%Y'),
                 datetime.strftime(rfp.required_date, '%d-%m-%Y'),
                 rfp.total_amount,
             ] for rfp in accepted_rfps
@@ -186,6 +195,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
             'x_scale': 0.5,
             'y_scale': 0.5,
         })
+        temp_logo_file.close()
     insert_vendor_info()
     insert_rfps()
     insert_product_lines()

@@ -19,16 +19,19 @@
                         <h4>
                             <t t-esc="vendor_name"/>
                         </h4>
-                        <div class="row border">
+                        <div class="row border p-2">
                             <div class="col-6">
                                 <p class="mb-1"><strong>Email:</strong> <span t-esc="vendor_info['Email']"/></p>
                                 <p class="mb-1"><strong>Phone:</strong> <span t-esc="vendor_info['Phone']"/></p>
                                 <p class="mb-1"><strong>Address:</strong> <span t-esc="vendor_info['Address']"/></p>
+                                <p class="mb-1"><strong>TIN:</strong> <span t-esc="vendor_info['TIN']"/></p>
                             </div>
                             <div class="col-6">
-                                <p class="mb-1"><strong>TIN:</strong> <span t-esc="vendor_info['TIN']"/></p>
                                 <p class="mb-1"><strong>Bank:</strong> <span t-esc="vendor_info['Bank']"/></p>
                                 <p class="mb-1"><strong>IBAN:</strong> <span t-esc="vendor_info['IBAN No.']"/></p>
+                                <p class="mb-1"><strong>Swift Code:</strong> <span t-esc="vendor_info['Swift Code']"/></p>
+                                <p class="mb-1"><strong>Account Name:</strong> <span t-esc="vendor_info['Account name']"/></p>
+                                <p class="mb-1"><strong>Account Number:</strong> <span t-esc="vendor_info['Account number']"/></p>
                             </div>
                         </div>
                     </div>

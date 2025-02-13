@@ -14,6 +14,7 @@ def get_report_data(company, supplier, accepted_rfps: Iterable):
     bank_ac = supplier.bank_ids[0] if supplier.bank_ids else None
     bank = bank_ac.bank_id if bank_ac else None
     data = {
+        'vendor_name': supplier.name,
         'vendor_info': {
             'Email': supplier.email or 'N/A',
             'Phone': supplier.phone or 'N/A',
@@ -52,6 +53,7 @@ def get_report_data(company, supplier, accepted_rfps: Iterable):
             'Address': company.street or 'N/A',
         },
         'company_name': company.name,
+        'company_logo': company.logo,
     }
     return data
 
@@ -193,3 +195,8 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
     output.seek(0)
     data = encodebytes(output.read())
     return data
+
+def generate_html_preview(env: Environment, supplier, accepted_rfps: Iterable) -> str:
+    report_data = get_report_data(env.company, supplier, accepted_rfps)
+    html = env['ir.qweb']._render('supplies.supplies_rfp_template_html', report_data)
+    return str(html)

@@ -6,17 +6,14 @@
             <field name="model">supplies.rfp.report.wizard</field>
             <field name="arch" type="xml">
                 <form string="RFP Report" create="False">
-                    <sheet>
-                        <group>
-                            <field name="supplier_id"/>
-                            <field name="start_date"/>
-                            <field name="end_date"/>
-                        </group>
-                        <div>
-                            <button name="action_download_excel_report" string="Download Excel Report" type="object" class="btn-primary"/>
-                            <button name="action_preview_html" string="Preview Report" type="object" class="btn-secondary ms-2"/>
-                        </div>
-                    </sheet>
+                    <group>
+                        <field name="supplier_id"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <button name="action_download_excel_report" string="Download Excel Report" type="object" class="btn-primary"/>
+                    <button name="action_preview_html" string="Preview HTML" type="object" class="btn-secondary ms-2"/>
+                    <field name="html_preview" widget="html"/>
                 </form>
             </field>
         </record>

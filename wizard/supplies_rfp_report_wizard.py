@@ -11,12 +11,13 @@ class RfpReportWizard(models.TransientModel):
     end_date = fields.Date(string='End Date')
     excel_report = fields.Binary(string='Excel Report File', readonly=True)
     company_logo = fields.Image(max_width=200, max_height=200, string='Company Logo')
+    html_preview = fields.Html('Report Preview', readonly=True)
 
     def _compute_display_name(self):
         for record in self:
             record.display_name = 'Generate RFP Report'
 
-    def check_fields_for_report(self):
+    def _check_fields_for_report(self):
         """
         Check if all the requried fields are filled correctly
         """
@@ -56,17 +57,21 @@ class RfpReportWizard(models.TransientModel):
         self.company_logo = self.env.company.logo
         return True
 
-    def action_download_excel_report(self):
-        """
-        Downloads the excel report for the selected supplier and date range
-        """
-        check = self.check_fields_for_report()
-        if isinstance(check, dict):
-            return check
+    def _get_accepted_rfps(self):
         accepted_rfps = self.env['supplies.rfp'].search([
             ('approved_supplier_id', '=', self.supplier_id.id),
             ('state', '=', 'accepted'),
         ])
+        return accepted_rfps
+
+    def action_download_excel_report(self):
+        """
+        Downloads the excel report for the selected supplier and date range
+        """
+        check = self._check_fields_for_report()
+        if isinstance(check, dict):
+            return check
+        accepted_rfps = self._get_accepted_rfps()
         if not accepted_rfps:
             return {
                 'warning': {
@@ -85,7 +90,25 @@ class RfpReportWizard(models.TransientModel):
         """
         Preview the report in HTML format
         """
-        check = self.check_fields_for_report()
+        check = self._check_fields_for_report()
         if isinstance(check, dict):
             return check
+        accepted_rfps = self._get_accepted_rfps()
+        if not accepted_rfps:
+            return {
+                'warning': {
+                    'title': 'No RFPs',
+                    'message': 'No accepted RFPs found for the selected supplier.',
+                }
+            }
+        try:
+            self.html_preview = utils.generate_html_preview(self.env, self.supplier_id, accepted_rfps)
+        except Exception as e:
+            print(e)
+            return {
+                'warning': {
+                    'title': 'Error',
+                    'message': 'Failed to generate the report preview.',
+                }
+            }
 

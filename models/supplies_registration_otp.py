@@ -14,22 +14,18 @@ class RegistrationOTP(models.TransientModel):
         default=lambda self: str(random.randint(100000, 999999))              
     )
     is_verified = fields.Boolean(string='Is Verified', default=False)
-    company = fields.Many2one('res.company', string='Company', default=lambda self: self._get_company())
+    company = fields.Many2one('res.company', string='Company')
     expiry_time = fields.Datetime(
         string='Expiry Time',
         default=lambda self: fields.Datetime.add(fields.Datetime.now(), minutes=5),
         readonly=True
     )
-
-    def _get_company(self):
-        company = self.env['res.company'].search([], limit=1)
-        return company
     
     def send_otp_email(self):
         email_values = {
             'email_from': get_smtp_server_email(self.env)
         }
-        print("company: ", self.company)
+        self.company = self.env.company or self.env['res.company'].sudo().search([], limit=1)
         self.env.ref(
             'supplies.email_template_model_bjit_supplies_registration_otp'
         ).send_mail(self.id, force_send=True, email_values=email_values)

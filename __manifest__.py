@@ -49,7 +49,12 @@
         'web.assets_frontend': [
             'web/static/lib/jquery/jquery.js',
             'supplies/static/src/js/registration.js',
-        ]
+        ],
+        'web.assets_backend': [
+            'supplies/static/src/components/**/*.js',
+            'supplies/static/src/components/**/*.xml',
+            'supplies/static/src/components/**/*.scss',
+        ],
     }
 }
 

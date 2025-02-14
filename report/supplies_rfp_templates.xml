@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="supplies_rfp_template_html">
+            <div class="container-fluid p-3 border mt-3">
+                <!-- Header Section -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="text-left">
+                            <img t-att-src="image_data_uri(company_logo)" alt="Company Logo" style="width: 130px;"/>
+                        </div>
+                        <hr style="border-top: 2px solid #000;"/>
+                    </div>
+                </div>
+
+                <!-- Vendor Information -->
+                <div class="row mb-4 p-3">
+                    <div class="col-12">
+                        <h4>
+                            <t t-esc="vendor_name"/>
+                        </h4>
+                        <div class="row border p-2">
+                            <div class="col-6">
+                                <p class="mb-1"><strong>Email:</strong> <span t-esc="vendor_info['Email']"/></p>
+                                <p class="mb-1"><strong>Phone:</strong> <span t-esc="vendor_info['Phone']"/></p>
+                                <p class="mb-1"><strong>Address:</strong> <span t-esc="vendor_info['Address']"/></p>
+                                <p class="mb-1"><strong>TIN:</strong> <span t-esc="vendor_info['TIN']"/></p>
+                            </div>
+                            <div class="col-6">
+                                <p class="mb-1"><strong>Bank:</strong> <span t-esc="vendor_info['Bank']"/></p>
+                                <p class="mb-1"><strong>IBAN:</strong> <span t-esc="vendor_info['IBAN No.']"/></p>
+                                <p class="mb-1"><strong>Swift Code:</strong> <span t-esc="vendor_info['Swift Code']"/></p>
+                                <p class="mb-1"><strong>Account Name:</strong> <span t-esc="vendor_info['Account name']"/></p>
+                                <p class="mb-1"><strong>Account Number:</strong> <span t-esc="vendor_info['Account number']"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RFP Table -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4>Request for Purchases</h4>
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <t t-foreach="rfp_headers" t-as="header">
+                                        <th t-esc="header"/>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="rfps" t-as="rfp">
+                                    <td t-foreach="rfp" t-as="field" t-esc="field"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-2">
+                            <div class="col-md-4 offset-md-8">
+                                <p class="text-right"><strong>Net Total:</strong>
+                                    <span t-esc="rfp_net_amount"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Lines Table -->
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <h4>Product Lines</h4>
+                        <table class="table table-bordered table-striped">
+                            <thead class="thead-light">
+                                <tr>
+                                    <t t-foreach="product_line_headers" t-as="header">
+                                        <th t-esc="header"/>
+                                    </t>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="product_lines" t-as="line">
+                                    <td t-foreach="line" t-as="field" t-esc="field"/>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row mt-2">
+                            <div class="col-md-4 offset-md-8">
+                                <p class="text-right"><strong>Net Total:</strong>
+                                    <span t-esc="product_line_net_amount"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Company Information -->
+                <div class="row mt-5 bg-light">
+                    <div class="col-12 border-top pt-3">
+                        <h4 t-esc="company_name"/>
+                        <div class="row">
+                            <div class="col-12">
+                                <p class="mb-1"><strong>Email:</strong> <span t-esc="company_data['Email']"/></p>
+                                <p class="mb-1"><strong>Phone:</strong> <span t-esc="company_data['Phone']"/></p>
+                                <p class="mb-1"><strong>Address:</strong> <span t-esc="company_data['Address']"/></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+    </data>
+</odoo>

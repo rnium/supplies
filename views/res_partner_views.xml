@@ -14,7 +14,6 @@
                     <page string="Company Information" invisible="supplier_rank &lt; 1">
                         <group string="Trade Information">
                             <field name="trade_license_number"/>
-                            <field name="tax_identification_number"/>
                             <field name="commencement_date"/>
                             <field name="expiry_date"/>
                         </group>

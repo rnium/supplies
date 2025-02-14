@@ -22,9 +22,8 @@
     # always loaded
     'data': [
         'security/supplies_security.xml',
-        'security/supplies_record_rules.xml',
         'security/ir.model.access.csv',
-        'security/ir.model.access.csv',
+        'wizard/supplies_rfp_report_wizard_views.xml',
         'views/views.xml',
         'views/templates.xml',
         'views/email_templates.xml',
@@ -36,9 +35,11 @@
         'views/res_bank_views.xml',
         'views/res_partner_views.xml',
         'views/res_partner_bank_views.xml',
+        'views/purchase_order_views.xml',
         'views/portal_templates.xml',
-        'wizard/blacklist_wizard_view.xml',
-        'wizard/reject_application_wizard.xml',
+        'report/supplies_rfp_templates.xml',
+        'wizard/supplies_blacklist_wizard_view.xml',
+        'wizard/supplies_reject_application_wizard_views.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

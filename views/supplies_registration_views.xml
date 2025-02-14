@@ -94,7 +94,7 @@
                                 </group>
                                 <group string="Trade Information">
                                     <field name="trade_license_number"/>
-                                    <field name="tax_identification_number"/>
+                                    <field name="vat"/>
                                     <field name="commencement_date"/>
                                     <field name="expiry_date"/>
                                 </group>
@@ -246,7 +246,7 @@
                 <field name="name"/>
                 <field name="email"/>
                 <field name="trade_license_number"/>
-                <field name="tax_identification_number"/>
+                <field name="vat"/>
                 <field name="commencement_date"/>
                 <field name="expiry_date"/>
                 <filter string="Waiting for approval" name="submission" domain="[('state','=','submitted')]"/>

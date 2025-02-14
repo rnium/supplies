@@ -73,7 +73,7 @@ class SupplierRegistrationSchema(BaseModel):
     street: str
     street2: str = None
     trade_license_number: Optional[TRADE_LIC_TYPE] = None
-    tax_identification_number: Optional[TINType] = None
+    vat: Optional[TINType] = None
     commencement_date: Optional[date] = None
     primary_contact_id: ContactSchema
     finance_contact_id: ContactSchema
@@ -226,7 +226,7 @@ class CompanySchema(BaseModel):
     street2: Optional[str] | bool
     image_1920: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
-    tax_identification_number: Optional[str] | bool
+    vat: Optional[str] | bool
     commencement_date: Optional[date] | bool
     expiry_date: Optional[date] | bool
     certification_name: Optional[str] | bool

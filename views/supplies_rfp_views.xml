@@ -115,6 +115,7 @@
                                 invisible="not id or state != 'accepted'"
                                 readonly="1"
                             />
+                            <field name="total_amount" invisible="not id or state != 'accepted'" readonly="1"/>
                         </group>
                     </group>
 
@@ -212,21 +213,38 @@
         </field>
     </record>
 
-    <record id="view_purchase_order_form_inherited" model="ir.ui.view">
-        <field name="name">purchase.order.form.inherited</field>
-        <field name="model">purchase.order</field>
-        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+    <record id="supplies_rfp_graph_view" model="ir.ui.view">
+        <field name="name">supplies.rfp.graph.view</field>
+        <field name="model">supplies.rfp</field>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='partner_id']" position="before">
-                <field name="rfp_id" invisible="not rfp_id" readonly="1"/>
-            </xpath>
+            <graph string="Request for Purchases" type="line" disable_linking="1" stacked="0">
+                <field name="required_date" type="row" interval="month"/>
+                <field name="total_amount" type="measure"/>
+                <field name="rfp_number" type="group"/>
+                <field name="approved_supplier_id" type="group"/>
+                <field name="state" type="group"/>
+            </graph>
         </field>
     </record>
+
+    <record id="view_supplies_rfp_pivot" model="ir.ui.view">
+        <field name="name">supplies.rfp.pivot</field>
+        <field name="model">supplies.rfp</field>
+        <field name="arch" type="xml">
+            <pivot string="RFP Pivot" display_quantity="1" disable_linking="1" default_order="total_amount desc">
+                <field name="approved_supplier_id" type="row"/>
+                <field name="state" type="row"/>
+                <field name="required_date" type="col" interval="month"/>
+                <field name="total_amount" type="measure"  />
+            </pivot>
+        </field>
+    </record>
+
 
     <record id="supplies_rfp_action" model="ir.actions.act_window">
         <field name="name">Request For Purchases</field>
         <field name="res_model">supplies.rfp</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,graph,pivot</field>
         <field name="help" type="html">
               <p class="o_view_nocontent_smiling_face">
                 No Request for Purchases

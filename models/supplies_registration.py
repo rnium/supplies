@@ -47,7 +47,7 @@ class SuppliesRegistration(models.Model):
     street = fields.Char(string='Address Line 1', required=True)
     street2 = fields.Char(string='Address Line 2')
     trade_license_number = fields.Char(string='Trade License Number')
-    tax_identification_number = fields.Char(string='Tax Identification Number')
+    vat = fields.Char(string='Tax Identification Number')
     commencement_date = fields.Date(string='Commencement Date')
     primary_contact_id = fields.Many2one('supplies.contact', string='Primary Contact', required=True)
     finance_contact_id = fields.Many2one('supplies.contact', string='Finance Contact', required=True)
@@ -122,11 +122,11 @@ class SuppliesRegistration(models.Model):
         return self.write({'state': 'finalized'})
 
     def action_blacklist(self):
-        wizard = self.env['blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
+        wizard = self.env['supplies.blacklist.wizard'].create({'email': self.email, 'registration_id': self.id})
         return {
             'name': 'Blacklist',
             'type': 'ir.actions.act_window',
-            'res_model': 'blacklist.wizard',
+            'res_model': 'supplies.blacklist.wizard',
             'res_id': wizard.id,
             'view_mode': 'form',
             'target': 'new',

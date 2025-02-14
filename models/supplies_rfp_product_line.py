@@ -16,6 +16,7 @@ class SuppliesRfpProductLine(models.Model):
     delivery_charge = fields.Monetary(string='Delivery Charge')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
 
+    @api.depends('product_qty', 'unit_price', 'delivery_charge')
     def _compute_subtotal_price(self):
         for rec in self:
             rec.subtotal_price = (rec.product_qty * rec.unit_price) + rec.delivery_charge

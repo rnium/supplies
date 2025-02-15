@@ -40,6 +40,11 @@
         'report/supplies_rfp_templates.xml',
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',
+        # Data
+        'demo/suppliers.xml',
+        'demo/res.partner.csv',
+        'demo/res.bank.csv',
+        'demo/res.partner.bank.csv',
     ],
     # only loaded in demonstration mode
     'demo': [

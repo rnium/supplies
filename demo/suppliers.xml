@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="supplier_1" model="res.partner">
+            <field name="name">Creative Solutions</field>
+            <field name="company_type">company</field>
+            <field name="street">Banani, Dhaka</field>
+            <field name="phone">+8801712345678</field>
+            <field name="email">admin@creativesol.com</field>
+            <field name="supplier_rank">1</field>
+            <field name="trade_license_number">BD12345678</field>
+            <field name="vat">9998125255783746</field>
+            <field name="commencement_date">2020-01-01</field>
+            <field name="expiry_date">2028-01-01</field>
+            <field name="certification_name">ISO 9001</field>
+            <field name="certificate_number">123456789</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2020-01-01</field>
+            <field name="certification_expiry_date">2021-01-01</field>
+            <field name="company_category_type">Limited</field>
+        </record>
+
+        <record id="supplier_2" model="res.partner">
+            <field name="name">Tech Innovators</field>
+            <field name="company_type">company</field>
+            <field name="street">Gulshan, Dhaka</field>
+            <field name="phone">+8801812345678</field>
+            <field name="email">info@techinnovators.com</field>
+            <field name="supplier_rank">2</field>
+            <field name="trade_license_number">BD87654321</field>
+            <field name="vat">1234567890123456</field>
+            <field name="commencement_date">2019-05-15</field>
+            <field name="expiry_date">2027-05-15</field>
+            <field name="certification_name">ISO 14001</field>
+            <field name="certificate_number">987654321</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2019-05-15</field>
+            <field name="certification_expiry_date">2020-05-15</field>
+            <field name="company_category_type">LLC</field>
+        </record>
+
+        <record id="supplier_3" model="res.partner">
+            <field name="name">Global Suppliers</field>
+            <field name="company_type">company</field>
+            <field name="street">Dhanmondi, Dhaka</field>
+            <field name="phone">+8801912345678</field>
+            <field name="email">contact@globalsuppliers.com</field>
+            <field name="supplier_rank">3</field>
+            <field name="trade_license_number">BD11223344</field>
+            <field name="vat">2345678901234567</field>
+            <field name="commencement_date">2018-03-10</field>
+            <field name="expiry_date">2026-03-10</field>
+            <field name="certification_name">ISO 45001</field>
+            <field name="certificate_number">112233445</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2018-03-10</field>
+            <field name="certification_expiry_date">2019-03-10</field>
+            <field name="company_category_type">PLC</field>
+        </record>
+
+        <record id="supplier_4" model="res.partner">
+            <field name="name">Prime Solutions</field>
+            <field name="company_type">company</field>
+            <field name="street">Mirpur, Dhaka</field>
+            <field name="phone">+8801612345678</field>
+            <field name="email">support@primesolutions.com</field>
+            <field name="supplier_rank">4</field>
+            <field name="trade_license_number">BD55667788</field>
+            <field name="vat">3456789012345678</field>
+            <field name="commencement_date">2021-07-20</field>
+            <field name="expiry_date">2029-07-20</field>
+            <field name="certification_name">ISO 27001</field>
+            <field name="certificate_number">556677889</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2021-07-20</field>
+            <field name="certification_expiry_date">2022-07-20</field>
+            <field name="company_category_type">Partnership</field>
+        </record>
+
+        <record id="supplier_5" model="res.partner">
+            <field name="name">Innovative Tech</field>
+            <field name="company_type">company</field>
+            <field name="street">Uttara, Dhaka</field>
+            <field name="phone">+8801512345678</field>
+            <field name="email">sales@innovativetech.com</field>
+            <field name="supplier_rank">5</field>
+            <field name="trade_license_number">BD99887766</field>
+            <field name="vat">4567890123456789</field>
+            <field name="commencement_date">2022-09-25</field>
+            <field name="expiry_date">2030-09-25</field>
+            <field name="certification_name">ISO 50001</field>
+            <field name="certificate_number">998877665</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2022-09-25</field>
+            <field name="certification_expiry_date">2023-09-25</field>
+            <field name="company_category_type">Sole Proprietorship</field>
+        </record>
+
+        <record id="supplier_6" model="res.partner">
+            <field name="name">Future Enterprises</field>
+            <field name="company_type">company</field>
+            <field name="street">Motijheel, Dhaka</field>
+            <field name="phone">+8801412345678</field>
+            <field name="email">info@futureenterprises.com</field>
+            <field name="supplier_rank">6</field>
+            <field name="trade_license_number">BD33445566</field>
+            <field name="vat">5678901234567890</field>
+            <field name="commencement_date">2023-02-14</field>
+            <field name="expiry_date">2031-02-14</field>
+            <field name="certification_name">ISO 22000</field>
+            <field name="certificate_number">334455667</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2023-02-14</field>
+            <field name="certification_expiry_date">2024-02-14</field>
+            <field name="company_category_type">Others</field>
+        </record>
+
+        <record id="supplier_7" model="res.partner">
+            <field name="name">Bright Solutions</field>
+            <field name="company_type">company</field>
+            <field name="street">Bashundhara, Dhaka</field>
+            <field name="phone">+8801312345678</field>
+            <field name="email">contact@brightsolutions.com</field>
+            <field name="supplier_rank">7</field>
+            <field name="trade_license_number">BD77889900</field>
+            <field name="vat">6789012345678901</field>
+            <field name="commencement_date">2024-04-30</field>
+            <field name="expiry_date">2032-04-30</field>
+            <field name="certification_name">ISO 9001</field>
+            <field name="certificate_number">778899001</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2024-04-30</field>
+            <field name="certification_expiry_date">2025-04-30</field>
+            <field name="company_category_type">Limited</field>
+        </record>
+
+        <record id="supplier_8" model="res.partner">
+            <field name="name">Smart Tech</field>
+            <field name="company_type">company</field>
+            <field name="street">Khilgaon, Dhaka</field>
+            <field name="phone">+8801212345678</field>
+            <field name="email">admin@smarttech.com</field>
+            <field name="supplier_rank">8</field>
+            <field name="trade_license_number">BD44556677</field>
+            <field name="vat">7890123456789012</field>
+            <field name="commencement_date">2025-06-12</field>
+            <field name="expiry_date">2033-06-12</field>
+            <field name="certification_name">ISO 14001</field>
+            <field name="certificate_number">445566778</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2025-06-12</field>
+            <field name="certification_expiry_date">2026-06-12</field>
+            <field name="company_category_type">LLC</field>
+        </record>
+
+        <record id="supplier_9" model="res.partner">
+            <field name="name">NextGen Solutions</field>
+            <field name="company_type">company</field>
+            <field name="street">Paltan, Dhaka</field>
+            <field name="phone">+8801112345678</field>
+            <field name="email">info@nextgensolutions.com</field>
+            <field name="supplier_rank">9</field>
+            <field name="trade_license_number">BD66778899</field>
+            <field name="vat">8901234567890123</field>
+            <field name="commencement_date">2026-08-18</field>
+            <field name="expiry_date">2034-08-18</field>
+            <field name="certification_name">ISO 45001</field>
+            <field name="certificate_number">667788992</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2026-08-18</field>
+            <field name="certification_expiry_date">2027-08-18</field>
+            <field name="company_category_type">PLC</field>
+        </record>
+
+        <record id="supplier_10" model="res.partner">
+            <field name="name">Alpha Enterprises</field>
+            <field name="company_type">company</field>
+            <field name="street">Farmgate, Dhaka</field>
+            <field name="phone">+8801012345678</field>
+            <field name="email">support@alphaenterprises.com</field>
+            <field name="supplier_rank">10</field>
+            <field name="trade_license_number">BD22334455</field>
+            <field name="vat">9012345678901234</field>
+            <field name="commencement_date">2027-10-22</field>
+            <field name="expiry_date">2035-10-22</field>
+            <field name="certification_name">ISO 27001</field>
+            <field name="certificate_number">223344556</field>
+            <field name="certifying_body">ISO</field>
+            <field name="certification_award_date">2027-10-22</field>
+            <field name="certification_expiry_date">2028-10-22</field>
+            <field name="company_category_type">Partnership</field>
+        </record>
+
+        <record id='supplier_11' model='res.partner'>
+            <field name='name'>Ryans Computers</field>
+            <field name='company_type'>company</field>
+            <field name='street'>Elephant Road, Dhaka</field>
+            <field name='phone'>+8801912345678</field>
+            <field name='email'>contact@ryans.com</field>
+            <field name='supplier_rank'>1</field>
+            <field name='trade_license_number'>BD12345678</field>
+            <field name='vat'>9998121255783746</field>
+            <field name='commencement_date'>1996-01-01</field>
+            <field name='expiry_date'>2028-01-01</field>
+            <field name='certification_name'>ISO 9001</field>
+            <field name='certificate_number'>123456789</field>
+            <field name='certifying_body'>ISO</field>
+            <field name='certification_award_date'>1996-01-01</field>
+            <field name='certification_expiry_date'>2031-01-01</field>
+            <field name='company_category_type'>Limited</field>
+        </record>
+    </data>
+</odoo>

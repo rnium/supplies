@@ -45,6 +45,9 @@
         'demo/res.partner.csv',
         'demo/res.bank.csv',
         'demo/res.partner.bank.csv',
+        'demo/supplies.contact.csv',
+        'demo/supplies.registration.csv',
+        
     ],
     # only loaded in demonstration mode
     'demo': [

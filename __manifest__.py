@@ -16,7 +16,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'website', 'mail'],
+    'depends': ['base', 'purchase', 'website', 'mail'],
     'license': 'LGPL-3',
 
     # always loaded
@@ -47,6 +47,7 @@
         'demo/res.partner.bank.csv',
         'demo/supplies.contact.csv',
         'demo/supplies.registration.csv',
+        'demo/supplies.rfp.csv',
         
     ],
     # only loaded in demonstration mode

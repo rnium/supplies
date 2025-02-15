@@ -42,8 +42,13 @@ class SuppliesRfp(models.Model):
         return []
 
     def create(self, vals_list):
-        if vals_list.get('rfp_number', 'New') == 'New':
-            vals_list['rfp_number'] = self.env['ir.sequence'].next_by_code('supplies.rfp.number') or 'New'
+        if isinstance(vals_list, list):
+            for vals in vals_list:
+                if vals.get('rfp_number', 'New') == 'New':
+                    vals['rfp_number'] = self.env['ir.sequence'].next_by_code('supplies.rfp.number') or 'New'
+        else:
+            if vals_list.get('rfp_number', 'New') == 'New':
+                vals_list['rfp_number'] = self.env['ir.sequence'].next_by_code('supplies.rfp.number') or 'New'
         return super(SuppliesRfp, self).create(vals_list)
 
     @api.depends('rfq_ids')

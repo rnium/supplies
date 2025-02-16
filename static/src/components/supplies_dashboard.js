@@ -46,7 +46,7 @@ export class SuppliesDashboard extends Component {
             const today = new Date();
             const days = parseInt(this.state.selectedPeriod);
             today.setDate(today.getDate() - days);
-            targetDate = today.toISOString().split('T')[0];
+            const targetDate = today.toISOString().split('T')[0];
             domain.push(['create_date', '>=', targetDate]);
         }
 

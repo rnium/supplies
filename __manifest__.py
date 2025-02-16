@@ -48,7 +48,9 @@
         'demo/supplies.contact.csv',
         'demo/supplies.registration.csv',
         'demo/supplies.rfp.csv',
-        'demo/supplies.rfp.product.line.csv'
+        'demo/supplies.rfp.product.line.csv',
+        'demo/purchase.order.csv',
+        'demo/purchase.order.line.csv',
         
     ],
     # only loaded in demonstration mode

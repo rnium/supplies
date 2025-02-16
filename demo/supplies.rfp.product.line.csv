@@ -1,7 +1,7 @@
 id,rfp_id:id,product_id:id,description,product_qty,unit_price,delivery_charge
-line_1,rfp_1,product.product_product_5,Three Seater Sofa,5,0,0
-line_2,rfp_1,product.product_product_6,Large Cabinet,3,0,0
-line_3,rfp_1,product.product_product_7,Storage Box,10,0,0
+line_1,rfp_1,product.product_product_5,Corner Desk Right Sit,5,145,170
+line_2,rfp_1,product.product_product_6,Large Cabinet,3,310,250
+line_3,rfp_1,product.product_product_7,Storage Box,10,15.5,40
 line_4,rfp_2,product.product_product_8,Large Desk,2,0,0
 line_5,rfp_2,product.product_product_9,Pedal Bin,15,0,0
 line_6,rfp_3,product.product_product_10,Cabinet with Doors,4,0,0
@@ -15,7 +15,7 @@ line_13,rfp_6,product.product_product_27,Drawer,5,0,0
 line_14,rfp_7,product.consu_delivery_03,Four Person Desk,1,0,0
 line_15,rfp_7,product.consu_delivery_02,Large Meeting Table,1,0,0
 line_16,rfp_8,product.consu_delivery_01,Three-Seat Sofa,2,0,0
-line_17,rfp_8,product.product_product_5,Three Seater Sofa,5,0,0
+line_17,rfp_8,product.product_product_5,Corner Desk Right Sit,5,0,0
 line_18,rfp_9,product.product_product_6,Large Cabinet,3,0,0
 line_19,rfp_9,product.product_product_7,Storage Box,10,0,0
 line_20,rfp_10,product.product_product_8,Large Desk,2,0,0

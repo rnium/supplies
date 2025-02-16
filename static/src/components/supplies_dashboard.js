@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry"
 const { Component, onWillStart, useRef, onMounted, useState, useEffect } = owl;
 import { useService } from "@web/core/utils/hooks";
 import { StatCard } from "./stat_card/stat_card";
+import { Layout } from "@web/search/layout";
 
 
 export class SuppliesDashboard extends Component {
@@ -12,6 +13,8 @@ export class SuppliesDashboard extends Component {
             selectedSupplierId: "0",
             selectedPeriod: "0",
             selectedPeriodDate: null,
+            productLineIds: [],
+            productLines: [],
             rfp: {
                 'accepted': 0,
                 'submitted': 0,
@@ -27,6 +30,12 @@ export class SuppliesDashboard extends Component {
         useEffect(() => {
             this.getRequestForPurchases();
         }, () => [this.state.selectedSupplierId, this.state.selectedPeriod]); 
+
+        useEffect(() => {
+            if (this.state.productLineIds.length) {
+                this.getProductLines();
+            }
+        }, () => [this.state.productLineIds]);
     }
 
     async getSuppliers() {
@@ -50,16 +59,28 @@ export class SuppliesDashboard extends Component {
             domain.push(['create_date', '>=', targetDate]);
         }
 
-        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['state', 'total_amount']);
+        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['state', 'total_amount', 'product_line_ids']);
         const accepted_rfps = rfps.filter(r => r.state === 'accepted');
         const submitted = rfps.length;
         const accepted = accepted_rfps.length;
         const total_amount = accepted_rfps.reduce((acc, r) => acc + r.total_amount, 0);
+        const productLineIds = rfps.map(r => r.product_line_ids).flat();
+        this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
+    }
+
+    async getProductLines() {
+        const productLines = await this.orm.searchRead(
+            'supplies.rfp.product.line', 
+            [['id', 'in', this.state.productLineIds]], 
+            ['product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image']
+        );
+        console.log(productLines);
+        this.state.productLines = productLines;
     }
 }
 
 SuppliesDashboard.template = 'supplies.dashboard';
-SuppliesDashboard.components = { StatCard };
+SuppliesDashboard.components = { Layout, StatCard };
 
 registry.category("actions").add("supplies.dashboard", SuppliesDashboard);

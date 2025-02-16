@@ -2,8 +2,8 @@ id,rfp_id:id,product_id:id,description,product_qty,unit_price,delivery_charge
 line_1,rfp_1,product.product_product_5,Corner Desk Right Sit,5,145,170
 line_2,rfp_1,product.product_product_6,Large Cabinet,3,310,250
 line_3,rfp_1,product.product_product_7,Storage Box,10,15.5,40
-line_4,rfp_2,product.product_product_8,Large Desk,2,0,0
-line_5,rfp_2,product.product_product_9,Pedal Bin,15,0,0
+line_4,rfp_2,product.product_product_8,Large Desk,2,1100,90
+line_5,rfp_2,product.product_product_9,Pedal Bin,15,90,40
 line_6,rfp_3,product.product_product_10,Cabinet with Doors,4,0,0
 line_7,rfp_3,product.product_product_12,Office Chair Black,6,0,0
 line_8,rfp_4,product.product_product_13,Corner Desk Left Sit,5,0,0

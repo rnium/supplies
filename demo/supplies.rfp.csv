@@ -1,6 +1,6 @@
 id,create_date,required_date,state,create_uid:id,approved_supplier_id:id
 rfp_1,2025-01-01,2025-01-08,accepted,base.user_demo,supplier_3
-rfp_2,2025-01-03,2025-01-10,accepted,base.user_demo,
+rfp_2,2025-01-03,2025-01-10,accepted,base.user_demo,supplier_3
 rfp_3,2025-01-05,2025-01-12,accepted,base.user_demo,
 rfp_4,2025-01-07,2025-01-14,accepted,base.user_demo,
 rfp_5,2025-01-10,2025-01-17,accepted,base.user_demo,

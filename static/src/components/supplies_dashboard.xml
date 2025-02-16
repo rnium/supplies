@@ -11,13 +11,13 @@
                                     <div class="d-flex align-items-center justify-content-between">
                                         <h2 class="text-primary fw-bold m-0">Supplier Stats</h2>
                                         <div class="d-flex align-items-center">
-                                            <select class="form-select me-1" t-model="state.selectedSupplierId" t-on-change="onChangeFilter">
+                                            <select class="form-select me-1" t-model="state.selectedSupplierId">
                                                 <option value="0">Select Supplier</option>
                                                 <t t-foreach="state.suppliers" t-as="supplier" t-key="supplier.id">
                                                     <option t-att-value="supplier.id" t-esc="supplier.name"/>
                                                 </t>
                                             </select>
-                                            <select class="form-select" t-model="state.selectedPeriod" t-on-change="onChangeFilter">
+                                            <select class="form-select" t-model="state.selectedPeriod">
                                                 <option value="0">All Time</option>
                                                 <option value="7">This Week</option>
                                                 <option value="14">Last Week</option>
@@ -30,7 +30,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" t-if="state.selectedSupplierId">
+                        <div class="row" t-if="state.selectedSupplierId !== '0'">
                             <StatCard title="'Accepted RFQs'" value="state.rfp.accepted"/>
                             <StatCard title="'Participation'" value="state.rfp.submitted"/>
                             <StatCard title="'Total Amount'" value="state.rfp.total_amount"/>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="col-md-5">
                     </div>
-                    <div class="col-md-12" t-if="!state.selectedSupplierId">
+                    <div class="col-md-12" t-if="state.selectedSupplierId === '0'">
                         <div class="d-flex flex-column justify-content-center align-items-center my-5 p-5">
                             <img src="/supplies/static/image/dudes-selective-doodle.svg" alt="Empty" class="img-fluid" width="400"/>
                             <h2 class="text-muted">Select a supplier to view stats</h2>

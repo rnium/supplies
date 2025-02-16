@@ -1,9 +1,10 @@
 /** @odoo-module */
 import { registry } from "@web/core/registry"
 const { Component, onWillStart, useRef, onMounted, useState, useEffect } = owl;
+import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { StatCard } from "./stat_card/stat_card";
-import { Layout } from "@web/search/layout";
+import { Graph } from "./Graph/graph";
 
 
 export class SuppliesDashboard extends Component {
@@ -15,6 +16,7 @@ export class SuppliesDashboard extends Component {
             selectedPeriodDate: null,
             productLineIds: [],
             productLines: [],
+            rfpPurchaseChartData: null,
             rfp: {
                 'accepted': 0,
                 'submitted': 0,
@@ -43,6 +45,23 @@ export class SuppliesDashboard extends Component {
         this.state.suppliers = suppliers;
     }
 
+    async setRfpPurchaseData(accepted_rfps) {
+        if (accepted_rfps.length == 0) {
+            this.state.rfpPurchaseChartData = null;
+            return;
+        }
+        const data = {
+            labels: accepted_rfps.map(r => r.rfp_number),
+            datasets: [
+                {
+                    label: 'Total Amount',
+                    data: accepted_rfps.map(r => r.total_amount)
+                }
+            ]
+        }
+        this.state.rfpPurchaseChartData = data;
+    }
+
     async getRequestForPurchases() {
         const domain = [];
         if (this.state.selectedSupplierId !== "0") {
@@ -59,7 +78,7 @@ export class SuppliesDashboard extends Component {
             domain.push(['create_date', '>=', targetDate]);
         }
 
-        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['state', 'total_amount', 'product_line_ids']);
+        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
         const accepted_rfps = rfps.filter(r => r.state === 'accepted');
         const submitted = rfps.length;
         const accepted = accepted_rfps.length;
@@ -67,6 +86,7 @@ export class SuppliesDashboard extends Component {
         const productLineIds = rfps.map(r => r.product_line_ids).flat();
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
+        await this.setRfpPurchaseData(accepted_rfps);
     }
 
     async getProductLines() {
@@ -75,12 +95,11 @@ export class SuppliesDashboard extends Component {
             [['id', 'in', this.state.productLineIds]], 
             ['product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image']
         );
-        console.log(productLines);
         this.state.productLines = productLines;
     }
 }
 
 SuppliesDashboard.template = 'supplies.dashboard';
-SuppliesDashboard.components = { Layout, StatCard };
+SuppliesDashboard.components = { Layout, StatCard, Graph };
 
 registry.category("actions").add("supplies.dashboard", SuppliesDashboard);

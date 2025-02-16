@@ -4,7 +4,7 @@
         <Layout display="display" className="'o_dashboard'">
             <div class="container py-2">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-8">
                         <div class="row">
                             <div class="col m-0 p-0">
                                 <div class="border m-2 px-4 py-2 bg-white rounded shadow-sm">
@@ -70,7 +70,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
+                        <t t-if="state.selectedSupplierId !== '0'">
+                            <div t-if="state.rfpPurchaseChartData" class="bg-white border m-2 p-4 rounded shadow-sm">
+                                <Graph title="'Purchase Breakdown'" type="'doughnut'" data="state.rfpPurchaseChartData"/>
+                            </div>
+                        </t>
                     </div>
                     <div class="col-md-12" t-if="state.selectedSupplierId === '0'">
                         <div class="d-flex flex-column justify-content-center align-items-center my-5 p-5">

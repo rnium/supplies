@@ -93,56 +93,53 @@ export class SuppliesDashboard extends Component {
     getDateInterval(interval) {
         const now = new Date();
         let start, end;
-
-        switch (interval.toLowerCase()) {
-            case 'this_week':
-                // Start of this week is last Sunday
-                start = new Date(now);
-                start.setDate(now.getDate() - now.getDay());  // Sunday is day 0
-                start.setHours(0, 0, 0, 0);
     
-                // End of this week is today
-                end = new Date(now);
-                end.setHours(23, 59, 59, 999);
-                break;
-                
+        switch(interval.toLowerCase()) {
             case 'last_week':
-                // Start of last week
                 start = new Date(now);
                 start.setDate(now.getDate() - now.getDay() - 7);
                 start.setHours(0, 0, 0, 0);
-
-                // End of last week
+    
                 end = new Date(start);
                 end.setDate(start.getDate() + 6);
                 end.setHours(23, 59, 59, 999);
                 break;
-
-            case 'last_month':
-                // Start of last month
-                start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-
-                // End of last month
-                end = new Date(now.getFullYear(), now.getMonth(), 0);
-                // Adjust to the last day of the previous month
+    
+            case 'this_week':
+                start = new Date(now);
+                start.setDate(now.getDate() - now.getDay());
+                start.setHours(0, 0, 0, 0);
+    
+                end = new Date(now);
                 end.setHours(23, 59, 59, 999);
                 break;
-
+    
+            case 'last_month':
+                start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+                end = new Date(now.getFullYear(), now.getMonth(), 0);
+                end.setHours(23, 59, 59, 999);
+                break;
+    
             case 'last_year':
-                // Start of last year
                 start = new Date(now.getFullYear() - 1, 0, 1);
-
-                // End of last year
                 end = new Date(now.getFullYear() - 1, 11, 31);
                 end.setHours(23, 59, 59, 999);
                 break;
-
+    
             default:
                 throw new Error('Invalid interval specified');
         }
+    
+        function formatDateLocal(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+    
         return {
-            start: start.toISOString().split('T')[0],
-            end: end.toISOString().split('T')[0]
+            start: formatDateLocal(start),
+            end: formatDateLocal(end)
         };
     }
 

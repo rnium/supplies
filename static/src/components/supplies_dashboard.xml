@@ -18,11 +18,10 @@
                                                 </t>
                                             </select>
                                             <select class="form-select" t-model="state.selectedPeriod">
-                                                <option value="0">All Time</option>
-                                                <option value="7">This Week</option>
-                                                <option value="14">Last Week</option>
-                                                <option value="30">Last Month</option>
-                                                <option value="365">Last Year</option>
+                                                <option value="0" selected="">All Time</option>
+                                                <t t-foreach="timeperiods" t-as="period" t-key="period.tag">
+                                                    <option t-att-value="period.tag" t-esc="period.label"/>
+                                                </t>
                                             </select>
                                             
                                         </div>

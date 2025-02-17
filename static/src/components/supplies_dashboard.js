@@ -9,11 +9,16 @@ import { Graph } from "./Graph/graph";
 
 export class SuppliesDashboard extends Component {
     setup() {
+        this.timeperiods = [
+            {tag: 'this_week', label: 'This Week'},
+            {tag: 'last_week', label: 'Last Week'},
+            {tag: 'last_month', label: 'Last Month'},
+            {tag: 'last_year', label: 'Last Year'},
+        ];
         this.state = useState({
             suppliers: [],
             selectedSupplierId: "0",
             selectedPeriod: "0",
-            selectedPeriodDate: null,
             productLineIds: [],
             productLines: [],
             rfpPurchaseChartData: null,
@@ -33,14 +38,14 @@ export class SuppliesDashboard extends Component {
 
         useEffect(() => {
             this.getRequestForPurchases();
-        }, () => [this.state.selectedSupplierId, this.state.selectedPeriod]); 
+        }, () => [this.state.selectedSupplierId, this.state.selectedPeriod]);
 
         useEffect(() => {
             if (this.state.productLineIds.length) {
                 this.getProductLines();
             }
         }, () => [this.state.productLineIds]);
-            
+
     }
 
     async getSuppliers() {
@@ -82,8 +87,63 @@ export class SuppliesDashboard extends Component {
                 }
             ]
         }
-        console.log(data);
         this.state.rfqStatusChartData = data;
+    }
+
+    getDateInterval(interval) {
+        const now = new Date();
+        let start, end;
+
+        switch (interval.toLowerCase()) {
+            case 'this_week':
+                // Start of this week is last Sunday
+                start = new Date(now);
+                start.setDate(now.getDate() - now.getDay());  // Sunday is day 0
+                start.setHours(0, 0, 0, 0);
+    
+                // End of this week is today
+                end = new Date(now);
+                end.setHours(23, 59, 59, 999);
+                break;
+                
+            case 'last_week':
+                // Start of last week
+                start = new Date(now);
+                start.setDate(now.getDate() - now.getDay() - 7);
+                start.setHours(0, 0, 0, 0);
+
+                // End of last week
+                end = new Date(start);
+                end.setDate(start.getDate() + 6);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'last_month':
+                // Start of last month
+                start = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+                // End of last month
+                end = new Date(now.getFullYear(), now.getMonth(), 0);
+                // Adjust to the last day of the previous month
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            case 'last_year':
+                // Start of last year
+                start = new Date(now.getFullYear() - 1, 0, 1);
+
+                // End of last year
+                end = new Date(now.getFullYear() - 1, 11, 31);
+                end.setHours(23, 59, 59, 999);
+                break;
+
+            default:
+                throw new Error('Invalid interval specified');
+        }
+        return {
+            start: start.toISOString().split('T')[0],
+            end: end.toISOString().split('T')[0]
+        };
     }
 
     async getRequestForPurchases() {
@@ -97,14 +157,14 @@ export class SuppliesDashboard extends Component {
             return;
         }
         if (this.state.selectedPeriod !== "0") {
-            const today = new Date();
-            const days = parseInt(this.state.selectedPeriod);
-            today.setDate(today.getDate() - days);
-            const targetDate = today.toISOString().split('T')[0];
-            const dateDomain = ['create_date', '>=', targetDate];
-            domain.push(dateDomain);
-            rfq_domain.push(dateDomain);
+            const { start: startDate, end: endDate } = this.getDateInterval(this.state.selectedPeriod);
+            const dateDomains = [['create_date', '>=', startDate], ['create_date', '<=', endDate]];
+            domain.push(...dateDomains)
+            rfq_domain.push(...dateDomains)
         }
+
+        console.log(domain);
+        console.log(rfq_domain);
 
         const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
         const rfqs = await this.orm.searchRead('purchase.order', rfq_domain, ['name', 'state']);
@@ -121,8 +181,8 @@ export class SuppliesDashboard extends Component {
 
     async getProductLines() {
         const productLines = await this.orm.searchRead(
-            'supplies.rfp.product.line', 
-            [['id', 'in', this.state.productLineIds]], 
+            'supplies.rfp.product.line',
+            [['id', 'in', this.state.productLineIds]],
             ['product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image']
         );
         this.state.productLines = productLines;

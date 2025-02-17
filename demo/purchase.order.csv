@@ -1,6 +1,6 @@
-id,rfp_id:id,partner_id:id,warrenty_period,date_planned,user_id:id,state,recommended,notes
-rfq_1,rfp_1,supplier_1,12,2025-01-07,"base.user_admin",cancel,1,"Need to pay 50% in advance. Return policy is 30 days."
-rfq_2,rfp_1,supplier_3,24,2025-01-06,"base.user_admin",purchase,1,"Full payment in advance. Any damage during delivery will be replaced."
-rfq_3,rfp_1,supplier_4,18,2025-01-05,"base.user_admin",cancel,0,"Payment in 3 installments. Return policy is 15 days."
-rfq_4,rfp_2,supplier_2,12,2025-01-10,"base.user_admin",cancel,1,"Payment in 2 installments. Return policy is 20 days."
-rfq_5,rfp_2,supplier_3,24,2025-01-09,"base.user_admin",purchase,1,"Full payment in advance. Any damage during delivery will be replaced."
+id,rfp_id:id,partner_id:id,warrenty_period,date_planned,user_id:id,state,recommended,create_date,notes
+rfq_1,rfp_1,supplier_1,12,2025-01-07,"base.user_admin",cancel,1,2025-01-01,"Need to pay 50% in advance. Return policy is 30 days."
+rfq_2,rfp_1,supplier_3,24,2025-01-06,"base.user_admin",purchase,1,2025-01-01,"Full payment in advance. Any damage during delivery will be replaced."
+rfq_3,rfp_1,supplier_4,18,2025-01-05,"base.user_admin",cancel,0,2025-01-02,"Payment in 3 installments. Return policy is 15 days."
+rfq_4,rfp_2,supplier_2,12,2025-01-10,"base.user_admin",cancel,1,2025-01-03,"Payment in 2 installments. Return policy is 20 days."
+rfq_5,rfp_2,supplier_3,24,2025-01-09,"base.user_admin",purchase,1,2025-01-03,"Full payment in advance. Any damage during delivery will be replaced."

@@ -19,7 +19,9 @@ export class Graph extends Component {
             if (this.chartInstance) {
                 this.chartInstance.destroy();
             }
-            this.renderChart();
+            if (typeof this.props === 'object') {
+                this.renderChart();
+            }
         }, () => [this.props.data]);
     }
 

@@ -17,6 +17,8 @@ export class SuppliesDashboard extends Component {
             productLineIds: [],
             productLines: [],
             rfpPurchaseChartData: null,
+            rfqStatusChartData: null,
+            another: 'test',
             rfp: {
                 'accepted': 0,
                 'submitted': 0,
@@ -38,6 +40,7 @@ export class SuppliesDashboard extends Component {
                 this.getProductLines();
             }
         }, () => [this.state.productLineIds]);
+            
     }
 
     async getSuppliers() {
@@ -62,11 +65,34 @@ export class SuppliesDashboard extends Component {
         this.state.rfpPurchaseChartData = data;
     }
 
+    async setRFQStatusData(rfqs) {
+        if (rfqs.length == 0) {
+            this.state.rfqStatusChartData = null;
+            return;
+        }
+        const purchase = rfqs.filter(r => r.state === 'purchase').length;
+        const draft = rfqs.filter(r => r.state === 'draft').length;
+        const cancel = rfqs.filter(r => r.state === 'cancel').length;
+        const data = {
+            labels: ['Accepted', 'Draft', 'Cancelled'],
+            datasets: [
+                {
+                    label: 'RFQ Status',
+                    data: [purchase, draft, cancel]
+                }
+            ]
+        }
+        console.log(data);
+        this.state.rfqStatusChartData = data;
+    }
+
     async getRequestForPurchases() {
         const domain = [];
+        const rfq_domain = [['rfp_id', '!=', false]];
         if (this.state.selectedSupplierId !== "0") {
             const supplerIdInt = parseInt(this.state.selectedSupplierId);
             domain.push(['approved_supplier_id', '=', supplerIdInt]);
+            rfq_domain.push(['partner_id', '=', supplerIdInt]);
         } else {
             return;
         }
@@ -75,18 +101,22 @@ export class SuppliesDashboard extends Component {
             const days = parseInt(this.state.selectedPeriod);
             today.setDate(today.getDate() - days);
             const targetDate = today.toISOString().split('T')[0];
-            domain.push(['create_date', '>=', targetDate]);
+            const dateDomain = ['create_date', '>=', targetDate];
+            domain.push(dateDomain);
+            rfq_domain.push(dateDomain);
         }
 
         const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
+        const rfqs = await this.orm.searchRead('purchase.order', rfq_domain, ['name', 'state']);
         const accepted_rfps = rfps.filter(r => r.state === 'accepted');
-        const submitted = rfps.length;
+        const submitted = rfqs.length;
         const accepted = accepted_rfps.length;
         const total_amount = accepted_rfps.reduce((acc, r) => acc + r.total_amount, 0);
         const productLineIds = rfps.map(r => r.product_line_ids).flat();
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
         await this.setRfpPurchaseData(accepted_rfps);
+        await this.setRFQStatusData(rfqs);
     }
 
     async getProductLines() {

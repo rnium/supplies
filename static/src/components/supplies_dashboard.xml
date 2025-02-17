@@ -72,8 +72,11 @@
                     </div>
                     <div class="col-md-4">
                         <t t-if="state.selectedSupplierId !== '0'">
+                            <div t-if="state.rfqStatusChartData" class="bg-white border m-2 p-4 rounded shadow-sm">
+                                <Graph title="'RFQ Status'" type="'doughnut'" data="state.rfqStatusChartData"/>
+                            </div>
                             <div t-if="state.rfpPurchaseChartData" class="bg-white border m-2 p-4 rounded shadow-sm">
-                                <Graph title="'Purchase Breakdown'" type="'doughnut'" data="state.rfpPurchaseChartData"/>
+                                <Graph title="'Purchase Breakdown'" type="'line'" data="state.rfpPurchaseChartData"/>
                             </div>
                         </t>
                     </div>

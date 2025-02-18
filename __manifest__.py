@@ -25,6 +25,7 @@
         'security/ir.model.access.csv',
         'wizard/supplies_rfp_report_wizard_views.xml',
         'views/views.xml',
+        'views/website_views.xml',
         'views/templates.xml',
         'views/email_templates.xml',
         'views/supplies_registration_views.xml',

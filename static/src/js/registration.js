@@ -3,6 +3,7 @@ const OTP_FORM_CONTAINER_ID = '#otp_container';
 const REG_FORM_CONTAINER_ID = '#registration_form_container';
 const CSRF_INPUT_ID = '#csrf_token';
 const SEND_OTP_BTN_ID = '#send_otp_btn';
+const EMAIL_INPUT_ID = '#email';
 const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
 const ALERT_CONTAINER_ID = '#alert_container';
@@ -410,5 +411,15 @@ $(document).ready(function () {
     $(DECLARATION_CHECKBOX_ID).on('change', function () {
         const isChecked = $(this).is(':checked');
         $(SUBMIT_BTN_ID).prop('disabled', !isChecked);
+    });
+    $(EMAIL_INPUT_ID).on('keyup', function (e) {
+        if (e.keyCode === 13) {
+            send_otp();
+        }
+    });
+    $(OTP_INPUT_CONTAINER_ID).on('keyup', 'input', function (e) {
+        if (e.keyCode === 13) {
+            verify_otp();
+        }
     });
 });

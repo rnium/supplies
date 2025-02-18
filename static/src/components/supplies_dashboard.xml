@@ -30,8 +30,8 @@
                             </div>
                         </div>
                         <div class="row" t-if="state.selectedSupplierId !== '0'">
-                            <StatCard title="'Accepted RFQs'" value="state.rfp.accepted"/>
-                            <StatCard title="'Participation'" value="state.rfp.submitted"/>
+                            <StatCard title="'Accepted'" value="state.rfp.accepted"/>
+                            <StatCard title="'Submissions'" value="state.rfp.submitted"/>
                             <StatCard title="'Total Amount'" value="state.rfp.total_amount"/>
                         </div>
                         <div class="row" t-if="state.productLineIds.length > 0">
@@ -43,6 +43,7 @@
                                             <thead>
                                                 <tr>
                                                     <th>Product</th>
+                                                    <th>RFP Ref</th>
                                                     <th>Quantity</th>
                                                     <th>Unit Price</th>
                                                     <th>Delivery Charge</th>
@@ -56,6 +57,7 @@
                                                             <img t-att-src="'data:image/png;base64,' + line.product_image" alt="product" class="img-fluid me-2" width="50"/>
                                                             <span t-esc="line.product_name"/>
                                                         </td>
+                                                        <td class="text-muted" t-esc="line.rfp_id[1]"/>
                                                         <td t-esc="line.product_qty"/>
                                                         <td t-esc="line.unit_price"/>
                                                         <td t-esc="line.delivery_charge"/>

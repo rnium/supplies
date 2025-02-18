@@ -54,7 +54,7 @@ export class SuppliesDashboard extends Component {
         this.state.suppliers = suppliers;
     }
 
-    async setRfpPurchaseData(accepted_rfps) {
+    setRfpPurchaseData(accepted_rfps) {
         if (accepted_rfps.length == 0) {
             this.state.rfpPurchaseChartData = null;
             return;
@@ -71,7 +71,7 @@ export class SuppliesDashboard extends Component {
         this.state.rfpPurchaseChartData = data;
     }
 
-    async setRFQStatusData(rfqs) {
+    setRFQStatusData(rfqs) {
         if (rfqs.length == 0) {
             this.state.rfqStatusChartData = null;
             return;
@@ -83,8 +83,13 @@ export class SuppliesDashboard extends Component {
             labels: ['Accepted', 'Draft', 'Cancelled'],
             datasets: [
                 {
-                    label: 'RFQ Status',
-                    data: [purchase, draft, cancel]
+                    label: 'Count',
+                    data: [purchase, draft, cancel],
+                    backgroundColor: [
+                        '#06d6a0',
+                        '#468faf',
+                        'rgb(255, 99, 132)'
+                    ],
                 }
             ]
         }
@@ -122,16 +127,17 @@ export class SuppliesDashboard extends Component {
         const productLineIds = rfps.map(r => r.product_line_ids).flat();
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
-        await this.setRfpPurchaseData(accepted_rfps);
-        await this.setRFQStatusData(rfqs);
+        this.setRfpPurchaseData(accepted_rfps);
+        this.setRFQStatusData(rfqs);
     }
 
     async getProductLines() {
         const productLines = await this.orm.searchRead(
             'supplies.rfp.product.line',
             [['id', 'in', this.state.productLineIds]],
-            ['product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image']
+            ['product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image', 'rfp_id']
         );
+        console.log(productLines);
         this.state.productLines = productLines;
     }
 }

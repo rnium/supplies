@@ -154,6 +154,7 @@
                                                 type="date"
                                                 class="form-control"
                                                 name="date_planned"
+                                                t-att-min="(datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
                                                 required="required"
                                             />
                                         </div>

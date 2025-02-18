@@ -251,8 +251,8 @@ class PurchaseOrderLineSchema(BaseModel):
     product_id: int
     product_qty: int
     product_uom: Optional[int] | None = None
-    price_unit: float
-    delivery_charge: float
+    price_unit: float = Field(gt=0)
+    delivery_charge: float = Field(gt=0)
     date_planned: date
     name: str # description
 

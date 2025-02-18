@@ -71,6 +71,14 @@ class SuppliesPortal(CustomerPortal):
                 ('state', '=', 'approved')
             ]
         )
+        all_rfps = request.env['supplies.rfp'].sudo().search(
+            [
+                ('state', '=', 'approved')
+            ]
+        )
+        rfp_index = all_rfps.ids.index(rfp.id)
+        prev_record = all_rfps[rfp_index - 1].rfp_number if rfp_index > 0 else False
+        next_record = all_rfps[rfp_index + 1].rfp_number if rfp_index < len(all_rfps) - 1 else False
         success_list = []
         error_list = []
         page_contexts = {}
@@ -115,6 +123,8 @@ class SuppliesPortal(CustomerPortal):
                 'page_name': 'rfp_view',
                 'success_list': success_list,
                 'error_list': error_list,
+                'prev_record': "/my/supplies/" + prev_record if prev_record else False,
+                'next_record': "/my/supplies/" + next_record if next_record else False,
                 **page_contexts
             }
         )

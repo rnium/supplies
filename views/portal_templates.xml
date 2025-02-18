@@ -89,6 +89,7 @@
     <template id="portal_supplies_rfp_form_view" name="Supplier RFP Portal Form View">
         <t t-if="not rfp" t-call="http_routing.404" />
         <t t-if="rfp" t-call="portal.portal_layout">
+            <script src="/supplies/static/src/js/portal.js" defer=""/>
             <div class="container">
                 <t t-if="submitted_rfq">
                     <div class="d-flex justify-content-center align-items-center my-5 py-3">
@@ -182,8 +183,9 @@
                                                     <th style="width: 120px">Photo</th>
                                                     <th>Product</th>
                                                     <th>Quantity</th>
-                                                    <th class="text-right">Unit Price</th>
-                                                    <th class="text-right">Delivery Charge</th>
+                                                    <th class="text-center">Unit Price</th>
+                                                    <th class="text-center">Delivery Charge</th>
+                                                    <th class="text-center">Subtotal</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -221,22 +223,27 @@
                                                             <span t-field="line.product_id.name"/><br/>
                                                             <small class="text-muted" t-field="line.description"/>
                                                         </td>
-                                                        <td>
+                                                        <td t-att-data-line-id="line.id">
                                                             <t t-esc="line.product_qty"/>
                                                         </td>
                                                         <td>
                                                             <div class="input-group">
-                                                                <input type="number" class="form-control text-right"
+                                                                <input type="number" class="form-control text-right input_price_unit"
                                                                        t-att-name="'line-' + str(line.id) + '-price_unit'"
+                                                                       t-att-data-line-id="line.id"
                                                                        step="0.01" min="0" required="required"/>
                                                             </div>
                                                         </td>
                                                         <td>
                                                             <div class="input-group">
-                                                                <input type="number" class="form-control text-right"
+                                                                <input type="number" class="form-control text-right input_delivery_charge"
+                                                                        t-att-data-line-id="line.id"
                                                                        t-att-name="'line-' + str(line.id) + '-delivery_charge'"
                                                                        step="0.01" min="0" required="required"/>
                                                             </div>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="line_subtotal" t-att-data-line-id="line.id">0.0</span>
                                                         </td>
                                                     </tr>
                                                 </t>

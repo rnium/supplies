@@ -309,6 +309,9 @@
                                                     name="certification_expiry_date"
                                                     t-att-min="(datetime.datetime.now() + datetime.timedelta(days=1)).strftime('%Y-%m-%d')"
                                                 />
+                                                <div class="invalid-feedback">
+                                                    Certification expiry date should be a future date.
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

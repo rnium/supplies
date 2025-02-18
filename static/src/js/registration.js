@@ -134,6 +134,7 @@ function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=
     }
     if (static_backdrop) {
         $(`#${id}`).attr('data-bs-backdrop', 'static');
+        $(`#${id}`).attr('data-bs-keyboard', false);
     } else {
         $(`#${id}`).removeAttr('data-bs-backdrop');
     }
@@ -399,6 +400,7 @@ $(document).ready(function () {
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         console.log('Next Button Clicked');
+        validateStepInputs(pageManager.page);
         pageManager.goNext();
     });
     $(PREV_BTN_ID).on('click', () => {

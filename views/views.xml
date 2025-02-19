@@ -15,7 +15,8 @@
         name="Supplier Statistics"
         id="menu_supplies_dashboard"
         sequence="2"
-    />
+        action="action_supplies_dashboard"
+      />
     </menuitem>
   </data>
 </odoo>

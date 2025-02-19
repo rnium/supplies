@@ -73,7 +73,7 @@
                                                     <t t-esc="rfp.rfp_number"/>
                                                 </a>
                                             </td>
-                                            <td><t t-esc="rfp.submitted_date"/></td>
+                                            <td><t t-esc="rfp.date_approve"/></td>
                                             <td><t t-esc="rfp.required_date"/></td>
                                         </tr>
                                     </t>

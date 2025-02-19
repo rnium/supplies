@@ -103,7 +103,7 @@
                     <group>
                         <group>
                             <field name="create_uid" string="Requested By" invisible="not id or state != 'draft'"/>
-                            <field name="submitted_date" invisible="not id or state == 'draft'"/>
+                            <field name="date_approve" invisible="not id or state in ['draft', 'submitted']"/>
                         </group>
                         <group>
                             <field name="required_date" readonly="state != 'draft'"/>

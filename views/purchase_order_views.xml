@@ -10,7 +10,7 @@
                     <field name="rfp_id" invisible="not rfp_id" readonly="1"/>
                 </xpath>
                 <xpath expr="//field[@name='order_line']/tree/field[@name='price_unit']" position="after">
-                    <field name="delivery_charge"/>
+                    <field name="delivery_charge"  column_invisible="not parent.rfp_id"/>
                 </xpath>
             </field>
         </record>

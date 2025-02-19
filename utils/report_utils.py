@@ -39,7 +39,7 @@ def get_report_data(company, supplier, accepted_rfps: Iterable):
         'rfps': [
             [
                 rfp.rfp_number,
-                datetime.strftime(rfp.create_date, '%d-%m-%Y'),
+                datetime.strftime(rfp.date_approve, '%d-%m-%Y'),
                 datetime.strftime(rfp.required_date, '%d-%m-%Y'),
                 rfp.total_amount,
             ] for rfp in accepted_rfps

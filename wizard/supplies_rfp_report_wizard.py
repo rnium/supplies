@@ -61,8 +61,8 @@ class RfpReportWizard(models.TransientModel):
         accepted_rfps = self.env['supplies.rfp'].search([
             ('approved_supplier_id', '=', self.supplier_id.id),
             ('state', '=', 'accepted'),
-            ('create_date', '>=', self.start_date),
-            ('create_date', '<=', self.end_date)
+            ('date_approve', '>=', self.start_date),
+            ('date_approve', '<=', self.end_date)
         ])
         return accepted_rfps
 

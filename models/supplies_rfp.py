@@ -25,7 +25,7 @@ class SuppliesRfp(models.Model):
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs', domain=lambda self: self._get_rfq_domain())
     num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
-    submitted_date = fields.Date(string='Submitted On', readonly=True)
+    date_approve = fields.Date(string='Approved On', readonly=True)
     total_amount = fields.Monetary(string='Total Amount', compute='_compute_total_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
 
@@ -60,7 +60,7 @@ class SuppliesRfp(models.Model):
     def action_submit(self):
         if not self.product_line_ids:
             raise UserError('Please add product lines before submitting.')
-        self.write({'state': 'submitted', 'submitted_date': fields.Date.today()})
+        self.write({'state': 'submitted'})
         email_values = {
             'email_from': get_smtp_server_email(self.env),
             'email_to': get_approver_emails(self.env),
@@ -79,7 +79,7 @@ class SuppliesRfp(models.Model):
 
     @rfp_state_flow('submitted')
     def action_approve(self):
-        self.state = 'approved'
+        self.write({'state': 'approved', 'date_approve': fields.Date.today()})
         # notify reviewer
         email_values = {
             'email_from': get_smtp_server_email(self.env),

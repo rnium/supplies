@@ -22,3 +22,9 @@ class SuppliesRfpProductLine(models.Model):
     def _compute_subtotal_price(self):
         for rec in self:
             rec.subtotal_price = (rec.product_qty * rec.unit_price) + rec.delivery_charge
+    
+
+    @api.onchange('product_qty')
+    def _onchange_product_qty(self):
+        if self.product_qty < 0:
+            self.product_qty = 1

@@ -13,7 +13,7 @@ class SuppliesPortal(CustomerPortal):
     def supplies_portal(self, page=1, sortby=None, search=None, search_in=None, groupby=None, **kw):
         limit = 5
         searchbar_sortings = {
-            'date': {'label': 'Newest', 'order': 'create_date desc'},
+            'date': {'label': 'Newest', 'order': 'date_approve desc'},
             'name': {'label': 'Name', 'order': 'rfp_number'},
         }
         groupby_list = {
@@ -21,7 +21,7 @@ class SuppliesPortal(CustomerPortal):
             'state': {'input': 'state', 'label': _('Status')},
         }
         search_in = search_in or 'name'
-        order = searchbar_sortings[sortby]['order'] if sortby else 'create_date desc'
+        order = searchbar_sortings[sortby]['order'] if sortby else 'date_approve desc'
         groupby = groupby or 'state'
         search_list = {
             'all': {'label': _('All'), 'input': 'all', 'domain': []},

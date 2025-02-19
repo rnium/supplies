@@ -108,7 +108,7 @@ export class SuppliesDashboard extends Component {
         }
         if (this.state.selectedPeriod !== "0") {
             const { start: startDate, end: endDate } = getDateInterval(this.state.selectedPeriod);
-            const dateDomains = [['create_date', '>=', startDate], ['create_date', '<=', endDate]];
+            const dateDomains = [['date_approve', '>=', startDate], ['date_approve', '<=', endDate]];
             domain.push(...dateDomains)
             rfq_domain.push(...dateDomains)
         }

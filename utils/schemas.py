@@ -223,6 +223,7 @@ class CompanySchema(BaseModel):
     company_category_type: str
     email: EmailStr
     street: str
+    phone: Optional[str] | None = None
     street2: Optional[str] | bool
     image_1920: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
@@ -246,6 +247,24 @@ class CompanySchema(BaseModel):
     other_certification_doc: Optional[bytes] | bool
     supplier_rank: int = 1
     company_type: str = 'company'
+
+    @model_validator(mode='before')
+    @classmethod
+    def preprocess_data(cls, values):
+        if not isinstance(values, dict):
+            data = {}
+            for field in cls.model_fields:
+                if hasattr(values, field):
+                    data[field] = getattr(values, field)
+            if hasattr(values, 'primary_contact_id'):
+                data['primary_contact_id'] = getattr(values, 'primary_contact_id')
+            values = data
+
+        if 'primary_contact_id' in values:
+            primary_contact = values['primary_contact_id']
+            if hasattr(primary_contact, 'phone'):
+                values['phone'] = primary_contact.phone
+        return values
 
 class PurchaseOrderLineSchema(BaseModel):
     product_id: int

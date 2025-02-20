@@ -10,6 +10,7 @@ import re
 import base64
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
+DOC_MIMETYPES = ['application/pdf', 'image/jpeg', 'image/png']
 TRADE_LIC_TYPE = Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9]{8,20}$")]
 TINType = Annotated[str, StringConstraints(pattern=r"^\d{16}$")]
 
@@ -156,6 +157,10 @@ class SupplierRegistrationSchema(BaseModel):
         for field in binary_file_fields:
             if field in values:
                 file_value = values[field]
+                filename = file_value.filename
+                mimetype = file_value.mimetype
+                if mimetype not in DOC_MIMETYPES:
+                    raise ValueError(f"Invalid file format for {filename}. Please upload a valid PDF or image file.")
                 values[field] = cls.transform_binary_fields(file_value)
         return values
 

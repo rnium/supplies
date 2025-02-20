@@ -19,6 +19,7 @@ class ContactSchema(BaseModel):
     phone: str
     address: str
 
+
 class ContactOutSchema(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
@@ -35,6 +36,7 @@ class ContactOutSchema(BaseModel):
         data = super().model_dump()
         data['function'] = kwargs.get('function')
         return data
+
 
 class ClientContactSchema(BaseModel):
     name: str = None
@@ -53,6 +55,7 @@ class ClientContactSchema(BaseModel):
         if (email or phone or address) and not name:
             raise ValueError("If email, phone, or address is provided, name must also be provided.")
         return values
+
 
 class ClientContactOutSchema(BaseModel):
     model_config = ConfigDict(
@@ -105,6 +108,10 @@ class SupplierRegistrationSchema(BaseModel):
     bank_letter_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     past_2_years_financial_statement_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     other_certification_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
+    company_stamp: conbytes(max_length=DOC_MAX_SIZE) # type: ignore
+    #signatory
+    signatory_name: str
+    authorized_signatory_name: str
 
     @model_validator(mode='before')
     @classmethod
@@ -134,6 +141,7 @@ class SupplierRegistrationSchema(BaseModel):
         # Binary fields
         binary_file_fields = [
             'image_1920',
+            'company_stamp',
             'trade_license_doc',
             'certificate_of_incorporation_doc',
             'certificate_of_good_standing_doc',
@@ -214,6 +222,7 @@ class UserSchema(BaseModel):
         data['groups_id'] = kwargs.get('groups_id')
         return data
 
+
 class CompanySchema(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
@@ -226,6 +235,7 @@ class CompanySchema(BaseModel):
     phone: Optional[str] | None = None
     street2: Optional[str] | bool
     image_1920: Optional[Base64Bytes] | bool
+    company_stamp: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
     vat: Optional[str] | bool
     commencement_date: Optional[date] | bool
@@ -245,6 +255,8 @@ class CompanySchema(BaseModel):
     bank_letter_doc: Optional[bytes] | bool
     past_2_years_financial_statement_doc: Optional[bytes] | bool
     other_certification_doc: Optional[bytes] | bool
+    signatory_name: str
+    authorized_signatory_name: str
     supplier_rank: int = 1
     company_type: str = 'company'
 

@@ -12,6 +12,11 @@
                 </xpath>
                 <xpath expr="//notebook" position="inside">
                     <page string="Company Information" invisible="supplier_rank &lt; 1">
+                        <group>
+                            <field name="signatory_name"/>
+                            <field name="authorized_signatory_name"/>
+                            <field name="company_stamp"/>
+                        </group>
                         <group string="Trade Information">
                             <field name="trade_license_number"/>
                             <field name="commencement_date"/>

@@ -33,3 +33,8 @@ class ResPartner(models.Model):
     bank_letter_doc = fields.Binary(string='Bank Letter Document')
     past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years Financial Statement Document')
     other_certification_doc = fields.Binary(string='Other Certification Document')
+    company_stamp = fields.Binary(string='Company Stamp')
+    # signature fields
+    signatory_name = fields.Char(string='Signatory')
+    authorized_signatory_name = fields.Char(string='Authorized Signatory')
+

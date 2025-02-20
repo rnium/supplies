@@ -383,11 +383,11 @@
                                             <div class="row g-3 mt-3">
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Name of Signatory</label>
-                                                    <input name="name_of_signatory" type="text" class="form-control" placeholder="Enter full name" required="" />
+                                                    <input name="signatory_name" type="text" class="form-control" placeholder="Enter full name" required="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Authorized Signatory</label>
-                                                    <input name="authorized_signatory" type="text" class="form-control" placeholder="Enter title or role" required="" />
+                                                    <input name="authorized_signatory_name" type="text" class="form-control" placeholder="Enter title or role" required="" />
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Company Stamp</label>

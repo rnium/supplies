@@ -18,6 +18,10 @@
             <field name="certification_award_date">2020-01-01</field>
             <field name="certification_expiry_date">2021-01-01</field>
             <field name="company_category_type">Limited</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/1.jpg"/>
+            <field name="signatory_name">Alice Johnson</field>
+            <field name="authorized_signatory_name">Bob Smith</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_2" model="res.partner">
@@ -36,7 +40,11 @@
             <field name="certifying_body">ISO</field>
             <field name="certification_award_date">2019-05-15</field>
             <field name="certification_expiry_date">2020-05-15</field>
-            <field name="company_category_type">LLC</field>
+            <field name="company_category_type">LLC</field>           
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/2.jpg"/>
+            <field name="signatory_name">Charlie Brown</field>
+            <field name="authorized_signatory_name">Diana Prince</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_3" model="res.partner">
@@ -56,6 +64,10 @@
             <field name="certification_award_date">2018-03-10</field>
             <field name="certification_expiry_date">2019-03-10</field>
             <field name="company_category_type">PLC</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/3.jpg"/>
+            <field name="signatory_name">Edward Norton</field>
+            <field name="authorized_signatory_name">Fiona Apple</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_4" model="res.partner">
@@ -75,6 +87,10 @@
             <field name="certification_award_date">2021-07-20</field>
             <field name="certification_expiry_date">2022-07-20</field>
             <field name="company_category_type">Partnership</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/4.jpg"/>
+            <field name="signatory_name">George Clooney</field>
+            <field name="authorized_signatory_name">Hannah Montana</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_5" model="res.partner">
@@ -94,6 +110,10 @@
             <field name="certification_award_date">2022-09-25</field>
             <field name="certification_expiry_date">2023-09-25</field>
             <field name="company_category_type">Sole Proprietorship</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/5.png"/>
+            <field name="signatory_name">Ian McKellen</field>
+            <field name="authorized_signatory_name">Jessica Alba</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_6" model="res.partner">
@@ -113,6 +133,10 @@
             <field name="certification_award_date">2023-02-14</field>
             <field name="certification_expiry_date">2024-02-14</field>
             <field name="company_category_type">Others</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/6.png"/>
+            <field name="signatory_name">Kevin Spacey</field>
+            <field name="authorized_signatory_name">Laura Dern</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_7" model="res.partner">
@@ -132,10 +156,14 @@
             <field name="certification_award_date">2024-04-30</field>
             <field name="certification_expiry_date">2025-04-30</field>
             <field name="company_category_type">Limited</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/7.jpg"/>
+            <field name="signatory_name">Michael Jordan</field>
+            <field name="authorized_signatory_name">Nancy Drew</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_8" model="res.partner">
-            <field name="name">Smart Tech</field>
+            <field name="name">Smart Technologies</field>
             <field name="company_type">company</field>
             <field name="street">Khilgaon, Dhaka</field>
             <field name="phone">+8801212345678</field>
@@ -150,7 +178,11 @@
             <field name="certifying_body">ISO</field>
             <field name="certification_award_date">2025-06-12</field>
             <field name="certification_expiry_date">2026-06-12</field>
-            <field name="company_category_type">LLC</field>
+            <field name="company_category_type">Limited</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/8.png"/>
+            <field name="signatory_name">Oscar Wilde</field>
+            <field name="authorized_signatory_name">Paula Abdul</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_9" model="res.partner">
@@ -170,6 +202,10 @@
             <field name="certification_award_date">2026-08-18</field>
             <field name="certification_expiry_date">2027-08-18</field>
             <field name="company_category_type">PLC</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/9.jpg"/>
+            <field name="signatory_name">Quentin Tarantino</field>
+            <field name="authorized_signatory_name">Rachel Green</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id="supplier_10" model="res.partner">
@@ -189,6 +225,10 @@
             <field name="certification_award_date">2027-10-22</field>
             <field name="certification_expiry_date">2028-10-22</field>
             <field name="company_category_type">Partnership</field>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/10.png"/>
+            <field name="signatory_name">John Doe</field>
+            <field name="authorized_signatory_name">Jane Doe</field>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
         </record>
 
         <record id='supplier_11' model='res.partner'>
@@ -208,6 +248,10 @@
             <field name='certification_award_date'>1996-01-01</field>
             <field name='certification_expiry_date'>2031-01-01</field>
             <field name='company_category_type'>Limited</field>
+            <field name='image_1920' type='base64' file='supplies/static/img/demo-supplier/11.jpg'/>
+            <field name='signatory_name'>Fahim Ahmed</field>
+            <field name='authorized_signatory_name'>Rezwanul Haque</field>
+            <field name='company_stamp' type='base64' file='supplies/static/img/demo-supplier/stamp.png'/>
         </record>
     </data>
 </odoo>

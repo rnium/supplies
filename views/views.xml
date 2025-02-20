@@ -9,7 +9,7 @@
       name="Supplies Dashboard"
       id="menu_supplies_dashboard_root"
       sequence="10"
-      web_icon="supplies,static/image/dashboard.png"
+      web_icon="supplies,static/img/dashboard.png"
     >
       <menuitem
         name="Supplier Statistics"

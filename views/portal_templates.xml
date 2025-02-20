@@ -94,7 +94,7 @@
                 <t t-if="submitted_rfq">
                     <div class="d-flex justify-content-center align-items-center my-5 py-3">
                         <div class="text-center">
-                            <img src="/supplies/static/image/cloud-check.svg" width="200" alt="Success"/>
+                            <img src="/supplies/static/img/cloud-check.svg" width="200" alt="Success"/>
                             <h4 class="mt-4 text-muted">Your Request for Quotation Posted Successfully</h4>
                             <a t-attf-href="/my/supplies/rfq/{{submitted_rfq.name}}" class="btn btn-outline-primary rounded mt-4">
                                 <i class="fa fa-list-alt mr-2" />

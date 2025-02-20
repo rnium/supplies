@@ -83,7 +83,7 @@
                     </div>
                     <div class="col-md-12" t-if="state.selectedSupplierId === '0'">
                         <div class="d-flex flex-column justify-content-center align-items-center my-5 p-5">
-                            <img src="/supplies/static/image/dudes-selective-doodle.svg" alt="Empty" class="img-fluid" width="400"/>
+                            <img src="/supplies/static/img/dudes-selective-doodle.svg" alt="Empty" class="img-fluid" width="400"/>
                             <h2 class="text-muted">Select a supplier to view stats</h2>
                         </div>
                     </div>

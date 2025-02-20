@@ -451,7 +451,7 @@
         <template id="supplier_registration_error">
             <div class="text-center p-4">
                 <div class="mb-3">
-                    <img src="/supplies/static/image/robot-assistant-error.png" alt="Error" class="img-fluid" style="max-width: 120px;"/>
+                    <img src="/supplies/static/img/robot-assistant-error.png" alt="Error" class="img-fluid" style="max-width: 120px;"/>
                 </div>
 
                 <h4 class="fw-bold text-danger">Failed to Process Application!</h4>

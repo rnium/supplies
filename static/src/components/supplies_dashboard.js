@@ -4,6 +4,7 @@ const { Component, onWillStart, useRef, onMounted, useState, useEffect } = owl;
 import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { StatCard } from "./stat_card/stat_card";
+import { StatBar } from "./statbar/statbar";
 import { Graph } from "./Graph/graph";
 import { formatAmount, getDateInterval } from './utils'
 
@@ -143,6 +144,6 @@ export class SuppliesDashboard extends Component {
 }
 
 SuppliesDashboard.template = 'supplies.dashboard';
-SuppliesDashboard.components = { Layout, StatCard, Graph };
+SuppliesDashboard.components = { Layout, StatCard, Graph, StatBar };
 
 registry.category("actions").add("supplies.dashboard", SuppliesDashboard);

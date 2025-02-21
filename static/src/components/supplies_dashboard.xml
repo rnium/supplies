@@ -47,7 +47,7 @@
                                                     <th>Quantity</th>
                                                     <th>Avg. Unit Price</th>
                                                     <th>
-                                                        Total Purchase (<t t-esc="state.currency"/>)
+                                                        Total (<t t-esc="state.currency"/>)
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -71,7 +71,7 @@
                             <t t-else="">
                                 <div class="bg-white border-1 d-flex flex-column justify-content-center align-items-center mt-3" style="padding: 7rem 0;">
                                     <p class="text-muted text-center">
-                                        No purchase data available for the selected supplier.
+                                        No purchase data available for the selection.
                                     </p>
                                 </div>
                             </t>

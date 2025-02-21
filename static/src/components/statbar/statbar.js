@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component, useState } = owl;
+const { Component } = owl;
 
 export class StatBar extends Component {
     static template = 'supplies.statbar';

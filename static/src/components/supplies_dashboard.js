@@ -83,6 +83,8 @@ export class SuppliesDashboard extends Component {
     }
 
     setRFQStatusData(rfqs) {
+        console.log("rfqs", rfqs);
+        
         if (rfqs.length == 0) {
             this.state.rfqStatusChartData = null;
             return;
@@ -104,6 +106,7 @@ export class SuppliesDashboard extends Component {
                 }
             ]
         }
+        console.log(data);
         this.state.rfqStatusChartData = data;
     }
 
@@ -119,9 +122,8 @@ export class SuppliesDashboard extends Component {
         }
         if (this.state.selectedPeriod !== "0") {
             const { start: startDate, end: endDate } = getDateInterval(this.state.selectedPeriod);
-            const dateDomains = [['date_approve', '>=', startDate], ['date_approve', '<=', endDate]];
-            domain.push(...dateDomains)
-            rfq_domain.push(...dateDomains)
+            domain.push(...[['date_approve', '>=', startDate], ['date_approve', '<=', endDate]]);
+            rfq_domain.push(...[['create_date', '>=', startDate], ['create_date', '<=', endDate]]);
         }
 
         const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);

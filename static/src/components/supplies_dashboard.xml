@@ -68,10 +68,10 @@
                     </div>
                     <div class="col-md-4">
                         <t t-if="state.selectedSupplierId !== '0'">
-                            <div t-if="state.rfqStatusChartData" class="bg-white border m-2 p-4 rounded shadow-sm">
+                            <div t-if="state.rfqStatusChartData" class="bg-white p-4 shadow-1 border-1">
                                 <Graph title="'RFQ Status'" type="'doughnut'" data="state.rfqStatusChartData"/>
                             </div>
-                            <div t-if="state.rfpPurchaseChartData" class="bg-white border m-2 p-4 rounded shadow-sm">
+                            <div t-if="state.rfpPurchaseChartData" class="bg-white p-4 shadow-1 border-1 mt-3">
                                 <Graph title="'Purchase Breakdown'" type="'line'" data="state.rfpPurchaseChartData"/>
                             </div>
                         </t>

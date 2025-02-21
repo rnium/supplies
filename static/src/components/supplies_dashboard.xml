@@ -69,7 +69,7 @@
                                 </div>
                             </t>
                             <t t-else="">
-                                <div class="bg-white border-1 d-flex flex-column justify-content-center align-items-center mt-3 p-5">
+                                <div class="bg-white border-1 d-flex flex-column justify-content-center align-items-center mt-3" style="padding: 7rem 0;">
                                     <p class="text-muted text-center">
                                         No purchase data available for the selected supplier.
                                     </p>

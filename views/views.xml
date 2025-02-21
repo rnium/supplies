@@ -6,17 +6,11 @@
       <field name="tag">supplies.dashboard</field>
     </record>
     <menuitem
-      name="Supplies Dashboard"
+      name="Supplier Dashboard"
       id="menu_supplies_dashboard_root"
       sequence="10"
       web_icon="supplies,static/img/dashboard.png"
-    >
-      <menuitem
-        name="Supplier Statistics"
-        id="menu_supplies_dashboard"
-        sequence="2"
-        action="action_supplies_dashboard"
-      />
-    </menuitem>
+      action="action_supplies_dashboard"
+    />
   </data>
 </odoo>

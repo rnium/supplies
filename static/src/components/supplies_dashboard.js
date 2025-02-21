@@ -62,9 +62,7 @@ export class SuppliesDashboard extends Component {
 
     async getSuppliers() {
         const suppliers = await this.orm.searchRead('res.partner', [['supplier_rank', '>', 0]], ['name', 'image_1920', 'street']);
-        this.state.suppliers = suppliers;
-        console.log(suppliers);
-        
+        this.state.suppliers = suppliers;        
     }
 
     setRfpPurchaseData(accepted_rfps) {
@@ -125,8 +123,6 @@ export class SuppliesDashboard extends Component {
             domain.push(...dateDomains)
             rfq_domain.push(...dateDomains)
         }
-        console.log(domain);
-        console.log(rfq_domain);
 
         const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
         const rfqs = await this.orm.searchRead('purchase.order', rfq_domain, ['state']);
@@ -138,7 +134,6 @@ export class SuppliesDashboard extends Component {
             total_amount = formatAmount(total_amount);
         }
         const productLineIds = rfps.map(r => r.product_line_ids).flat();
-        console.log(productLineIds);
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
         this.setRfpPurchaseData(accepted_rfps);

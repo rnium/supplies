@@ -38,12 +38,21 @@ export class SuppliesDashboard extends Component {
         });
 
         useEffect(() => {
-            this.getRequestForPurchases();
+            if (this.state.selectedSupplierId !== "0") {
+                this.getRequestForPurchases();
+            } else {
+                this.state.rfp = { accepted: 0, submitted: 0, total_amount: 0 };
+                this.state.rfpPurchaseChartData = null;
+                this.state.rfqStatusChartData = null;
+                this.state.productLines = [];
+            }
         }, () => [this.state.selectedSupplierId, this.state.selectedPeriod]);
 
         useEffect(() => {
             if (this.state.productLineIds.length) {
                 this.getProductLines();
+            } else {
+                this.state.productLines = [];
             }
         }, () => [this.state.productLineIds]);
 
@@ -125,6 +134,7 @@ export class SuppliesDashboard extends Component {
             total_amount = formatAmount(total_amount);
         }
         const productLineIds = rfps.map(r => r.product_line_ids).flat();
+        console.log(productLineIds);
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
         this.setRfpPurchaseData(accepted_rfps);

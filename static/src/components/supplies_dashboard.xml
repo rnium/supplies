@@ -39,8 +39,8 @@
                             <t t-if="state.productLines.length > 0">
                                 <div class="my-3 p-4 bg-white products-container shadow-1 border-1">
                                     <h2 class="text-muted" style="font-weight: 600">Products Purchased</h2>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
+                                    <div class="table-responsive border-1">
+                                        <table class="table table-hover border-1">
                                             <thead>
                                                 <tr>
                                                     <th>Product</th>

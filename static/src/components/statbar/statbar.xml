@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <templates>
     <t t-name="supplies.statbar" owl="1">
-        <div class="statbar border-1 shadow-1">
+        <div class="bg-white statbar border-1 shadow-1">
             <div class="statbar-item">
                 <div class="d-flex">
                     <div class="icon-box p-3">

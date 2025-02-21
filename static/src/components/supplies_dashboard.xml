@@ -34,48 +34,37 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-md-8">
-                        <StatBar />
-                        <div class="row d-none" t-if="state.selectedSupplierId !== '0'">
-                            <StatCard title="'Accepted'" value="state.rfp.accepted"/>
-                            <StatCard title="'Submissions'" value="state.rfp.submitted"/>
-                            <StatCard title="'Total Amount'" value="state.rfp.total_amount"/>
-                        </div>
-                        <div class="row" t-if="state.productLineIds.length > 0">
-                            <div class="col m-0 p-0">
-                                <div class="border m-2 px-4 py-2 bg-white rounded shadow-sm">
-                                    <h2 class="text-primary fw-bold">Products</h2>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead>
+                        <StatBar t-if="state.selectedSupplierId !== '0'" rfp_stats="state.rfp" />
+                        <t t-if="state.productLineIds.length > 0">
+                            <div class="mt-3 p-3 bg-white products-container shadow-1 border-1">
+                                <h2 class="text-muted" style="font-weight: 600">Products Purchased</h2>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Quantity</th>
+                                                <th>Avg. Unit Price</th>
+                                                <th>Total Purchase</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="state.productLines" t-as="line" t-key="line.id">
                                                 <tr>
-                                                    <th>Product</th>
-                                                    <th>RFP Ref</th>
-                                                    <th>Quantity</th>
-                                                    <th>Unit Price</th>
-                                                    <th>Delivery Charge</th>
-                                                    <th>Sub Total</th>
+                                                    <td>
+                                                        <img t-att-src="'data:image/png;base64,' + line.product_image" alt="product" class="img-fluid rounded me-2 border" width="80"/>
+                                                        <h4 class="d-inline" t-esc="line.product_name"/>
+                                                    </td>
+                                                    <td t-esc="line.total_qty" />
+                                                    <td t-esc="line.avg_qty_price"/>
+                                                    <td t-esc="line.subtotal_purchase"/>
                                                 </tr>
-                                            </thead>
-                                            <tbody>
-                                                <t t-foreach="state.productLines" t-as="line" t-key="line.id">
-                                                    <tr>
-                                                        <td>
-                                                            <img t-att-src="'data:image/png;base64,' + line.product_image" alt="product" class="img-fluid me-2" width="50"/>
-                                                            <span t-esc="line.product_name"/>
-                                                        </td>
-                                                        <td class="text-muted" t-esc="line.rfp_id[1]"/>
-                                                        <td t-esc="line.product_qty"/>
-                                                        <td t-esc="line.unit_price"/>
-                                                        <td t-esc="line.delivery_charge"/>
-                                                        <td t-esc="line.subtotal_price"/>
-                                                    </tr>
-                                                </t>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                            </t>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                        </div>
+                        </t>
                     </div>
                     <div class="col-md-4">
                         <t t-if="state.selectedSupplierId !== '0'">
@@ -87,7 +76,7 @@
                             </div>
                         </t>
                     </div>
-                    <div class="col-md-12 d-none" t-if="state.selectedSupplierId === '0'">
+                    <div class="col-md-12" t-if="state.selectedSupplierId === '0'">
                         <div class="d-flex flex-column justify-content-center align-items-center my-5 p-5">
                             <img src="/supplies/static/img/undraw_choice.svg" alt="Empty" class="img-fluid" width="350"/>
                             <h2 class="mt-3 mb-0">

@@ -61,3 +61,37 @@ export function getDateInterval(interval) {
         end: formatDateLocal(end)
     };
 }
+
+export function groupProducts(products) {
+    const grouped = products.reduce((acc, product) => {
+        const key = product.product_id[0];
+        
+        if (!acc[key]) {
+            acc[key] = {
+                product_name: product.product_name,
+                product_image: product.product_image,
+                product_id: product.product_id,
+                total_qty: 0,
+                sum_unit_price: 0,
+                subtotal_purchase: 0,
+                count: 0
+            };
+        }
+        
+        acc[key].total_qty += product.product_qty;
+        acc[key].sum_unit_price += product.unit_price;
+        acc[key].subtotal_purchase += product.subtotal_price;
+        acc[key].count += 1;
+        
+        return acc;
+    }, {});
+    
+    return Object.values(grouped).map((group, index) => ({
+        id: index + 1,
+        product_name: group.product_name,
+        product_image: group.product_image,
+        total_qty: group.total_qty,
+        avg_qty_price: group.sum_unit_price / group.count,
+        subtotal_purchase: group.subtotal_purchase
+    }));
+}

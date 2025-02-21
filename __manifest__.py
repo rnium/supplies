@@ -53,7 +53,6 @@
         'demo/supplies.rfp.product.line.csv',
         'demo/purchase.order.csv',
         'demo/purchase.order.line.csv',
-        'demo/admin_groups.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

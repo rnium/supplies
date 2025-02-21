@@ -46,7 +46,9 @@
                                                     <th>Product</th>
                                                     <th>Quantity</th>
                                                     <th>Avg. Unit Price</th>
-                                                    <th>Total Purchase</th>
+                                                    <th>
+                                                        Total Purchase (<t t-esc="state.currency"/>)
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>

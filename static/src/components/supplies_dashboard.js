@@ -5,7 +5,7 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { StatBar } from "./statbar/statbar";
 import { Graph } from "./graph/graph";
-import { formatAmount, getDateInterval, groupProducts } from './utils'
+import { formatAmount, getDateInterval, groupProducts, getCurrency } from './utils'
 
 
 export class SuppliesDashboard extends Component {
@@ -19,6 +19,7 @@ export class SuppliesDashboard extends Component {
         this.state = useState({
             suppliers: [],
             selectedSupplierId: "0",
+            currency: '',
             selectedPeriod: "0",
             productLineIds: [],
             productLines: [],
@@ -145,9 +146,10 @@ export class SuppliesDashboard extends Component {
         const productLines = await this.orm.searchRead(
             'supplies.rfp.product.line',
             [['id', 'in', this.state.productLineIds]],
-            ['product_id', 'product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image', 'rfp_id']
-        );
+            ['product_id', 'currency_id', 'product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image', 'rfp_id']
+        );        
         this.state.productLines = groupProducts(productLines);
+        this.state.currency = getCurrency(productLines);
     }
 }
 

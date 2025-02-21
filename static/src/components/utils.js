@@ -95,3 +95,7 @@ export function groupProducts(products) {
         subtotal_purchase: group.subtotal_purchase
     }));
 }
+
+export function getCurrency(products) {
+    return products?.[0]?.currency_id?.[1] || '';
+}

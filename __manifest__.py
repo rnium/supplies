@@ -16,7 +16,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'purchase', 'website', 'mail'],
+    'depends': ['purchase', 'website'],
     'license': 'LGPL-3',
 
     # always loaded
@@ -49,10 +49,11 @@
         'demo/supplies.contact.csv',
         'demo/supplies.registration.csv',
         'demo/supplies.rfp.csv',
+        'demo/mail.blacklist.csv',
         'demo/supplies.rfp.product.line.csv',
         'demo/purchase.order.csv',
         'demo/purchase.order.line.csv',
-        
+        'demo/admin_groups.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

@@ -5,6 +5,7 @@ import { Layout } from "@web/search/layout";
 import { useService } from "@web/core/utils/hooks";
 import { StatBar } from "./statbar/statbar";
 import { Graph } from "./graph/graph";
+import { CompanyCard } from "./company_card/company_card";
 import { formatAmount, getDateInterval, groupProducts, getCurrency } from './utils'
 
 
@@ -60,8 +61,10 @@ export class SuppliesDashboard extends Component {
     }
 
     async getSuppliers() {
-        const suppliers = await this.orm.searchRead('res.partner', [['supplier_rank', '>', 0]], ['name']);
+        const suppliers = await this.orm.searchRead('res.partner', [['supplier_rank', '>', 0]], ['name', 'image_1920', 'street']);
         this.state.suppliers = suppliers;
+        console.log(suppliers);
+        
     }
 
     setRfpPurchaseData(accepted_rfps) {
@@ -154,6 +157,6 @@ export class SuppliesDashboard extends Component {
 }
 
 SuppliesDashboard.template = 'supplies.dashboard';
-SuppliesDashboard.components = { Layout, Graph, StatBar };
+SuppliesDashboard.components = { Layout, Graph, StatBar, CompanyCard };
 
 registry.category("actions").add("supplies.dashboard", SuppliesDashboard);

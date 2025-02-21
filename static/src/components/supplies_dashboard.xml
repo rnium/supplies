@@ -79,8 +79,13 @@
                         </t>
                     </div>
                     <div class="col-md-4">
+                        <CompanyCard 
+                            t-if="state.selectedSupplierId !== '0'" 
+                            supplierId="state.selectedSupplierId"
+                            all_suppliers="state.suppliers"
+                        />
                         <t t-if="state.selectedSupplierId !== '0'">
-                            <div t-if="state.rfqStatusChartData" class="bg-white p-4 shadow-1 border-1">
+                            <div t-if="state.rfqStatusChartData" class="bg-white p-4 shadow-1 border-1 mt-3">
                                 <Graph title="'RFQ Status'" type="'doughnut'" data="state.rfqStatusChartData"/>
                             </div>
                             <div t-if="state.rfpPurchaseChartData" class="bg-white p-4 shadow-1 border-1 mt-3">

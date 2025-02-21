@@ -99,3 +99,15 @@ export function groupProducts(products) {
 export function getCurrency(products) {
     return products?.[0]?.currency_id?.[1] || '';
 }
+
+
+
+export function getImageDataURI(base64) {
+    const get_img_type = () => {
+        if (base64.startsWith('iVBORw0KGgo')) return 'image/png';
+        if (base64.startsWith('/9j/')) return 'image/jpeg';
+        if (base64.startsWith('R0lGODlh')) return 'image/gif';
+        return 'image/jpeg';
+    }
+    return `data:${get_img_type()};base64,${base64}`;
+}

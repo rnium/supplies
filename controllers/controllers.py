@@ -14,6 +14,8 @@ class SupplierRegistration(http.Controller):
         """
         Renders the supplier registration page
         """
+        if not request.env.user.is_public:
+            return request.redirect('/my')
         return request.render('supplies.portal_supplier_registration')
 
     @http.route(['/supplies/register/send-otp'], type='json', auth='none', methods=['POST'])

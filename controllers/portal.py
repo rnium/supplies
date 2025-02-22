@@ -13,7 +13,7 @@ class SuppliesPortal(CustomerPortal):
     def supplies_portal(self, page=1, sortby=None, search=None, search_in=None, groupby=None, **kw):
         limit = 5
         searchbar_sortings = {
-            'date': {'label': 'Newest', 'order': 'create_date desc'},
+            'date': {'label': 'Newest', 'order': 'date_approve desc'},
             'name': {'label': 'Name', 'order': 'rfp_number'},
         }
         groupby_list = {
@@ -21,7 +21,7 @@ class SuppliesPortal(CustomerPortal):
             'state': {'input': 'state', 'label': _('Status')},
         }
         search_in = search_in or 'name'
-        order = searchbar_sortings[sortby]['order'] if sortby else 'create_date desc'
+        order = searchbar_sortings[sortby]['order'] if sortby else 'date_approve desc'
         groupby = groupby or 'state'
         search_list = {
             'all': {'label': _('All'), 'input': 'all', 'domain': []},
@@ -71,6 +71,14 @@ class SuppliesPortal(CustomerPortal):
                 ('state', '=', 'approved')
             ]
         )
+        all_rfps = request.env['supplies.rfp'].sudo().search(
+            [
+                ('state', '=', 'approved')
+            ]
+        )
+        rfp_index = all_rfps.ids.index(rfp.id)
+        prev_record = all_rfps[rfp_index - 1].rfp_number if rfp_index > 0 else False
+        next_record = all_rfps[rfp_index + 1].rfp_number if rfp_index < len(all_rfps) - 1 else False
         success_list = []
         error_list = []
         page_contexts = {}
@@ -115,18 +123,52 @@ class SuppliesPortal(CustomerPortal):
                 'page_name': 'rfp_view',
                 'success_list': success_list,
                 'error_list': error_list,
+                'prev_record': "/my/supplies/" + prev_record if prev_record else False,
+                'next_record': "/my/supplies/" + next_record if next_record else False,
                 **page_contexts
             }
         )
 
-    @http.route('/my/supplies/rfq', auth='user', website=True)
-    def supplies_portal_rfq(self, **kw):
-        rfqs = request.env['purchase.order'].sudo().search([('partner_id', '=', request.env.user.partner_id.id)])
+    @http.route(['/my/supplies/rfq', '/my/supplies/rfq/page/<int:page>'], auth='user', website=True)
+    def supplies_portal_rfq(self, page=1, sortby=None, search=None, search_in=None, groupby=None, **kw):
+        limit = 5
+        searchbar_sortings = {
+            'date': {'label': 'Newest', 'order': 'create_date desc'},
+            'name': {'label': 'Name', 'order': 'name'},
+            'state': {'label': 'Status', 'order': 'state desc'},
+        }
+        search_in = search_in or 'name'
+        order = searchbar_sortings[sortby]['order'] if sortby else 'create_date desc'
+        groupby = groupby or 'state'
+        search_list = {
+            'all': {'label': _('All'), 'input': 'all', 'domain': []},
+            'name': {'label': _('Name'), 'input': 'name', 'domain': [('name', 'ilike', search)]},
+        }
+        sortby = sortby or 'date'
+        search_domain = [('partner_id', '=', request.env.user.partner_id.id)]
+        search_domain += search_list[search_in]['domain']
+        rfq_count = request.env['purchase.order'].sudo().search_count(search_domain)
+        pager = portal_pager(
+            url="/my/supplies/rfq",
+            url_args={'sortby': sortby, 'search_in': search_in, 'search': search, 'groupby': groupby},
+            total=rfq_count,
+            page=page,
+            step=limit
+        )
+        rfqs = request.env['purchase.order'].sudo().search(search_domain, order=order, limit=limit, offset=pager['offset'])
+
         return request.render(
             'supplies.portal_supplies_rfq_tree_view',
             {
                 'rfqs': rfqs,
-                'page_name': 'rfq_list'
+                'page_name': 'rfq_list',
+                'pager': pager,
+                'searchbar_sortings': searchbar_sortings,
+                'searchbar_inputs': search_list,
+                'sortby': sortby,
+                'search_in': search_in,
+                'search': search,
+                'default_url': '/my/supplies/rfq',
             }
         )
 

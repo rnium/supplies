@@ -16,7 +16,7 @@
     'category': 'Uncategorized',
     'version': '0.1',
     # any module necessary for this one to work correctly
-    'depends': ['base', 'website', 'mail'],
+    'depends': ['purchase', 'website'],
     'license': 'LGPL-3',
 
     # always loaded
@@ -25,6 +25,7 @@
         'security/ir.model.access.csv',
         'wizard/supplies_rfp_report_wizard_views.xml',
         'views/views.xml',
+        'views/website_views.xml',
         'views/templates.xml',
         'views/email_templates.xml',
         'views/supplies_registration_views.xml',
@@ -40,6 +41,18 @@
         'report/supplies_rfp_templates.xml',
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',
+        # Data
+        'demo/suppliers.xml',
+        'demo/res.partner.csv',
+        'demo/res.bank.csv',
+        'demo/res.partner.bank.csv',
+        'demo/supplies.contact.csv',
+        'demo/supplies.registration.csv',
+        'demo/supplies.rfp.csv',
+        'demo/mail.blacklist.csv',
+        'demo/supplies.rfp.product.line.csv',
+        'demo/purchase.order.csv',
+        'demo/purchase.order.line.csv',
     ],
     # only loaded in demonstration mode
     'demo': [
@@ -49,7 +62,12 @@
         'web.assets_frontend': [
             'web/static/lib/jquery/jquery.js',
             'supplies/static/src/js/registration.js',
-        ]
+        ],
+        'web.assets_backend': [
+            'supplies/static/src/components/**/*.js',
+            'supplies/static/src/components/**/*.xml',
+            'supplies/static/src/components/**/*.scss',
+        ],
     }
 }
 

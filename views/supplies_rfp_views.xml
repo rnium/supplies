@@ -102,16 +102,18 @@
                     </div>
                     <group>
                         <group>
-                            <field name="create_uid" string="Requested By" invisible="not id or state != 'draft'"/>
-                            <field name="submitted_date" invisible="not id or state == 'draft'"/>
+                            <field name="create_uid" string="Requested By" groups="supplies.group_supplies_approver"/>
+                            <field name="required_date" readonly="state != 'draft'"/>
+                            <field name="review_by" string="Approved By" invisible="not id or state in ['draft', 'submitted', 'rejected']"/>
+                            <field name="review_by" string="Rejected By" invisible="state not in ['rejected']"/>
+                            <field name="date_approve" string="Approved On" invisible="not id or state in ['draft', 'submitted', 'rejected']"/>
+                            <field name="date_approve" string="Rejected On" invisible="state not in ['rejected']"/>
                         </group>
                         <group>
-                            <field name="required_date" readonly="state != 'draft'"/>
                             <field
                                 name="approved_supplier_id"
                                 context="{'search_default_supplier': 1}"
                                 options="{'no_open': True}"
-                                groups="supplies.group_supplies_approver"
                                 invisible="not id or state != 'accepted'"
                                 readonly="1"
                             />
@@ -128,6 +130,7 @@
                             >
                                 <tree editable="bottom">
                                     <field name="product_id" string="Product"/>
+                                    <field name="product_image" widget="image" options='{"size": [120, 120]}'/>
                                     <field name="description" string="Description"/>
                                     <field name="product_qty" string="Quantity"/>
                                     <field name="product_uom" string="UoM"/>

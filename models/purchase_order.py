@@ -12,8 +12,8 @@ class PurchaseOrder(models.Model):
     rfp_state = fields.Selection(related='rfp_id.state', string='RFP State')
 
     def action_accept(self):
-        self.rfp_id.write({'state': 'accepted', 'approved_supplier_id': self.partner_id.id})
-        self.write({'state': 'purchase'})
+        self.rfp_id.write({'state': 'accepted', 'approved_supplier_id': self.partner_id.id, 'date_accept': fields.Date.today()})
+        self.button_confirm()
         # updating RFP product line prices
         for line in self.rfp_id.product_line_ids:
             rfq_line = self.order_line.filtered(lambda x: x.product_id == line.product_id)
@@ -28,7 +28,7 @@ class PurchaseOrder(models.Model):
                 ('id', '!=', self.id),
             ]
         )
-        other_rfqs.write({'state': 'cancel'})
+        other_rfqs.button_cancel()
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'supplies.rfp',

@@ -43,6 +43,7 @@ class SuppliesRegistration(models.Model):
         ]
     )
     image_1920 = fields.Binary(string='Logo')
+    company_stamp = fields.Binary(string='Company Stamp')
     email = fields.Char(string='Email', required=True)
     street = fields.Char(string='Address Line 1', required=True)
     street2 = fields.Char(string='Address Line 2')
@@ -79,6 +80,9 @@ class SuppliesRegistration(models.Model):
     bank_letter_doc = fields.Binary(string='Bank Letter indicating Bank Account Information')
     past_2_years_financial_statement_doc = fields.Binary(string='Past 2 Years of Financial Statement')
     other_certification_doc = fields.Binary(string='Other Certification / Accreditation')
+    # signature fields
+    signatory_name = fields.Char(string='Signatory')
+    authorized_signatory_name = fields.Char(string='Authorized Signatory')
     comments = fields.Text(string='Comments')
 
     def action_approve(self):
@@ -90,6 +94,12 @@ class SuppliesRegistration(models.Model):
     def action_finalize(self):
         if self.state != 'approved':
             raise ValidationError('Invalid state change')
+        # check for existing company with the same email or TIN
+        existing_company = self.env['res.partner'].sudo().search(
+            ['|', ('email', '=', self.email), ('vat', '=', self.vat)]
+        )
+        if existing_company:
+            raise ValidationError('Company with the same email or vat already exists')
         company_schema = schemas.CompanySchema.model_validate(self)
         bank_schema = schemas.BankSchema.model_validate(self)
         bank_ids_schema = schemas.BankAccountSchema.model_validate(self)

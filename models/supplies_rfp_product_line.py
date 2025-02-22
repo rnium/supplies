@@ -8,6 +8,8 @@ class SuppliesRfpProductLine(models.Model):
 
     rfp_id = fields.Many2one('supplies.rfp', string='RFP', required=True, ondelete='cascade', index=True, copy=False)
     product_id = fields.Many2one('product.product', string='Product', required=True)
+    product_name = fields.Char(string='Product Name', related='product_id.name')
+    product_image = fields.Binary(string='Product Image', related='product_id.image_1920')
     description = fields.Text(string='Description')
     product_qty = fields.Integer(string='Quantity')
     unit_price = fields.Monetary(string='Price')
@@ -20,3 +22,9 @@ class SuppliesRfpProductLine(models.Model):
     def _compute_subtotal_price(self):
         for rec in self:
             rec.subtotal_price = (rec.product_qty * rec.unit_price) + rec.delivery_charge
+    
+
+    @api.onchange('product_qty')
+    def _onchange_product_qty(self):
+        if self.product_qty < 0:
+            self.product_qty = 1

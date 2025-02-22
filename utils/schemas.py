@@ -5,11 +5,12 @@ from pydantic import (
 )
 from typing import List, Optional, Annotated
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 import re
 import base64
 
 DOC_MAX_SIZE = 1 * 1024 * 1024 # 1 MB
+DOC_MIMETYPES = ['application/pdf', 'image/jpeg', 'image/png']
 TRADE_LIC_TYPE = Annotated[str, StringConstraints(pattern=r"^[a-zA-Z0-9]{8,20}$")]
 TINType = Annotated[str, StringConstraints(pattern=r"^\d{16}$")]
 
@@ -18,6 +19,7 @@ class ContactSchema(BaseModel):
     email: EmailStr
     phone: str
     address: str
+
 
 class ContactOutSchema(BaseModel):
     model_config = ConfigDict(
@@ -36,6 +38,7 @@ class ContactOutSchema(BaseModel):
         data['function'] = kwargs.get('function')
         return data
 
+
 class ClientContactSchema(BaseModel):
     name: str = None
     email: EmailStr = None
@@ -53,6 +56,7 @@ class ClientContactSchema(BaseModel):
         if (email or phone or address) and not name:
             raise ValueError("If email, phone, or address is provided, name must also be provided.")
         return values
+
 
 class ClientContactOutSchema(BaseModel):
     model_config = ConfigDict(
@@ -105,6 +109,10 @@ class SupplierRegistrationSchema(BaseModel):
     bank_letter_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     past_2_years_financial_statement_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
     other_certification_doc: conbytes(max_length=DOC_MAX_SIZE) = None # type: ignore
+    company_stamp: conbytes(max_length=DOC_MAX_SIZE) # type: ignore
+    #signatory
+    signatory_name: str
+    authorized_signatory_name: str
 
     @model_validator(mode='before')
     @classmethod
@@ -134,6 +142,7 @@ class SupplierRegistrationSchema(BaseModel):
         # Binary fields
         binary_file_fields = [
             'image_1920',
+            'company_stamp',
             'trade_license_doc',
             'certificate_of_incorporation_doc',
             'certificate_of_good_standing_doc',
@@ -148,6 +157,10 @@ class SupplierRegistrationSchema(BaseModel):
         for field in binary_file_fields:
             if field in values:
                 file_value = values[field]
+                filename = file_value.filename
+                mimetype = file_value.mimetype
+                if mimetype not in DOC_MIMETYPES:
+                    raise ValueError(f"Invalid file format for {filename}. Please upload a valid PDF or image file.")
                 values[field] = cls.transform_binary_fields(file_value)
         return values
 
@@ -214,6 +227,7 @@ class UserSchema(BaseModel):
         data['groups_id'] = kwargs.get('groups_id')
         return data
 
+
 class CompanySchema(BaseModel):
     model_config = ConfigDict(
         from_attributes=True,
@@ -223,8 +237,10 @@ class CompanySchema(BaseModel):
     company_category_type: str
     email: EmailStr
     street: str
+    phone: Optional[str] | None = None
     street2: Optional[str] | bool
     image_1920: Optional[Base64Bytes] | bool
+    company_stamp: Optional[Base64Bytes] | bool
     trade_license_number: Optional[str] | bool
     vat: Optional[str] | bool
     commencement_date: Optional[date] | bool
@@ -244,15 +260,37 @@ class CompanySchema(BaseModel):
     bank_letter_doc: Optional[bytes] | bool
     past_2_years_financial_statement_doc: Optional[bytes] | bool
     other_certification_doc: Optional[bytes] | bool
+    signatory_name: str
+    authorized_signatory_name: str
+    date_registration: datetime
     supplier_rank: int = 1
     company_type: str = 'company'
+
+    @model_validator(mode='before')
+    @classmethod
+    def preprocess_data(cls, values):
+        if not isinstance(values, dict):
+            data = {}
+            for field in cls.model_fields:
+                if hasattr(values, field):
+                    data[field] = getattr(values, field)
+            if hasattr(values, 'primary_contact_id'):
+                data['primary_contact_id'] = getattr(values, 'primary_contact_id')
+            data['date_registration'] = values.create_date
+            values = data
+
+        if 'primary_contact_id' in values:
+            primary_contact = values['primary_contact_id']
+            if hasattr(primary_contact, 'phone'):
+                values['phone'] = primary_contact.phone
+        return values
 
 class PurchaseOrderLineSchema(BaseModel):
     product_id: int
     product_qty: int
     product_uom: Optional[int] | None = None
-    price_unit: float
-    delivery_charge: float
+    price_unit: float = Field(gt=0)
+    delivery_charge: float = Field(gt=0)
     date_planned: date
     name: str # description
 

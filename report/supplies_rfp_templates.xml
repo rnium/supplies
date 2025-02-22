@@ -63,7 +63,7 @@
                     <div class="col-12">
                         <h4>Request for Purchases</h4>
                         <table class="table table-bordered">
-                            <thead class="thead-light">
+                            <thead class="thead-light bg-primary text-white">
                                 <tr>
                                     <t t-foreach="rfp_headers" t-as="header">
                                         <th t-esc="header"/>
@@ -72,7 +72,7 @@
                             </thead>
                             <tbody>
                                 <tr t-foreach="rfps" t-as="rfp">
-                                    <td t-foreach="rfp" t-as="field" t-esc="field"/>
+                                    <td t-foreach="rfp[:-1]" t-as="field" t-esc="field"/>
                                 </tr>
                             </tbody>
                         </table>
@@ -91,7 +91,7 @@
                     <div class="col-12">
                         <h4>Product Lines</h4>
                         <table class="table table-bordered">
-                            <thead class="thead-light">
+                            <thead class="thead-light bg-primary text-white">
                                 <tr>
                                     <t t-foreach="product_line_headers" t-as="header">
                                         <th t-esc="header"/>
@@ -99,9 +99,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="product_lines" t-as="line">
-                                    <td t-foreach="line" t-as="field" t-esc="field"/>
-                                </tr>
+                                <t t-foreach="rfps" t-as="rfp">
+                                    <t t-set="rowspan_count" t-value="len(rfp[-1])"/>
+                                    <t t-foreach="rfp[-1]" t-as="line" t-foreach-index="line_index">
+                                        <tr>
+                                            <t t-if="line_index == 0">
+                                                <td t-att-rowspan="rowspan_count" t-esc="rfp[0]" style="vertical-align: middle; text-align: center" />
+                                            </t>
+                                            <td t-foreach="line" t-as="field" t-esc="field"/>
+                                        </tr>
+                                    </t>
+                                </t>
                             </tbody>
                         </table>
                         <div class="row mt-2">

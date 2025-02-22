@@ -36,15 +36,24 @@ def get_report_data(company, supplier, accepted_rfps: Iterable):
             'Account number': (bank_ac.acc_number or 'N/A') if bank_ac else 'N/A',
         },
         'rfp_headers': ['RFP Number', 'Date', 'Required Date', 'Total Amount'],
+        'product_line_headers': ['RFP', 'Product', 'Quantity', 'Unit Price', 'Delivery Charge', 'Subtotal'],
         'rfps': [
             [
                 rfp.rfp_number,
                 datetime.strftime(rfp.date_approve, '%d-%m-%Y'),
                 datetime.strftime(rfp.required_date, '%d-%m-%Y'),
                 rfp.total_amount,
+                [
+                    [
+                        line.product_id.name,
+                        line.product_qty,
+                        line.unit_price,
+                        line.delivery_charge,
+                        line.subtotal_price,
+                    ] for line in rfp.product_line_ids
+                ]
             ] for rfp in accepted_rfps
         ],
-        'product_line_headers': ['Product', 'Quantity', 'Unit Price', 'Delivery Charge', 'Subtotal'],
         'product_lines': [
             [
                 line.product_id.name,

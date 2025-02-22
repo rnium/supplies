@@ -14,26 +14,47 @@
                 </div>
 
                 <!-- Vendor Information -->
-                <div class="row mb-4 p-3">
-                    <div class="col-12">
-                        <h4>
-                            <t t-esc="vendor_name"/>
-                        </h4>
-                        <div class="row border p-2">
-                            <div class="col-6">
-                                <p class="mb-1"><strong>Email:</strong> <span t-esc="vendor_info['Email']"/></p>
-                                <p class="mb-1"><strong>Phone:</strong> <span t-esc="vendor_info['Phone']"/></p>
-                                <p class="mb-1"><strong>Address:</strong> <span t-esc="vendor_info['Address']"/></p>
-                                <p class="mb-1"><strong>TIN:</strong> <span t-esc="vendor_info['TIN']"/></p>
-                            </div>
-                            <div class="col-6">
-                                <p class="mb-1"><strong>Bank:</strong> <span t-esc="vendor_info['Bank']"/></p>
-                                <p class="mb-1"><strong>IBAN:</strong> <span t-esc="vendor_info['IBAN No.']"/></p>
-                                <p class="mb-1"><strong>Swift Code:</strong> <span t-esc="vendor_info['Swift Code']"/></p>
-                                <p class="mb-1"><strong>Account Name:</strong> <span t-esc="vendor_info['Account name']"/></p>
-                                <p class="mb-1"><strong>Account Number:</strong> <span t-esc="vendor_info['Account number']"/></p>
-                            </div>
-                        </div>
+                <div class="row mb-4 p-3 justify-content-end">
+                    <div class="col-5">
+                        <h3 class="text-center mb-3" t-esc="vendor_name"/>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td><strong>Email</strong></td>
+                                <td><span t-esc="vendor_info['Email']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Phone</strong></td>
+                                <td><span t-esc="vendor_info['Phone']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Address</strong></td>
+                                <td><span t-esc="vendor_info['Address']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>TIN</strong></td>
+                                <td><span t-esc="vendor_info['TIN']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Bank</strong></td>
+                                <td><span t-esc="vendor_info['Bank']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>IBAN</strong></td>
+                                <td><span t-esc="vendor_info['IBAN No.']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Swift Code</strong></td>
+                                <td><span t-esc="vendor_info['Swift Code']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Account Name</strong></td>
+                                <td><span t-esc="vendor_info['Account name']"/></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Account Number</strong></td>
+                                <td><span t-esc="vendor_info['Account number']"/></td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
 
@@ -41,7 +62,7 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <h4>Request for Purchases</h4>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead class="thead-light">
                                 <tr>
                                     <t t-foreach="rfp_headers" t-as="header">
@@ -69,7 +90,7 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <h4>Product Lines</h4>
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-bordered">
                             <thead class="thead-light">
                                 <tr>
                                     <t t-foreach="product_line_headers" t-as="header">
@@ -95,8 +116,8 @@
 
                 <!-- Company Information -->
                 <div class="row mt-5 bg-light">
-                    <div class="col-12 border-top pt-3">
-                        <h4 t-esc="company_name"/>
+                    <div class="col-12 pt-3">
+                        <h3 t-esc="company_name"/>
                         <div class="row">
                             <div class="col-12">
                                 <p class="mb-1"><strong>Email:</strong> <span t-esc="company_data['Email']"/></p>

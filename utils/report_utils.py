@@ -105,22 +105,23 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         'font_size': 12,
     }
     report_data = get_report_data(env.company, supplier, accepted_rfps)
+
     def insert_vendor_info():
         nonlocal ROW_OFFSET
         nonlocal COL_OFFSET
-        COL_OFFSET = 5
+        COL_OFFSET = 4
 
         nonlocal value_cell_style_config
         nonlocal key_cell_style_config
         vendor_info = report_data['vendor_info']
-        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + 1, supplier.name, workbook.add_format(header_style_config))
+        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + 2, supplier.name, workbook.add_format(header_style_config))
         ROW_OFFSET += 1
         for i, (key, value) in enumerate(vendor_info.items()):
             ROW_OFFSET += 1
             worksheet.write(ROW_OFFSET, COL_OFFSET, key, workbook.add_format(key_cell_style_config))
-            worksheet.write(ROW_OFFSET, COL_OFFSET + 1, value, workbook.add_format(value_cell_style_config))
+            worksheet.merge_range(ROW_OFFSET, COL_OFFSET + 1, ROW_OFFSET, COL_OFFSET + 2, value, workbook.add_format(value_cell_style_config))
         worksheet.set_column(COL_OFFSET, COL_OFFSET, 20)
-        worksheet.set_column(COL_OFFSET + 1, COL_OFFSET + 1, 35)
+        worksheet.set_column(COL_OFFSET + 1, COL_OFFSET + 2, 20)
         COL_OFFSET = 1 # reset back to 1
 
     def insert_rfps():
@@ -135,11 +136,11 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
             worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(key_cell_style_config))
         for i, row in enumerate(rfp_data):
             ROW_OFFSET += 1
-            for j, cell in enumerate(row):
+            for j, cell in enumerate(row[:-1]):
                 worksheet.write(ROW_OFFSET, COL_OFFSET + j, cell, workbook.add_format(value_cell_style_config))
         ROW_OFFSET += 1
         net_amount = report_data['rfp_net_amount']
-        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
+        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
         worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 1, net_amount, workbook.add_format(value_cell_style_config))
         worksheet.set_column(COL_OFFSET, COL_OFFSET + len(rfp_data[0]) - 1, 20)
 
@@ -148,18 +149,30 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         nonlocal COL_OFFSET
         ROW_OFFSET += 3
         header = report_data['product_line_headers']
-        product_data = report_data['product_lines']
         worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 1, 'Product Lines', workbook.add_format(header_style_config))
         ROW_OFFSET += 1
         for i, cell in enumerate(header):
             worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(key_cell_style_config))
-        for i, row in enumerate(product_data):
-            ROW_OFFSET += 1
-            for j, cell in enumerate(row):
-                worksheet.write(ROW_OFFSET, COL_OFFSET + j, cell, workbook.add_format(value_cell_style_config))
+        # Writing product data
+        for rfp in report_data['rfps']:
+            rfp_number = rfp[0]
+            rowspan_count = len(rfp[4])  # Number of product lines for this RFP
+            
+            first_row = True  # Track the first row for merging
+            for product in rfp[4]:  # Iterate through product lines
+                ROW_OFFSET += 1
+                if first_row:
+                    # Merge RFP Number cell for all product lines
+                    worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET + rowspan_count - 1, COL_OFFSET, rfp_number, workbook.add_format(value_cell_style_config))
+                    first_row = False
+                
+                # Write product details
+                for j in range(len(product)):
+                    worksheet.write(ROW_OFFSET, COL_OFFSET + 1 + j, product[j], workbook.add_format(value_cell_style_config))
         ROW_OFFSET += 1
         net_amount = report_data['product_line_net_amount']
-        worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
+        # worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
+        worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 2, 'Net Amount', workbook.add_format(key_cell_style_config))
         worksheet.write(ROW_OFFSET, COL_OFFSET + len(header) - 1, net_amount, workbook.add_format(value_cell_style_config))
         worksheet.set_column(COL_OFFSET, COL_OFFSET + len(header) - 1, 20)
 
@@ -167,7 +180,6 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         nonlocal ROW_OFFSET
         nonlocal COL_OFFSET
         ROW_OFFSET += 3
-        COL_OFFSET = 0
         local_common_style_config = {
             **common_style_config,
             'align': 'left',

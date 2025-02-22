@@ -25,9 +25,11 @@ class SuppliesRfp(models.Model):
     product_line_ids = fields.One2many('supplies.rfp.product.line', 'rfp_id', string='Product Lines')
     rfq_ids = fields.One2many('purchase.order', 'rfp_id', string='RFQs', domain=lambda self: self._get_rfq_domain())
     num_rfq = fields.Integer(string='Number of RFQs', compute='_compute_num_rfq', store=True)
-    date_approve = fields.Date(string='Approved On', readonly=True)
     total_amount = fields.Monetary(string='Total Amount', compute='_compute_total_amount', store=True)
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
+    date_approve = fields.Date(string='Reviewed On', readonly=True) # when an approver either approves or rejects
+    review_by = fields.Many2one('res.users', string='Review By', readonly=True) # an approver either approves or rejects
+    date_accept = fields.Date(string='Accepted On', readonly=True)
 
     @api.depends('product_line_ids', 'product_line_ids.subtotal_price')
     def _compute_total_amount(self):
@@ -79,7 +81,7 @@ class SuppliesRfp(models.Model):
 
     @rfp_state_flow('submitted')
     def action_approve(self):
-        self.write({'state': 'approved', 'date_approve': fields.Date.today()})
+        self.write({'state': 'approved', 'date_approve': fields.Date.today(), 'review_by': self.env.user.id})
         # notify reviewer
         email_values = {
             'email_from': get_smtp_server_email(self.env),
@@ -103,7 +105,7 @@ class SuppliesRfp(models.Model):
 
     @rfp_state_flow('submitted')
     def action_reject(self):
-        self.state = 'rejected'
+        self.write({'state': 'rejected', 'review_by': self.env.user.id, 'date_approve': fields.Date.today()})
         email_values = {
             'email_from': get_smtp_server_email(self.env),
             'email_to': self.create_uid.login,

@@ -106,7 +106,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
     }
     table_header_style_config = {
         **common_style_config,
-        'bg_color': '#a53860',
+        'bg_color': '#875A7B',
         'border': 1,
         'font_color': 'white',
         'bold': False,

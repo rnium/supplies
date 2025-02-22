@@ -104,6 +104,13 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         'border': 0,
         'font_size': 12,
     }
+    table_header_style_config = {
+        **common_style_config,
+        'bg_color': '#a53860',
+        'border': 1,
+        'font_color': 'white',
+        'bold': False,
+    }
     report_data = get_report_data(env.company, supplier, accepted_rfps)
 
     def insert_vendor_info():
@@ -133,7 +140,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 1, 'Accepted RFPs', workbook.add_format(header_style_config))
         ROW_OFFSET += 1
         for i, cell in enumerate(header):
-            worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(key_cell_style_config))
+            worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(table_header_style_config))
         for i, row in enumerate(rfp_data):
             ROW_OFFSET += 1
             for j, cell in enumerate(row[:-1]):
@@ -152,7 +159,7 @@ def generate_excel_report(env: Environment, supplier, accepted_rfps: Iterable, r
         worksheet.merge_range(ROW_OFFSET, COL_OFFSET, ROW_OFFSET, COL_OFFSET + len(header) - 1, 'Product Lines', workbook.add_format(header_style_config))
         ROW_OFFSET += 1
         for i, cell in enumerate(header):
-            worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(key_cell_style_config))
+            worksheet.write(ROW_OFFSET, COL_OFFSET + i, cell, workbook.add_format(table_header_style_config))
         # Writing product data
         for rfp in report_data['rfps']:
             rfp_number = rfp[0]

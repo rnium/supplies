@@ -139,7 +139,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Logo</label>
-                                                <input type="file" class="form-control" name="image_1920"/>
+                                                <input type="file" class="form-control" name="image_1920" accept=".jpg, .jpeg, .png"/>
                                             </div>
                                         </div>
 

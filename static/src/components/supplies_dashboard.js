@@ -126,8 +126,16 @@ export class SuppliesDashboard extends Component {
             rfq_domain.push(...[['create_date', '>=', startDate], ['create_date', '<=', endDate]]);
         }
 
-        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
-        const rfqs = await this.orm.searchRead('purchase.order', rfq_domain, ['state']);
+        const rfps = await this.orm.call(
+            'supplies.rfp',
+            'get_rfp_sudo', 
+            [domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']]
+        );
+        const rfqs = await this.orm.call(
+            'purchase.order',
+            'get_purchase_order_sudo', 
+            [rfq_domain, ['state']]
+        );
         const accepted_rfps = rfps.filter(r => r.state === 'accepted');
         const submitted = rfqs.length;
         const accepted = accepted_rfps.length;

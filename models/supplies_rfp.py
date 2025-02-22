@@ -145,3 +145,7 @@ class SuppliesRfp(models.Model):
         action = self.env.ref('purchase.purchase_rfq').read()[0]
         action['domain'] = [('rfp_id', '=', self.id), ('recommended', '=', True), ('partner_id', '=', self.approved_supplier_id.id)]
         return action
+    
+    @api.model
+    def get_rfp_sudo(self, domain, fields):
+        return self.sudo().search_read(domain, fields)

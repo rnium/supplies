@@ -68,4 +68,6 @@ class PurchaseOrder(models.Model):
                 order.currency_id or order.company_id.currency_id,
             )
 
-
+    @api.model
+    def get_purchase_order_sudo(self, domain, fields):
+        return self.sudo().search_read(domain, fields)

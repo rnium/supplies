@@ -37,4 +37,5 @@ class ResPartner(models.Model):
     # signature fields
     signatory_name = fields.Char(string='Signatory')
     authorized_signatory_name = fields.Char(string='Authorized Signatory')
+    date_registration = fields.Datetime(string='Date of Registration')
 

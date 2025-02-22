@@ -94,6 +94,12 @@ class SuppliesRegistration(models.Model):
     def action_finalize(self):
         if self.state != 'approved':
             raise ValidationError('Invalid state change')
+        # check for existing company with the same email or TIN
+        existing_company = self.env['res.partner'].sudo().search(
+            ['|', ('email', '=', self.email), ('vat', '=', self.vat)]
+        )
+        if existing_company:
+            raise ValidationError('Company with the same email or vat already exists')
         company_schema = schemas.CompanySchema.model_validate(self)
         bank_schema = schemas.BankSchema.model_validate(self)
         bank_ids_schema = schemas.BankAccountSchema.model_validate(self)

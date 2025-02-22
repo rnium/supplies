@@ -5,7 +5,7 @@ from pydantic import (
 )
 from typing import List, Optional, Annotated
 from collections import defaultdict
-from datetime import date
+from datetime import date, datetime
 import re
 import base64
 
@@ -262,6 +262,7 @@ class CompanySchema(BaseModel):
     other_certification_doc: Optional[bytes] | bool
     signatory_name: str
     authorized_signatory_name: str
+    date_registration: datetime
     supplier_rank: int = 1
     company_type: str = 'company'
 
@@ -275,6 +276,7 @@ class CompanySchema(BaseModel):
                     data[field] = getattr(values, field)
             if hasattr(values, 'primary_contact_id'):
                 data['primary_contact_id'] = getattr(values, 'primary_contact_id')
+            data['date_registration'] = values.create_date
             values = data
 
         if 'primary_contact_id' in values:

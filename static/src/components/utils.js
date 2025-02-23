@@ -79,8 +79,8 @@ export function groupProducts(products) {
         }
         
         acc[key].total_qty += product.product_qty;
-        acc[key].sum_unit_price += product.unit_price;
-        acc[key].subtotal_purchase += product.subtotal_price;
+        acc[key].sum_unit_price += product.price_unit;
+        acc[key].subtotal_purchase += product.price_subtotal;
         acc[key].count += 1;
         
         return acc;

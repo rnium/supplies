@@ -294,7 +294,7 @@
         <field name="state">code</field>
         <field name="code">model.cleanup_dangling_contacts()</field>
         <field name="interval_number">1</field>
-        <field name="interval_type">minutes</field>
+        <field name="interval_type">hours</field>
         <field name="numbercall">-1</field>
         <field name="doall" eval="False"/>
     </record>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="reg_1" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/1.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_2" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/2.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_3" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/3.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_4" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/4.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_5" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/5.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_6" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/6.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_7" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/7.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_8" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/8.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_9" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/9.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_10" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/10.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_11" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/11.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_12" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/12.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_13" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/13.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_14" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/14.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_15" model="supplies.registration">
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_16" model="supplies.registration">
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_17" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/17.png"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_18" model="supplies.registration">
+            <field name="image_1920" type="base64" file="supplies/static/img/demo-supplier/18.jpg"/>
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+        <record id="reg_19" model="supplies.registration">
+            <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+        </record>
+    </data>
+</odoo>

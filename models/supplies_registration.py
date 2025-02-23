@@ -109,10 +109,10 @@ class SuppliesRegistration(models.TransientModel):
             raise ValidationError('Invalid state change')
         # check for existing company with the same email or TIN
         existing_company = self.env['res.partner'].sudo().search(
-            ['|', ('email', '=', self.email), ('vat', '=', self.vat)]
+            ['|', ('email', '=', self.email), ('vat', '!=', False), ('vat', '=', self.vat)]
         )
         if existing_company:
-            raise ValidationError('Company with the same email or vat already exists')
+            raise ValidationError('Company with the same email or TIN already exists')
         company_schema = schemas.CompanySchema.model_validate(self)
         bank_schema = schemas.BankSchema.model_validate(self)
         bank_ids_schema = schemas.BankAccountSchema.model_validate(self)

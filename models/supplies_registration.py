@@ -13,7 +13,19 @@ class SuppliesRegistrationContact(models.Model):
     email = fields.Char(string='Email')
     phone = fields.Char(string='Phone')
     address = fields.Char(string='Address')
-
+    
+    @api.model
+    def cleanup_dangling_contacts(self):
+        all_registrations = self.env['supplies.registration'].search([])
+        used_contact_ids = (
+            all_registrations.mapped('primary_contact_id').ids +
+            all_registrations.mapped('finance_contact_id').ids +
+            all_registrations.mapped('authorized_contact_id').ids +
+            all_registrations.mapped('client_ref_ids').ids
+        )
+        dangling_contacts = self.search([('id', 'not in', used_contact_ids)])
+        dangling_contacts.unlink()
+        
 
 class SuppliesRegistration(models.TransientModel):
     _name = 'supplies.registration'

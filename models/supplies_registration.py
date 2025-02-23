@@ -15,9 +15,10 @@ class SuppliesRegistrationContact(models.Model):
     address = fields.Char(string='Address')
 
 
-class SuppliesRegistration(models.Model):
+class SuppliesRegistration(models.TransientModel):
     _name = 'supplies.registration'
     _description = 'Supplies Registration'
+    _transient_max_hours = 24 * 30 # 30 days
 
     state = fields.Selection(
         [
@@ -152,10 +153,3 @@ class SuppliesRegistration(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
-
-    @api.model
-    def cleanup_registrations(self):
-        # delete all registrations that is not in 'submitted' state and it's created more than 30 days ago
-        thirty_days_ago = fields.Date.subtract(fields.Date.today(), days=30)
-        registrations = self.search([('state', '!=', 'submitted'), ('create_date', '<', thirty_days_ago)])
-        registrations.unlink()

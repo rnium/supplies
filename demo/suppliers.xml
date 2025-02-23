@@ -22,6 +22,7 @@
             <field name="signatory_name">Alice Johnson</field>
             <field name="authorized_signatory_name">Bob Smith</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 15:00:00</field>
         </record>
 
         <record id="supplier_2" model="res.partner">
@@ -45,6 +46,7 @@
             <field name="signatory_name">Charlie Brown</field>
             <field name="authorized_signatory_name">Diana Prince</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 16:00:00</field>
         </record>
 
         <record id="supplier_3" model="res.partner">
@@ -68,6 +70,7 @@
             <field name="signatory_name">Edward Norton</field>
             <field name="authorized_signatory_name">Fiona Apple</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 17:00:00</field>
         </record>
 
         <record id="supplier_4" model="res.partner">
@@ -91,6 +94,7 @@
             <field name="signatory_name">George Clooney</field>
             <field name="authorized_signatory_name">Hannah Montana</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 18:00:00</field>
         </record>
 
         <record id="supplier_5" model="res.partner">
@@ -114,6 +118,7 @@
             <field name="signatory_name">Ian McKellen</field>
             <field name="authorized_signatory_name">Jessica Alba</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 19:00:00</field>
         </record>
 
         <record id="supplier_6" model="res.partner">
@@ -137,6 +142,7 @@
             <field name="signatory_name">Kevin Spacey</field>
             <field name="authorized_signatory_name">Laura Dern</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 20:00:00</field>
         </record>
 
         <record id="supplier_7" model="res.partner">
@@ -160,6 +166,7 @@
             <field name="signatory_name">Michael Jordan</field>
             <field name="authorized_signatory_name">Nancy Drew</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 21:00:00</field>
         </record>
 
         <record id="supplier_8" model="res.partner">
@@ -183,6 +190,7 @@
             <field name="signatory_name">Oscar Wilde</field>
             <field name="authorized_signatory_name">Paula Abdul</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 22:00:00</field>
         </record>
 
         <record id="supplier_9" model="res.partner">
@@ -206,6 +214,7 @@
             <field name="signatory_name">Quentin Tarantino</field>
             <field name="authorized_signatory_name">Rachel Green</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-15 23:00:00</field>
         </record>
 
         <record id="supplier_10" model="res.partner">
@@ -229,6 +238,7 @@
             <field name="signatory_name">John Doe</field>
             <field name="authorized_signatory_name">Jane Doe</field>
             <field name="company_stamp" type="base64" file="supplies/static/img/demo-supplier/stamp.png"/>
+            <field name="date_registration">2024-11-16 00:00:00</field>
         </record>
 
         <record id='supplier_11' model='res.partner'>
@@ -252,6 +262,7 @@
             <field name='signatory_name'>Fahim Ahmed</field>
             <field name='authorized_signatory_name'>Rezwanul Haque</field>
             <field name='company_stamp' type='base64' file='supplies/static/img/demo-supplier/stamp.png'/>
+            <field name='date_registration'>2024-11-16 01:00:00</field>
         </record>
     </data>
 </odoo>

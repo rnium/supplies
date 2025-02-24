@@ -101,3 +101,16 @@ def render_registration_error_html(env: Environment, errors: List[dict]):
     template_name = 'supplies.supplier_registration_error'
     html = render_qweb_template(env, template_name, {'errors': formatted_erros})
     return str(html)
+
+
+def check_unique_tin_trade_lic(env: Environment, formdata):
+    """
+    Checks if the tin and trade license are unique
+    """
+    tin = formdata.get('vat')
+    trade_lic = formdata.get('trade_license_number')
+    if tin and env['res.partner'].sudo().search([('vat', '=', tin)]):
+        return False
+    if trade_lic and env['res.partner'].sudo().search([('trade_license_number', '=', trade_lic)]):
+        return False
+    return True

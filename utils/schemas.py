@@ -73,7 +73,7 @@ class SupplierRegistrationSchema(BaseModel):
     name: str
     company_category_type: str
     email: EmailStr
-    image_1920: Base64Bytes | None = None
+    image_1920: Base64Bytes
     street: str
     street2: str = None
     trade_license_number: Optional[TRADE_LIC_TYPE] = None

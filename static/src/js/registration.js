@@ -191,7 +191,9 @@ function validateStepInputs(step) {
     $(`#step_${step} input`).each((index, element) => {
         // skip file input
         if ($(element).attr('type') === 'file') {
-            return;
+            if ($(element).attr('required') && !$(element).val()) {
+                toggleIsInvalid(element, true);
+            }
         }
         // first check if the input is required
         if ($(element).attr('required')) {
@@ -380,7 +382,7 @@ function submit_form(formData) {
                     true
                 );
             } else {
-                showModal(MODAL_1, data?.data?.html || 'Failed to submit form', true);
+                showModal(MODAL_1, data?.data?.html || data?.message || 'Failed to submit form', true);
             }
         },
         error: function (xhr, status, error) {

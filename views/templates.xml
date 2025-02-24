@@ -139,7 +139,10 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-label">Logo</label>
-                                                <input type="file" class="form-control" name="image_1920" accept=".jpg, .jpeg, .png"/>
+                                                <input type="file" class="form-control" name="image_1920" accept=".jpg, .jpeg, .png" required=""/>
+                                                <div class="invalid-feedback">
+                                                    Please upload logo in JPG, JPEG, or PNG format.
+                                                </div>
                                             </div>
                                         </div>
 
@@ -157,9 +160,9 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label class="form-label">Trade License Number</label>
-                                                <input type="text" class="form-control" pattern="^(?:\d{8,20}|)$" name="trade_license_number"/>
+                                                <input type="text" class="form-control" pattern="^(?:[a-zA-Z0-9]{8,20})?$" name="trade_license_number"/>
                                                 <div class="invalid-feedback">
-                                                    Please enter a valid Trade License Number. Should be a 8 to 20 digits number.
+                                                    Please enter a valid Trade License Number. Should be 8 to 20 characters long.
                                                 </div>
                                             </div>
                                             <div class="col-md-6">

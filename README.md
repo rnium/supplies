@@ -1,6 +1,8 @@
-# Supplies (Procurement Management System in Odoo)
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL%20v3-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0)
 
-This project implements an Odoo 17 solution for supplier registration, RFP creation, and quotation management. It is designed as a containerized application for ease of development and production deployment. This repository includes all necessary Docker, Nginx, and configuration files.
+# Supplies (Procurement Management System)
+
+This Odoo project implements an Odoo 17 solution for supplier registration, RFP creation, and quotation management. It is designed as a containerized application for ease of development and production deployment. This repository includes all necessary Docker, Nginx, and configuration files.
 
 ## Table of Contents
 

@@ -11,6 +11,7 @@
       sequence="10"
       web_icon="supplies,static/img/dashboard.png"
       action="action_supplies_dashboard"
+      groups="supplies.group_supplies_approver,supplies.group_supplies_reviewer"
     />
   </data>
 </odoo>

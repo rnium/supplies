@@ -58,7 +58,7 @@
     ],
     # only loaded in demonstration mode
     'demo': [
-        'demo/demo.xml',
+        
     ],
     'assets': {
         'web.assets_frontend': [

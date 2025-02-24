@@ -42,6 +42,7 @@
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',
         # Data
+        'demo/demo_users.xml',
         'demo/suppliers.xml',
         'demo/res.partner.csv',
         'demo/res.bank.csv',

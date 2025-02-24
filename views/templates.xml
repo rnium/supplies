@@ -118,7 +118,7 @@
                             <div class="d-flex justify-content-center align-items-center" style="margin: 5rem auto;">
                                 <div class="otp-form">
                                     <span class="mainHeading">Enter OTP</span>
-                                    <p class="otpSubheading text-muted">We have sent a verification code to the email address</p>
+                                    <p class="otpSubheading text-muted">We have sent a verification code to your email address</p>
                                     <div class="inputContainer">
                                         <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input1"/>
                                         <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input2"/>
@@ -127,8 +127,11 @@
                                         <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input5"/> 
                                         <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input6"/> 
                                     </div>
-                                    <button class="verifyButton" type="submit">Verify</button>
-                                    <p class="mt-2 text-muted resendNote">Didn't receive the code? <button class="resendBtn">Resend Code</button></p>
+                                    <button disabled="" class="verifyButton" type="submit">Verify</button>
+                                    <p class="mt-2 text-muted resendNote">
+                                        Didn't receive the code?
+                                        <button disabled="" class="resendBtn">Resend Code</button>
+                                    </p>
                                 </div>
                             </div>
                             <div class="d-none card shadow-sm my-5">

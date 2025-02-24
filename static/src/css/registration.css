@@ -6,6 +6,11 @@
     --primary-color-disabled: rgba(96, 64, 88, 0.8);
 }
 
+.welcome-section {
+    img {
+        width: 150px;
+    }
+}
 
 
 .otp-form {

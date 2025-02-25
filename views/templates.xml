@@ -88,8 +88,8 @@
                     <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="row ">
                         <div class="col-md-12">
-                            <div id="otp_container" class="d-flex justify-content-center align-items-center" style="margin: 5rem auto;">
-                                <div class="row justify-content-center" id="window_1">
+                            <div id="otp_container" class="d-flex justify-content-center align-items-center">
+                                <div class="row justify-content-center" id="window_1" style="margin: 5rem auto;">
                                     <div class="col-md-8 welcome-section text-center">
                                         <img src="/supplies/static/img/business-3d-happy-robot-assistant.png" alt="Supplier Network" class="img-fluid"/>
                                         <h2 class="text-center mb-4">Join Our Supplier Network</h2>
@@ -105,7 +105,7 @@
                                     </div>
                                 </div>
                                 
-                                <div id="window_2" style="display: none;">
+                                <div id="window_2" style="display: none;margin: 5rem auto;">
                                     <div class="otp-form">
                                         <span class="mainHeading">Enter OTP</span>
                                         <p class="otpSubheading text-muted">We have sent a verification code to your email address</p>
@@ -427,14 +427,10 @@
                     <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 11111">
                         <div id="liveToast" class="toast text-bg-secondary" role="alert" aria-live="assertive" aria-atomic="true">
                             <div class="toast-header">
-                            <img src="..." class="rounded me-2" alt="..."/>
-                            <strong class="me-auto">Bootstrap</strong>
-                            <small>11 mins ago</small>
+                            <strong class="title me-auto"/>
                             <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"/>
                             </div>
-                            <div class="toast-body">
-                                Hello, world! This is a toast message.
-                            </div>
+                            <div class="toast-body"/>
                         </div>
                     </div>
                     <!-- Modal -->

@@ -134,7 +134,9 @@ const pageManager = {
 function goNextWindow() {
     $(WINDOW_1_ID).fadeOut(100, () => {
         $(WINDOW_2_ID).fadeIn(100, () => {
-            $(`${OTP_INPUT_CONTAINER_ID} input`).first().focus();
+            setTimeout(() => {
+                $('.otp-input').first().focus();
+            }, 300)
         });
     });
 }
@@ -159,31 +161,14 @@ function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=
     mBootstrap.show()
 }
 
-function showError(alertContainerId, msg) {
-    $(alertContainerId).removeClass("alert-warning");
-    $(alertContainerId).addClass("alert-danger");
-    $(`${alertContainerId} .error_message_text`).text(msg)
-    $(alertContainerId).show(200,()=>{
-        setTimeout(()=>{
-            $(alertContainerId).hide()
-        }, 20000)
-    })
-}
 
-function showWarning(alertContainerId, msg) {
-    $(alertContainerId).removeClass("alert-danger");
-    $(alertContainerId).addClass("alert-warning");
-    $(`${alertContainerId} .error_message_text`).text(msg)
-    $(alertContainerId).show(200,()=>{
-        setTimeout(()=>{
-            $(alertContainerId).hide(200)
-        }, 20000)
-    })
-}
-
-function showToast() {
+function showToast(message, title="Error", scope="danger") {
     const toastLiveExample = document.getElementById('liveToast')
     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+    toastLiveExample.querySelector('.toast-body').innerText = message
+    toastLiveExample.querySelector('.title').innerText = title
+    toastLiveExample.classList.remove('bg-danger', 'bg-warning', 'bg-success', 'bg-info')
+    toastLiveExample.classList.add(`bg-${scope}`)
     toastBootstrap.show()
 }
 
@@ -291,7 +276,7 @@ function format_rpc_data(data) {
 function send_otp() {
     const email = $('#email').val();
     if (!isValidEmail(email)) {
-        showError(ALERT_CONTAINER_ID, 'Invalid Email');
+        showToast('Invalid email address');
         return;
     }
     $.ajax({
@@ -307,7 +292,6 @@ function send_otp() {
         success: function (data) {
             if (data?.result?.status === 'success') {
                 goNextWindow();                    
-                showWarning(ALERT_CONTAINER_ID, 'OTP has been sent to your email.');
                 $(SEND_OTP_BTN_ID).hide();
                 $(OTP_INPUT_CONTAINER_ID).show(
                     200,
@@ -318,11 +302,11 @@ function send_otp() {
                 $(VERIFY_OTP_BTN_ID).show();
                 $('#email').prop('readonly', true);
             } else {
-                showError(ALERT_CONTAINER_ID, data?.result?.message || 'Failed to send OTP');
+                showToast(data?.result?.message || 'Failed to send OTP');
             }
         },
         error: function (xhr, status, error) {
-            showError(ALERT_CONTAINER_ID, 'Failed to send OTP');
+            showToast('Failed to send OTP');
         },
         complete: function () {
             $(SEND_OTP_BTN_ID).prop('disabled', false);
@@ -330,11 +314,25 @@ function send_otp() {
     });
 }
 
+function getOtpInput() {
+    const otp = [];
+    $('.otp-input').each((index, element) => {
+        const value = $(element).val();
+        if (value) {
+            otp.push(value);
+        }
+    });    
+    if (otp.length !== NUM_OTP_DIGITS) {
+        return null;
+    }    
+    return otp.join('');
+}
+
 function verify_otp() {
     const email = $('#email').val();
-    const otp = $('#otp').val();
+    const otp = getOtpInput();
     if (!otp) {
-        showError(ALERT_CONTAINER_ID, 'OTP is required');
+        showToast('Please enter valid OTP');
         return;
     }
     $.ajax({
@@ -349,9 +347,9 @@ function verify_otp() {
         data: JSON.stringify(format_rpc_data({email: email, otp: otp})),
         success: function (data) {
             if (data?.result?.status === 'success') {
-                showWarning(ALERT_CONTAINER_ID, 'OTP verified. Proceeding to registration.');
+                showToast('OTP verified successfully, proceeding to next step', 'Success', 'success');
                 setTimeout(() => {
-                    $(OTP_FORM_CONTAINER_ID).hide(200, () => {
+                    $(WINDOW_2_ID).hide(200, () => {
                         $(REG_FORM_CONTAINER_ID).show(200);
                         pageManager.email = email;
                         pageManager.otp = otp;
@@ -359,11 +357,11 @@ function verify_otp() {
                 }, 1500);
             } else {
                 const error_msg = data?.result?.message || 'Invalid OTP. Please try again.';
-                showError(ALERT_CONTAINER_ID, error_msg);
+                showToast(error_msg);
             }
         },
         error: function (xhr, status, error) {
-            showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
+            showToast('Invalid OTP. Please try again.')
         },
         complete: function () {
             $(VERIFY_OTP_BTN_ID).prop('disabled', false);
@@ -411,11 +409,40 @@ function enableOtpInput() {
             return;
         }
         const current_position = $(this).data('position');
+        if (e.keyCode === 13) {
+            verify_otp();
+        }
+        if (isNaN(parseInt($(this).val()))) {
+            $(this).val('');
+            return;
+        }
         const next_position = current_position + 1;
         if (next_position <= NUM_OTP_DIGITS) {
             $(`input[data-position=${next_position}]`).removeAttr('disabled').focus();
         } else {
-            console.log('All OTP digits entered');
+            $(VERIFY_OTP_BTN_ID).removeAttr('disabled');
+        }
+    });
+    $('input[data-position="1"]').on('paste', function(e) {
+        e.preventDefault();
+        var pastedData = e.originalEvent.clipboardData.getData('text');
+        var digits = pastedData.match(/\d/g);
+        if (digits && digits.length > 0) {
+            var numDigits = Math.min(digits.length, 6);
+            for (var i = 1; i <= numDigits; i++) {
+                var input = $('input[data-position="' + i + '"]');
+                input.val(digits[i - 1]);
+                input.removeAttr('disabled');
+            }
+            if (numDigits < 6) {
+                var nextInput = $('input[data-position="' + (numDigits + 1) + '"]');
+                if (nextInput.length > 0) {
+                    nextInput.removeAttr('disabled').focus();
+                }
+            } else {
+                $(VERIFY_OTP_BTN_ID).removeAttr('disabled');
+                $('input[data-position="6"]').focus();
+            }
         }
     });
 }
@@ -449,5 +476,5 @@ $(document).ready(function () {
             verify_otp();
         }
     });
-    enableOtpInput()
+    enableOtpInput();
 });

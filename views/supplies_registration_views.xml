@@ -194,7 +194,7 @@
 
                         <!-- Comments Page -->
                         <page string="Comments">
-                            <field name="comments" widget="html" readonly="1"/>
+                            <field name="comments" widget="html"/>
                         </page>
                     </notebook>
                 </sheet>

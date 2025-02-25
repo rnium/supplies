@@ -159,14 +159,13 @@
                                 </tree>
                                 <form string="RFQ">
                                     <header>
-                                        <field name="rfp_state" invisible="1"/>
                                         <button
                                             name="action_accept"
                                             string="Accept"
                                             type="object"
                                             class="btn-primary"
                                             groups="supplies.group_supplies_approver"
-                                            invisible="rfp_state != 'recommendation'"
+                                            invisible="parent.state != 'recommendation'"
                                         />
                                     </header>
                                     <group>

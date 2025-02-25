@@ -6,17 +6,19 @@ This Odoo project implements an Odoo 17 solution for supplier registration, RFP 
 
 ## Table of Contents
 
-- [Supplies (Procurement Management System in Odoo)](#supplies-procurement-management-system-in-odoo)
+- [Supplies (Procurement Management System)](#supplies-procurement-management-system)
   - [Table of Contents](#table-of-contents)
   - [Overview](#overview)
   - [Dependencies](#dependencies)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
-    - [Method 1: Build the Image](#method-1-build-the-image)
-    - [Method 2: Use Prebuilt Image](#method-2-use-prebuilt-image)
+    - [Method 1: Simple Run](#method-1-simple-run)
+    - [Method 2: Build the Image](#method-2-build-the-image)
+  - [Odoo Setup](#odoo-setup)
   - [Customization](#customization)
   - [Additional Notes](#additional-notes)
-  - [License](#license)
+  - [Release Notes](#release-notes)
+    - [v1.0.0 (Initial Release) - 2025-02-25](#v100-initial-release---2025-02-25)
 
 ## Overview
 
@@ -39,7 +41,27 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
 
 ## Installation
 
-### Method 1: Build the Image
+### Method 1: Simple Run
+
+1. **Clone the Supplies Repository:**
+
+   ```bash
+   git clone --branch rony_30207_final_project --single-branch git@github.com:BJIT-Academy-24/YSD_B4_ODOO_Roni.git supplies
+   ```
+
+2. **Pull the Prebuilt Image:**
+
+   ```bash
+   docker-compose pull
+   ```
+
+3. **Run the Containers in Detached Mode:**
+
+   ```bash
+   docker-compose up -d
+   ```
+
+### Method 2: Build the Image
 
 1. **Clone the Docker Branch:**
 
@@ -77,25 +99,29 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
    docker-compose up
    ```
 
-### Method 2: Use Prebuilt Image
+## Odoo Setup
 
-1. **Clone the Supplies Repository:**
+After the containers are running, follow these steps to complete the Odoo configuration:
 
-   ```bash
-   git clone --branch rony_30207_final_project --single-branch git@github.com:BJIT-Academy-24/YSD_B4_ODOO_Roni.git supplies
-   ```
+1. **Create a New Database:**
+   - Open your web browser and navigate to your Odoo instance (usually at `http://localhost:80`).
+   - On the database management screen, click **"Create Database"**.
+   - Fill in the required details such as the master password, database name, email, password, and company information.
+   - Click **"Create Database"** to proceed.
 
-2. **Pull the Prebuilt Image:**
+2. **Install the 'Supplies' Module:**
+   - Once logged into Odoo, navigate to the **Apps** menu.
+   - If you don’t see the Supplies module, click on **"Update Apps List"** to refresh the available modules.
+   - Search for **"Supplies"**.
+   - Click **"Install"** next to the Supplies module.
 
-   ```bash
-   docker-compose pull
-   ```
-
-3. **Run the Containers in Detached Mode:**
-
-   ```bash
-   docker-compose up -d
-   ```
+3. **User Management:**
+   - Navigate to **Settings > Users & Companies > Users**.
+   - Create new user accounts as needed.
+   - Assign appropriate groups to each user:
+     - **Reviewer:** For users responsible for reviewing supplier registrations and quotations.
+     - **Approver:** For users with final approval rights over supplier registrations and RFPs.
+   - Configure additional user settings and access rights as required.
 
 ## Customization
 
@@ -116,8 +142,14 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
 - **Further Customizations:**  
   Users can extend and customize other configuration files and services (such as the Odoo enterprise code and additional libraries) based on their project needs.
 
-## License
+## Release Notes
 
-This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0). You may not use this file except in compliance with the License. You can obtain a copy of the License at https://www.gnu.org/licenses/lgpl-3.0.html.
-
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more details.
+### v1.0.0 (Initial Release) - 2025-02-25
+- Released the initial version of the Supplies (Procurement Management System).
+- Implemented supplier registration with email OTP verification.
+- Developed the two-step verification process for supplier account creation.
+- Introduced RFP creation, publication, and quotation management features.
+- Configured Docker containerization, Nginx reverse proxy, and Odoo 17 integration.
+- Provided basic user management with roles for Reviewer and Approver.
+- Established core dependencies including wkhtml2pdf, Pydantic 2, and Pydantic email validator.
+- Licensed under GNU LGPL-3.0.

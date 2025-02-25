@@ -19,40 +19,40 @@
                         <h3 class="text-center mb-3" t-esc="vendor_name"/>
                         <table class="table table-bordered">
                             <tr>
-                                <td><strong>Email</strong></td>
-                                <td><span t-esc="vendor_info['Email']"/></td>
+                                <td class="text-center align-middle"><strong>Email</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Email']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Phone</strong></td>
-                                <td><span t-esc="vendor_info['Phone']"/></td>
+                                <td class="text-center align-middle"><strong>Phone</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Phone']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Address</strong></td>
-                                <td><span t-esc="vendor_info['Address']"/></td>
+                                <td class="text-center align-middle"><strong>Address</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Address']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>TIN</strong></td>
-                                <td><span t-esc="vendor_info['TIN']"/></td>
+                                <td class="text-center align-middle"><strong>TIN</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['TIN']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Bank</strong></td>
-                                <td><span t-esc="vendor_info['Bank']"/></td>
+                                <td class="text-center align-middle"><strong>Bank</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Bank']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>IBAN</strong></td>
-                                <td><span t-esc="vendor_info['IBAN No.']"/></td>
+                                <td class="text-center align-middle"><strong>IBAN</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['IBAN No.']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Swift Code</strong></td>
-                                <td><span t-esc="vendor_info['Swift Code']"/></td>
+                                <td class="text-center align-middle"><strong>Swift Code</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Swift Code']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Account Name</strong></td>
-                                <td><span t-esc="vendor_info['Account name']"/></td>
+                                <td class="text-center align-middle"><strong>Account Name</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Account name']"/></td>
                             </tr>
                             <tr>
-                                <td><strong>Account Number</strong></td>
-                                <td><span t-esc="vendor_info['Account number']"/></td>
+                                <td class="text-center align-middle"><strong>Account Number</strong></td>
+                                <td class="text-center align-middle"><span t-esc="vendor_info['Account number']"/></td>
                             </tr>
                         </table>
                     </div>
@@ -61,28 +61,27 @@
                 <!-- RFP Table -->
                 <div class="row mb-4">
                     <div class="col-12">
-                        <h4>Request for Purchases</h4>
+                        <h3 class="text-center">Request for Purchases</h3>
                         <table class="table table-bordered">
-                            <thead class="thead-light">
+                            <thead class="thead-light bg-primary text-white">
                                 <tr>
                                     <t t-foreach="rfp_headers" t-as="header">
-                                        <th t-esc="header"/>
+                                        <th class="text-center align-middle" t-esc="header"/>
                                     </t>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr t-foreach="rfps" t-as="rfp">
-                                    <td t-foreach="rfp" t-as="field" t-esc="field"/>
+                                    <td class="text-center align-middle" t-foreach="rfp[:-1]" t-as="field" t-esc="field"/>
+                                </tr>
+                                <tr>
+                                    <td class="text-center" t-att-colspan="len(rfp_headers) - 1">
+                                        <strong>Net Total</strong>
+                                    </td>
+                                    <td t-esc="rfp_net_amount" class="text-center"/>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="row mt-2">
-                            <div class="col-md-4 offset-md-8">
-                                <p class="text-right"><strong>Net Total:</strong>
-                                    <span t-esc="rfp_net_amount"/>
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -91,40 +90,56 @@
                     <div class="col-12">
                         <h4>Product Lines</h4>
                         <table class="table table-bordered">
-                            <thead class="thead-light">
+                            <thead class="thead-light bg-primary text-white">
                                 <tr>
                                     <t t-foreach="product_line_headers" t-as="header">
-                                        <th t-esc="header"/>
+                                        <th class="text-center align-middle" t-esc="header"/>
                                     </t>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr t-foreach="product_lines" t-as="line">
-                                    <td t-foreach="line" t-as="field" t-esc="field"/>
+                                <t t-foreach="rfps" t-as="rfp">
+                                    <t t-set="rowspan_count" t-value="len(rfp[-1])"/>
+                                    <t t-foreach="rfp[-1]" t-as="line" t-foreach-index="line_index">
+                                        <tr>
+                                            <t t-if="line_index == 0">
+                                                <td class="text-center align-middle" t-att-rowspan="rowspan_count" t-esc="rfp[0]" style="vertical-align: middle; text-align: center" />
+                                            </t>
+                                            <td class="text-center align-middle" t-foreach="line" t-as="field" t-esc="field"/>
+                                        </tr>
+                                    </t>
+                                </t>
+                                <tr>
+                                    <td class="text-center" t-att-colspan="len(product_line_headers) - 1">
+                                        <strong>Net Total</strong>
+                                    </td>
+                                    <td t-esc="product_line_net_amount" class="text-center"/>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="row mt-2">
-                            <div class="col-md-4 offset-md-8">
-                                <p class="text-right"><strong>Net Total:</strong>
-                                    <span t-esc="product_line_net_amount"/>
-                                </p>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
                 <!-- Company Information -->
                 <div class="row mt-5 bg-light">
-                    <div class="col-12 pt-3">
+                    <div class="col-4 pt-3">
                         <h3 t-esc="company_name"/>
-                        <div class="row">
-                            <div class="col-12">
-                                <p class="mb-1"><strong>Email:</strong> <span t-esc="company_data['Email']"/></p>
-                                <p class="mb-1"><strong>Phone:</strong> <span t-esc="company_data['Phone']"/></p>
-                                <p class="mb-1"><strong>Address:</strong> <span t-esc="company_data['Address']"/></p>
-                            </div>
-                        </div>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th class="text-start p-0">Email</th>
+                                    <td class="text-start p-0" colspan="2"><span t-esc="company_data['Email']"/></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start p-0">Phone</th>
+                                    <td class="text-start p-0" colspan="2"><span t-esc="company_data['Phone']"/></td>
+                                </tr>
+                                <tr>
+                                    <th class="text-start p-0">Address</th>
+                                    <td class="text-start p-0" colspan="2"><span t-esc="company_data['Address']"/></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

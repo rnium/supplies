@@ -141,7 +141,6 @@
                         <page string="RFQs">
                             <field
                                 name="rfq_ids"
-                                context="{'default_rfp_id': id, 'create': False}"
                                 options="{'create': 0, 'delete': 0}"
                                 readonly="state in ('recommendation', 'accepted')"
                             >

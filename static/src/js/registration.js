@@ -18,6 +18,7 @@ const DECLARATION_CHECKBOX_ID = '#declarationCheckbox';
 const MODAL_1 = 'modal_1';
 const WINDOW_1_ID = '#window_1';
 const WINDOW_2_ID = '#window_2';
+const PROGRESS_BAR_ID = '#progress_bar';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
@@ -41,6 +42,7 @@ const pageManager = {
             this.page += 1;
             this.showStep();
         }
+        this.setProgressBar();
         return this.page;
     },
     goBack: function () {
@@ -48,7 +50,11 @@ const pageManager = {
             this.page -= 1;
             this.showStep();
         }
+        this.setProgressBar();
         return this.page;
+    },
+    setProgressBar: function () {
+        $(PROGRESS_BAR_ID).css('width', `${(this.page / this.totalSteps) * 100}%`);
     },
     showStep: function () {
         $(`${STEPS_CONTAINER_ID} .step`).each((index, element) => {

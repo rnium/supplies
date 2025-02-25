@@ -128,7 +128,11 @@
                                 </div>
                             </div>
                             <div id="registration_form_container" class="card shadow-sm my-5" style="display: none;">
-                                <div class="card-body" id="steps_container">
+                                <div class="progress rounded-0" style="height: 8px;" role="progressbar" aria-label="Basic example" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                    <div id="progress_bar" class="progress-bar" style="width: 20%;border-radius: 0;"></div>
+                                </div>
+
+                                <div class="card-body p-5 rounded-lg" id="steps_container">
                                     <div class="step" id="step_1">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 1: Company Information</h5>
                                         <div class="row mb-3">

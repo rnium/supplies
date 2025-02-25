@@ -41,7 +41,9 @@
         'report/supplies_rfp_templates.xml',
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',
-        # Data
+    ],
+    # only loaded in demonstration mode
+    'demo': [
         'demo/demo_users.xml',
         'demo/suppliers.xml',
         'demo/res.partner.csv',
@@ -56,10 +58,6 @@
         'demo/supplies.rfp.product.line.csv',
         'demo/purchase.order.csv',
         'demo/purchase.order.line.csv',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        
     ],
     'assets': {
         'web.assets_frontend': [

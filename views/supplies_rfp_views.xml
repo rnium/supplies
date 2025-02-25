@@ -216,6 +216,20 @@
         </field>
     </record>
 
+    <record id="view_supplies_rfp_search" model="ir.ui.view">
+        <field name="name">supplies.rfp.search</field>
+        <field name="model">supplies.rfp</field>
+        <field name="arch" type="xml">
+            <search string="Search Request for Purchases">
+                <field name="rfp_number" string="Reference"/>
+                <field name="create_uid" string="Requested By"/>
+                <field name="required_date"/>
+                <filter name="running" string="Running" domain="[('state', 'not in', ('closed', 'rejected'))]"/>
+            </search>
+        </field>
+    </record>
+
+
     <record id="supplies_rfp_graph_view" model="ir.ui.view">
         <field name="name">supplies.rfp.graph.view</field>
         <field name="model">supplies.rfp</field>
@@ -253,5 +267,6 @@
                 No Request for Purchases
               </p>
         </field>
+        <field name="context">{'search_default_running': 1}</field>
     </record>
 </odoo>

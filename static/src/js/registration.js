@@ -6,6 +6,7 @@ const SEND_OTP_BTN_ID = '#send_otp_btn';
 const EMAIL_INPUT_ID = '#email';
 const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
+const OTP_RESEND_BTN_ID = '#resend_otp_button';
 const ALERT_CONTAINER_ID = '#alert_container';
 const STEPS_CONTAINER_ID = '#steps_container';
 const CLIENT_REF_CONTAINER_ID = '#step_3';
@@ -137,6 +138,9 @@ function goNextWindow() {
             setTimeout(() => {
                 $('.otp-input').first().focus();
             }, 300)
+            setTimeout(() => {
+                $(OTP_RESEND_BTN_ID).removeAttr('disabled');
+            }, 3000)
         });
     });
 }
@@ -292,15 +296,6 @@ function send_otp() {
         success: function (data) {
             if (data?.result?.status === 'success') {
                 goNextWindow();                    
-                $(SEND_OTP_BTN_ID).hide();
-                $(OTP_INPUT_CONTAINER_ID).show(
-                    200,
-                    () => {
-                        $(`${OTP_INPUT_CONTAINER_ID} input`).focus();
-                    }
-                );
-                $(VERIFY_OTP_BTN_ID).show();
-                $('#email').prop('readonly', true);
             } else {
                 showToast(data?.result?.message || 'Failed to send OTP');
             }
@@ -310,6 +305,41 @@ function send_otp() {
         },
         complete: function () {
             $(SEND_OTP_BTN_ID).prop('disabled', false);
+        },
+    });
+}
+
+function resend_otp() {
+    const email = pageManager.email;
+    $.ajax({
+        type: 'POST',
+        url: SEND_OTP_API,
+        contentType: 'application/json',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRFToken', get_csrf_token());
+            $(OTP_RESEND_BTN_ID).prop('disabled', true);
+            let countdown = 15;
+            const interval = setInterval(() => {
+                $(OTP_RESEND_BTN_ID).text(`Resend OTP in ${countdown} seconds`);
+                countdown -= 1;
+            }, 1000);
+            setTimeout(() => {
+                clearInterval(interval);
+                $(OTP_RESEND_BTN_ID).text('Resend OTP');
+                $(OTP_RESEND_BTN_ID).prop('disabled', false);
+            }, 15 * 1000);
+        },
+        data: JSON.stringify(format_rpc_data({email: email})),
+        success: function (data) {
+            if (data?.result?.status === 'success') {
+                showToast('OTP resent successfully, please check your inbox/spam', 'Success', 'success');
+            } else {
+                showToast(data?.result?.message || 'Failed to send OTP');
+            }
+        },
+        error: function (xhr, status, error) {
+            showToast('Failed to send OTP');
         },
     });
 }
@@ -449,6 +479,7 @@ function enableOtpInput() {
 
 $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
+    $(OTP_RESEND_BTN_ID).on('click', resend_otp);
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
         validateStepInputs(pageManager.page);

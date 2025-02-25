@@ -28,6 +28,12 @@ class SupplierRegistration(http.Controller):
         is_valid, message = utils.validate_email_address(request, email)
         if not is_valid:
             return utils.format_response('error', message)
+        # limit 5 OTPs sent to an email address which is not expired
+        otps = request.env['supplies.registration.otp'].sudo().search(
+            [('email', '=', email), ('expiry_time', '>=', fields.Datetime.now())]
+        )
+        if len(otps) >= 5:
+            return utils.format_response('error', 'Maximum number of OTPs sent. Please try again later')
         otp_obj = request.env['supplies.registration.otp'].sudo().create(
             {'email': email}
         )

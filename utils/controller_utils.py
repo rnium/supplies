@@ -1,6 +1,6 @@
 from typing import List, Tuple
 from odoo.api import Environment
-import re
+from urllib.parse import urlencode
 
 def format_response(status: str, message: str, data: dict = None) -> dict:
     """
@@ -62,7 +62,7 @@ def create_supplier_registration(env: Environment, data: dict):
             client_ref_ids.append((0, 0, client_ref))
     data['client_ref_ids'] = client_ref_ids
     # create the registration
-    env['supplies.registration'].sudo().create(data)
+    return env['supplies.registration'].sudo().create(data)
 
 def render_qweb_template(env: Environment, template_name: str, data: dict = {}):
     """
@@ -114,3 +114,29 @@ def check_unique_tin_trade_lic(env: Environment, formdata):
     if trade_lic and env['res.partner'].sudo().search([('trade_license_number', '=', trade_lic)]):
         return False
     return True
+
+
+def generate_registration_url(env: Environment, registration_id: int) -> str:
+    """
+    Generates the registration URL
+    """
+    model_name = 'supplies.registration'
+    
+    action = env.ref('supplies.supplies_registration_reviewer_action', raise_if_not_found=False)
+    action_id = action.id if action else 340
+    
+    cids = env.company.id
+    
+    base_url = env['ir.config_parameter'].sudo().get_param('web.base.url')
+    
+    params = {
+        'id': registration_id,
+        'model': model_name,
+        'action': action_id,
+        'view_type': 'form',
+        'cids': cids,
+        # 'menu_id': 231  # Optional unless required
+    }
+    fragment = urlencode(params)
+    url = f"{base_url}/web#{fragment}"
+    return url

@@ -10,6 +10,11 @@ def get_approver_emails(env: Environment) -> str:
     email_list = approvers.mapped('login')
     return ','.join(email_list)
 
+def get_reviewers(env: Environment) -> str:
+    group = env.ref('supplies.group_supplies_reviewer')
+    reviewers = env['res.users'].sudo().search([('groups_id', 'in', group.id)])
+    return reviewers
+
 def get_supplier_emails(env: Environment) -> list:
     suppliers = env['res.users'].search([]).filtered(lambda u: u.partner_id and u.partner_id.supplier_rank >= 1)
     email_list = suppliers.mapped('login')

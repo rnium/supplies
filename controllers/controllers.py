@@ -5,6 +5,7 @@ from ..utils import controller_utils as utils
 from ..utils import schemas
 from pydantic import ValidationError
 from odoo import fields
+from ..utils.mail_utils import get_smtp_server_email, get_reviewers
 import json
 
 
@@ -80,7 +81,7 @@ class SupplierRegistration(http.Controller):
             )
         try:
             reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
-            utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
+            registration = utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
         except ValidationError as e:
             errors = e.errors(include_input=False, include_context=False, include_url=False)
             data = json.dumps(
@@ -93,6 +94,19 @@ class SupplierRegistration(http.Controller):
                 )
             )
         else:
+            reviewers = get_reviewers(request.env)
+            reg_url = utils.generate_registration_url(request.env, registration.id)
+            email_values = {
+                'email_from': get_smtp_server_email(request.env),
+            }
+            contexts = {
+                'reg_url': reg_url,
+                'company_name': request.env.company.name,
+            }
+            for reviewer in reviewers:
+                template = request.env.ref('supplies.email_template_model_supplies_vendor_registration_reviewer').sudo()
+                template.with_context(**contexts).send_mail(reviewer.id, email_values=email_values)
+
             data = json.dumps(
                 utils.format_response(
                     'success',

@@ -50,6 +50,7 @@
         'demo/supplies.contact.csv',
         'demo/supplies.registration.csv',
         'demo/registration_extra.xml',
+        'demo/products.xml',
         'demo/supplies.rfp.csv',
         'demo/mail.blacklist.csv',
         'demo/supplies.rfp.product.line.csv',

@@ -36,3 +36,5 @@ rfq_34,rfp_13,supplier_3,18,2025-02-12,"base.user_admin",draft,1,90,2025-02-01,,
 rfq_35,rfp_13,supplier_4,24,2025-02-14,"base.user_admin",draft,0,65,2025-02-01,,"Payment in 3 installments. Return policy is 15 days."
 rfq_36,rfp_13,supplier_5,36,2025-02-13,"base.user_admin",draft,1,80,2025-02-01,,"Delivery within 10 days. 1-year warranty included."
 rfq_37,rfp_13,supplier_3,48,2025-02-15,"base.user_admin",draft,0,75,2025-02-01,,"Free installation service. 6-month return policy."
+rfq_38,rfp_16,supplier_5,24,2025-02-20,"base.user_admin",purchase,1,95,2025-02-10,2025-02-24,"Full payment in advance. Return policy is 1 month."
+rfq_39,rfp_16,supplier_3,18,2025-02-20,"base.user_admin",cancel,0,85,2025-02-22,,"Payment in 3 installments. Return policy is 15 days."

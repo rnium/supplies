@@ -30,3 +30,6 @@ line_28,rfp_14,product.product_product_27,Drawer,5,0,0
 line_29,rfp_14,product.product_product_5,Corner Desk Right Sit,5,0,0
 line_30,rfp_15,product.consu_delivery_03,Four Person Desk,4,0,0
 line_31,rfp_15,product.consu_delivery_02,Large Meeting Table,2,0,0
+line_32,rfp_16,product_server_x1,Server X1,100,4899,210
+line_33,rfp_16,product_workstation_z5,Workstation Z5,200,2450,100
+line_34,rfp_16,product_gpu_rtx_5090,GPU RTX 5090,350,1750,100

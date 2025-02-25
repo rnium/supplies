@@ -15,7 +15,7 @@
     />
     <menuitem
         id="supplies_registration_reviewer_menu"
-        name="Registration"
+        name="Supplier Registration"
         parent="supplies_menu"
         action="supplies_registration_reviewer_action"
         sequence="10"
@@ -23,7 +23,7 @@
     />
     <menuitem
         id="supplies_registration_approver_menu"
-        name="Registration"
+        name="Supplier Registration"
         parent="supplies_menu"
         action="supplies_registration_approver_action"
         sequence="10"
@@ -36,6 +36,7 @@
         parent="supplies_menu"
         action="supplies_rfp_report_wizard_act_window"
         sequence="15"
+        groups="supplies.group_supplies_reviewer,supplies.group_supplies_approver"
     />
 
 </odoo>

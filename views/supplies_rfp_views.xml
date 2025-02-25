@@ -224,6 +224,10 @@
                 <field name="create_uid" string="Requested By"/>
                 <field name="required_date"/>
                 <filter name="running" string="Running" domain="[('state', 'not in', ('closed', 'rejected', 'accepted'))]"/>
+                <searchpanel>
+                    <field name="state"/>
+                    <field name="approved_supplier_id" string="Supplier"/>
+                </searchpanel>
             </search>
         </field>
     </record>

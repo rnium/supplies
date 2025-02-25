@@ -11,11 +11,11 @@
                 <field
                     name="state"
                     widget="badge"
-                    decoration-warning="state in ('draft', 'closed')"
+                    decoration-warning="state in ('draft',)"
                     decoration-danger="state in ('rejected',)"
-                    decoration-info="state in ('submitted', 'approved')"
+                    decoration-info="state in ('approved',)"
                     decoration-primary="state in ('recommendation',)"
-                    decoration-success="state in ('approved',)"
+                    decoration-success="state in ('accepted',)"
                 />
             </tree>
         </field>

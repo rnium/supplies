@@ -87,37 +87,10 @@
                 <div class="container">
                     <input type="hidden" id="csrf_token" name="csrf_token" t-att-value="request.csrf_token()"/>
                     <div class="row ">
-                        <div class="d-none col-md-6 offset-md-3" id="otp_container" >
-                            <div class=" card my-5">
-                                <div class="card-header">
-                                    <h4 class="text-center">Register As Our Supplier</h4>
-                                </div>
-                                 <div class="card-body">
-                                    <div class="form-group my-3" >
-                                        <div class="form-floating">
-                                            <input type="email" class="form-control mb-2" id="email" placeholder="name@example.com"/>
-                                            <label for="floatingInput">Company Email address</label>
-                                        </div>
-                                        <div class="form-floating" id="otp_input_container" style="display: none;">
-                                            <input type="text" class="form-control" id="otp" placeholder="OTP"/>
-                                            <label for="floatingInput">Enter The OTP</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="alert alert-danger" id="alert_container" style="display: none;">
-                                        <span class="error_message_text" />
-                                    </div>
-                                    <div class="d-flex">
-                                        <button class="btn btn-primary w-100" id="send_otp_btn">Send OTP</button>
-                                        <button class="btn btn-primary w-100" id="verify_otp_btn" style="display: none;">Verify OTP</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12 text-center justify-content-center" id="registration_form_container">
-                            <div class="d-flex justify-content-center align-items-center" style="margin: 5rem auto;">
-                                <div class="row justify-content-center">
-                                    <div class="col-md-8 welcome-section">
+                        <div class="col-md-12">
+                            <div id="otp_container" class="d-flex justify-content-center align-items-center" style="margin: 5rem auto;">
+                                <div class="row justify-content-center" id="window_1">
+                                    <div class="col-md-8 welcome-section text-center">
                                         <img src="/supplies/static/img/business-3d-happy-robot-assistant.png" alt="Supplier Network" class="img-fluid"/>
                                         <h2 class="text-center mb-4">Join Our Supplier Network</h2>
                                         <div class="section-text text-center">
@@ -126,31 +99,35 @@
                                             </h5>
                                         </div>
                                         <div class="d-flex justify-content-center mt-5">
-                                            <input type="email" class="form-control w-50" id="userEmail" placeholder="Enter company email"/>
-                                            <button type="submit" class="btn btn-primary ms-3">Get Started</button>
+                                            <input id="email" type="email" class="form-control w-50" placeholder="Enter company email"/>
+                                            <button id="send_otp_btn" type="submit" class="btn btn-primary ms-3">Get Started</button>
                                         </div>
                                     </div>
                                 </div>
-                                    
-                                <div class="otp-form d-none">
-                                    <span class="mainHeading">Enter OTP</span>
-                                    <p class="otpSubheading text-muted">We have sent a verification code to your email address</p>
-                                    <div class="inputContainer">
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input1"/>
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input2"/>
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input3"/>
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input4"/> 
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input5"/> 
-                                        <input required="required" maxlength="1" type="text" class="otp-input" id="otp-input6"/> 
+                                
+                                <div id="window_2" style="display: none;">
+                                    <div class="otp-form">
+                                        <span class="mainHeading">Enter OTP</span>
+                                        <p class="otpSubheading text-muted">We have sent a verification code to your email address</p>
+                                        <div class="inputContainer">
+                                            <t t-foreach="[1, 2, 3, 4, 5, 6]" t-as="i">
+                                                <t t-if="i == 1">
+                                                    <input maxlength="1" type="text" class="otp-input" t-att-data-position="i"/>
+                                                </t>
+                                                <t t-else="">
+                                                    <input maxlength="1" type="text" class="otp-input" t-att-data-position="i" disabled=""/>
+                                                </t>
+                                            </t>
+                                        </div>
+                                        <button id="verify_otp_btn" disabled="" class="verifyButton" type="submit">Verify</button>
+                                        <p class="mt-2 text-muted resendNote">
+                                            Didn't receive the code?
+                                            <button id="resend_otp_button" disabled="" class="resendBtn">Resend Code</button>
+                                        </p>
                                     </div>
-                                    <button disabled="" class="verifyButton" type="submit">Verify</button>
-                                    <p class="mt-2 text-muted resendNote">
-                                        Didn't receive the code?
-                                        <button disabled="" class="resendBtn">Resend Code</button>
-                                    </p>
                                 </div>
                             </div>
-                            <div class="d-none card shadow-sm my-5">
+                            <div id="registration_form_container" class="card shadow-sm my-5" style="display: none;">
                                 <div class="card-body" id="steps_container">
                                     <div class="step" id="step_1">
                                         <h5 class="mb-4 text-primary border-bottom pb-3">Step 1: Company Information</h5>

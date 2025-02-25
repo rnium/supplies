@@ -15,10 +15,14 @@ const PREV_BTN_ID = '#prev_btn';
 const SUBMIT_BTN_ID = '#submit_btn';
 const DECLARATION_CHECKBOX_ID = '#declarationCheckbox';
 const MODAL_1 = 'modal_1';
+const WINDOW_1_ID = '#window_1';
+const WINDOW_2_ID = '#window_2';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
 const SUBMIT_FORM_API = '/supplies/register/submit';
+// Constants
+NUM_OTP_DIGITS = 6;
 
 
 function get_csrf_token() {
@@ -125,6 +129,14 @@ const pageManager = {
         const formData = this.getFormData();        
         handler(formData);
     }
+}
+
+function goNextWindow() {
+    $(WINDOW_1_ID).fadeOut(100, () => {
+        $(WINDOW_2_ID).fadeIn(100, () => {
+            $(`${OTP_INPUT_CONTAINER_ID} input`).first().focus();
+        });
+    });
 }
 
 function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=false) {
@@ -294,6 +306,7 @@ function send_otp() {
         data: JSON.stringify(format_rpc_data({email: email})),
         success: function (data) {
             if (data?.result?.status === 'success') {
+                goNextWindow();                    
                 showWarning(ALERT_CONTAINER_ID, 'OTP has been sent to your email.');
                 $(SEND_OTP_BTN_ID).hide();
                 $(OTP_INPUT_CONTAINER_ID).show(
@@ -392,6 +405,21 @@ function submit_form(formData) {
     });
 }
 
+function enableOtpInput() {
+    $(".otp-input").on('keyup', function (e) {
+        if (e.keyCode === 8) {
+            return;
+        }
+        const current_position = $(this).data('position');
+        const next_position = current_position + 1;
+        if (next_position <= NUM_OTP_DIGITS) {
+            $(`input[data-position=${next_position}]`).removeAttr('disabled').focus();
+        } else {
+            console.log('All OTP digits entered');
+        }
+    });
+}
+
 $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
@@ -421,4 +449,5 @@ $(document).ready(function () {
             verify_otp();
         }
     });
+    enableOtpInput()
 });

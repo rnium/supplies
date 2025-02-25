@@ -82,9 +82,7 @@ export class SuppliesDashboard extends Component {
         this.state.rfpPurchaseChartData = data;
     }
 
-    setRFQStatusData(rfqs) {
-        console.log("rfqs", rfqs);
-        
+    setRFQStatusData(rfqs) {        
         if (rfqs.length == 0) {
             this.state.rfqStatusChartData = null;
             return;
@@ -106,7 +104,6 @@ export class SuppliesDashboard extends Component {
                 }
             ]
         }
-        console.log(data);
         this.state.rfqStatusChartData = data;
     }
 

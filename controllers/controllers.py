@@ -35,7 +35,6 @@ class SupplierRegistration(http.Controller):
         try:
             otp_obj.send_otp_email()
         except Exception as e:
-            print(e)
             return utils.format_response('error', 'Failed to send OTP')
         return utils.format_response('success', 'OTP sent successfully to your email address')
 

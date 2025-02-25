@@ -134,7 +134,7 @@ const pageManager = {
 
 function goNextWindow() {
     $(WINDOW_1_ID).fadeOut(100, () => {
-        $(WINDOW_2_ID).fadeIn(100, () => {
+        $(WINDOW_2_ID).fadeIn(200, () => {
             setTimeout(() => {
                 $('.otp-input').first().focus();
             }, 300)
@@ -379,7 +379,7 @@ function verify_otp() {
             if (data?.result?.status === 'success') {
                 showToast('OTP verified successfully, proceeding to next step', 'Success', 'success');
                 setTimeout(() => {
-                    $(WINDOW_2_ID).hide(200, () => {
+                    $(WINDOW_2_ID).fadeOut(200, () => {
                         $(REG_FORM_CONTAINER_ID).show(200);
                         pageManager.email = email;
                         pageManager.otp = otp;

@@ -20,7 +20,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px;
+    padding: 50px 40px;
     gap: 25px;
     position: relative;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -2px -2px 15px rgba(0, 0, 0, 0.04);
@@ -68,6 +68,13 @@ body {
 .otp-input:valid {
     background-color: var(--primary-color-transparent);
     transition-duration: .3s;
+}
+
+.otp-input:focus {
+    outline: 3px solid var(--primary-color-light);
+    transform: scale(1.05);
+    transition-duration: 50ms;
+    box-shadow: 0 0 5px var(--primary-color-light);
 }
 
 .verifyButton {

@@ -1,0 +1,119 @@
+:root {
+    --primary-color: #604058;
+    --primary-color-hover: #4a2f4a;
+    --primary-color-light: #a99aa9;
+    --primary-color-transparent: rgba(96, 64, 88, 0.199);
+    --primary-color-disabled: rgba(96, 64, 88, 0.8);
+}
+
+.welcome-section {
+    img {
+        width: 150px;
+    }
+}
+
+
+.otp-form {
+    width: 350px;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    gap: 25px;
+    position: relative;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1), -2px -2px 15px rgba(0, 0, 0, 0.04);
+    border-radius: 15px;
+}
+body {
+    background-color: rgba(232, 232, 232, 0.3) !important
+}
+.mainHeading {
+    font-size: 1.3rem;
+    color: rgb(15, 15, 15);
+    font-weight: 700;
+}
+
+.otpSubheading {
+    font-size: 1rem;
+    color: black;
+    line-height: 17px;
+    text-align: center;
+}
+
+.inputContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.otp-input {
+    background-color: rgb(228, 228, 228);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border: none;
+    border-radius: 7px;
+    caret-color: var(--primary-color);
+    color: rgb(44, 44, 44);
+    outline: none;
+    font-weight: 600;
+}
+
+.otp-input:focus,
+.otp-input:valid {
+    background-color: var(--primary-color-transparent);
+    transition-duration: .3s;
+}
+
+.verifyButton {
+    width: 100%;
+    height: 30px;
+    border: none;
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    transition-duration: .2s;
+}
+
+.verifyButton:hover {
+    background-color: var(--primary-color-hover);
+    transition-duration: .2s;
+}
+
+.verifyButton:disabled {
+    background-color: var(--primary-color-disabled);
+    cursor: not-allowed;
+}
+
+.resendNote {
+    margin: 0;
+    font-size: 0.9rem;
+    color: black;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.resendBtn {
+    background-color: transparent;
+    border: none;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+}
+
+.resendBtn:disabled {
+    color: var(--primary-color-disabled);
+    cursor: not-allowed;
+}

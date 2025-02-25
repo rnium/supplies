@@ -135,7 +135,6 @@ def generate_registration_url(env: Environment, registration_id: int) -> str:
         'action': action_id,
         'view_type': 'form',
         'cids': cids,
-        # 'menu_id': 231  # Optional unless required
     }
     fragment = urlencode(params)
     url = f"{base_url}/web#{fragment}"

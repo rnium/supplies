@@ -23,7 +23,7 @@ services:
       - DATABASE=postgres
     volumes:
       - .:/mnt/extra-addons/supplies
-      - ./odoo.conf:/etc/odoo/odoo.conf:ro
+      - ./odoodocker.conf:/etc/odoo/odoo.conf:ro
       - odoo-data:/var/lib/odoo
 
   nginx:

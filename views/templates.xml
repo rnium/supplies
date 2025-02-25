@@ -395,6 +395,9 @@
                                                 <div class="col-md-4">
                                                     <label class="form-label fw-semibold">Company Stamp</label>
                                                     <input name="company_stamp" type="file" class="form-control" required=""/>
+                                                    <div class="invalid-feedback">
+                                                        Please upload company stamp.
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

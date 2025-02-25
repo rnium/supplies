@@ -101,7 +101,6 @@ const pageManager = {
         const regData = this.getRegData();
         
         for (const key in regData) {
-            console.log(key, regData[key]);
             if (Array.isArray(regData[key])) {
                 regData[key].forEach((file, index) => {
                     formData.append(`${key}_${index}`, file);
@@ -239,7 +238,6 @@ function validateStepInputs(step) {
         let requiredFields = parent.find(
             requiredFieldClasses.map((className) => `.${className}`).join(',')
         )
-        console.log(typeof requiredFields);
         const any_field_filled = requiredFields.map((index, field) => $(field).val().length > 0).get().some((val) => val);
         toggleIsInvalid(element, any_field_filled);
     });
@@ -295,7 +293,6 @@ function send_otp() {
         },
         data: JSON.stringify(format_rpc_data({email: email})),
         success: function (data) {
-            console.log(data);
             if (data?.result?.status === 'success') {
                 showWarning(ALERT_CONTAINER_ID, 'OTP has been sent to your email.');
                 $(SEND_OTP_BTN_ID).hide();
@@ -353,7 +350,6 @@ function verify_otp() {
             }
         },
         error: function (xhr, status, error) {
-            console.log(xhr, status, error);
             showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
         },
         complete: function () {
@@ -373,7 +369,6 @@ function submit_form(formData) {
         },
         data: formData,
         success: function (data) {
-            console.log(data);
             if (data?.status === 'success') {
                 showModal(
                     MODAL_1,
@@ -401,7 +396,6 @@ $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
-        console.log('Next Button Clicked');
         validateStepInputs(pageManager.page);
         pageManager.goNext();
     });
@@ -410,6 +404,7 @@ $(document).ready(function () {
     });
     $(ADD_MORE_CLIENT_BTN_ID).on('click', addMoreClientReference);
     $(SUBMIT_BTN_ID).on('click', () => {
+        validateStepInputs(pageManager.page);
         pageManager.handleSubmitForm(submit_form);
     });
     $(DECLARATION_CHECKBOX_ID).on('change', function () {

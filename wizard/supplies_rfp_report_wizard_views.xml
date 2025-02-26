@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <form string="RFP Report" create="False">
                     <group>
-                        <field name="supplier_id"/>
+                        <field name="supplier_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
                         <field name="start_date"/>
                         <field name="end_date"/>
                     </group>

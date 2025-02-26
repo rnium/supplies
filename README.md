@@ -46,7 +46,7 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
 1. **Clone the Supplies Repository:**
 
    ```bash
-   git clone --branch rony_30207_final_project --single-branch git@github.com:BJIT-Academy-24/YSD_B4_ODOO_Roni.git supplies
+   git clone --branch rony_30207_final_project --single-branch https://github.com/rnium/supplies.git supplies
    ```
 
 2. **Pull the Prebuilt Image:**
@@ -66,7 +66,7 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
 1. **Clone the Docker Branch:**
 
    ```bash
-   git clone --branch supplies-docker --single-branch git@github.com:BJIT-Academy-24/YSD_B4_ODOO_Roni.git supplies-docker
+   git clone --branch supplies-docker --single-branch https://github.com/rnium/supplies.git supplies-docker
    ```
 
 2. **Enter the Directory:**
@@ -80,7 +80,7 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
    Inside the `supplies-docker` directory, run:
 
    ```bash
-   git clone --branch rony_30207_final_project --single-branch git@github.com:BJIT-Academy-24/YSD_B4_ODOO_Roni.git supplies
+   git clone --branch rony_30207_final_project --single-branch https://github.com/rnium/supplies.git supplies
    ```
 
 4. **Prepare the Enterprise Code:**
@@ -129,7 +129,7 @@ After the containers are running, follow these steps to complete the Odoo config
   You can customize the `nginx.conf` file to meet your requirements. For production deployment, ensure you configure the server hostname and implement other necessary security optimizations.
 
 - **Odoo Configuration:**  
-  The `odoo.conf` file is available for adjustments. Modify it according to your deployment environment or performance needs.
+  The `odoodocker.conf` file is available for adjustments. Modify it according to your deployment environment or performance needs.
 
 - **Docker Compose:**  
   Feel free to edit the `docker-compose.yml` file to change service configurations, add volumes, or update environment variables.

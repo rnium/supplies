@@ -9,7 +9,6 @@ class PurchaseOrder(models.Model):
     warrenty_period = fields.Integer(string='Warrenty Period (in months)')
     score = fields.Float(string='Score', default=0)
     recommended = fields.Boolean(string='Recommended', default=False)
-    rfp_state = fields.Selection(related='rfp_id.state', string='RFP State')
 
     def action_accept(self):
         self.rfp_id.write({'state': 'accepted', 'approved_supplier_id': self.partner_id.id, 'date_accept': fields.Date.today()})
@@ -68,4 +67,6 @@ class PurchaseOrder(models.Model):
                 order.currency_id or order.company_id.currency_id,
             )
 
-
+    @api.model
+    def get_purchase_order_sudo(self, domain, fields):
+        return self.sudo().search_read(domain, fields)

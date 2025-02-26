@@ -65,26 +65,24 @@ export class SuppliesDashboard extends Component {
         this.state.suppliers = suppliers;        
     }
 
-    setRfpPurchaseData(accepted_rfps) {
-        if (accepted_rfps.length == 0) {
+    setRfpPurchaseData(purchase_orders) {
+        if (purchase_orders.length == 0) {
             this.state.rfpPurchaseChartData = null;
             return;
         }
         const data = {
-            labels: accepted_rfps.map(r => r.rfp_number),
+            labels: purchase_orders.map(po => po.name),
             datasets: [
                 {
                     label: 'Total Amount',
-                    data: accepted_rfps.map(r => r.total_amount)
+                    data: purchase_orders.map(po => po.amount_untaxed)
                 }
             ]
         }
         this.state.rfpPurchaseChartData = data;
     }
 
-    setRFQStatusData(rfqs) {
-        console.log("rfqs", rfqs);
-        
+    setRFQStatusData(rfqs) {        
         if (rfqs.length == 0) {
             this.state.rfqStatusChartData = null;
             return;
@@ -106,48 +104,55 @@ export class SuppliesDashboard extends Component {
                 }
             ]
         }
-        console.log(data);
         this.state.rfqStatusChartData = data;
     }
 
     async getRequestForPurchases() {
-        const domain = [];
         const rfq_domain = [['rfp_id', '!=', false]];
+        const purchase_order_domain = [['state', '=', 'purchase']];
         if (this.state.selectedSupplierId !== "0") {
             const supplerIdInt = parseInt(this.state.selectedSupplierId);
-            domain.push(['approved_supplier_id', '=', supplerIdInt]);
-            rfq_domain.push(['partner_id', '=', supplerIdInt]);
+            const partner_subdomain = ['partner_id', '=', supplerIdInt];
+            rfq_domain.push(partner_subdomain);
+            purchase_order_domain.push(partner_subdomain);
         } else {
             return;
         }
         if (this.state.selectedPeriod !== "0") {
             const { start: startDate, end: endDate } = getDateInterval(this.state.selectedPeriod);
-            domain.push(...[['date_accept', '>=', startDate], ['date_accept', '<=', endDate]]);
             rfq_domain.push(...[['create_date', '>=', startDate], ['create_date', '<=', endDate]]);
+            purchase_order_domain.push(['date_approve', '>=', startDate], ['date_approve', '<=', endDate]);
         }
 
-        const rfps = await this.orm.searchRead('supplies.rfp', domain, ['rfp_number', 'state', 'total_amount', 'product_line_ids']);
-        const rfqs = await this.orm.searchRead('purchase.order', rfq_domain, ['state']);
-        const accepted_rfps = rfps.filter(r => r.state === 'accepted');
+        const purchase_orders = await this.orm.call(
+            'purchase.order',
+            'get_purchase_order_sudo', 
+            [purchase_order_domain, ['name', 'amount_untaxed', 'order_line']]
+        );
+        const rfqs = await this.orm.call(
+            'purchase.order',
+            'get_purchase_order_sudo', 
+            [rfq_domain, ['state']]
+        );
         const submitted = rfqs.length;
-        const accepted = accepted_rfps.length;
-        let total_amount = accepted_rfps.reduce((acc, r) => acc + r.total_amount, 0);
+        const accepted = purchase_orders.length;
+        let total_amount = purchase_orders.reduce((acc, r) => acc + r.amount_untaxed, 0);
         if (!isNaN(total_amount) && total_amount > 0) {
             total_amount = formatAmount(total_amount);
         }
-        const productLineIds = rfps.map(r => r.product_line_ids).flat();
+        const productLineIds = purchase_orders.map(r => r.order_line).flat();
         this.state.productLineIds = productLineIds;
         this.state.rfp = { accepted, submitted, total_amount };
-        this.setRfpPurchaseData(accepted_rfps);
+        this.setRfpPurchaseData(purchase_orders);
         this.setRFQStatusData(rfqs);
     }
 
     async getProductLines() {
         const productLines = await this.orm.searchRead(
-            'supplies.rfp.product.line',
+            'purchase.order.line',
             [['id', 'in', this.state.productLineIds]],
-            ['product_id', 'currency_id', 'product_name', 'product_qty', 'unit_price', 'delivery_charge', 'subtotal_price', 'product_image', 'rfp_id']
-        );        
+            ['product_id', 'currency_id', 'product_name', 'product_qty', 'price_unit', 'price_subtotal', 'product_image', 'rfp_id']
+        );
         this.state.productLines = groupProducts(productLines);
         this.state.currency = getCurrency(productLines);
     }

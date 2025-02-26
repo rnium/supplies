@@ -41,22 +41,23 @@
         'report/supplies_rfp_templates.xml',
         'wizard/supplies_blacklist_wizard_view.xml',
         'wizard/supplies_reject_application_wizard_views.xml',
-        # Data
+    ],
+    # only loaded in demonstration mode
+    'demo': [
+        'demo/demo_users.xml',
         'demo/suppliers.xml',
         'demo/res.partner.csv',
         'demo/res.bank.csv',
         'demo/res.partner.bank.csv',
         'demo/supplies.contact.csv',
         'demo/supplies.registration.csv',
+        'demo/registration_extra.xml',
+        'demo/products.xml',
         'demo/supplies.rfp.csv',
         'demo/mail.blacklist.csv',
         'demo/supplies.rfp.product.line.csv',
         'demo/purchase.order.csv',
         'demo/purchase.order.line.csv',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
     ],
     'assets': {
         'web.assets_frontend': [

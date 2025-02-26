@@ -6,6 +6,7 @@ const SEND_OTP_BTN_ID = '#send_otp_btn';
 const EMAIL_INPUT_ID = '#email';
 const OTP_INPUT_CONTAINER_ID = '#otp_input_container';
 const VERIFY_OTP_BTN_ID = '#verify_otp_btn';
+const OTP_RESEND_BTN_ID = '#resend_otp_button';
 const ALERT_CONTAINER_ID = '#alert_container';
 const STEPS_CONTAINER_ID = '#steps_container';
 const CLIENT_REF_CONTAINER_ID = '#step_3';
@@ -15,10 +16,15 @@ const PREV_BTN_ID = '#prev_btn';
 const SUBMIT_BTN_ID = '#submit_btn';
 const DECLARATION_CHECKBOX_ID = '#declarationCheckbox';
 const MODAL_1 = 'modal_1';
+const WINDOW_1_ID = '#window_1';
+const WINDOW_2_ID = '#window_2';
+const PROGRESS_BAR_ID = '#progress_bar';
 // API Endpoints
 const SEND_OTP_API = '/supplies/register/send-otp';
 const VERIFY_OTP_API = '/supplies/register/verify-otp';
 const SUBMIT_FORM_API = '/supplies/register/submit';
+// Constants
+NUM_OTP_DIGITS = 6;
 
 
 function get_csrf_token() {
@@ -36,6 +42,7 @@ const pageManager = {
             this.page += 1;
             this.showStep();
         }
+        this.setProgressBar();
         return this.page;
     },
     goBack: function () {
@@ -43,7 +50,11 @@ const pageManager = {
             this.page -= 1;
             this.showStep();
         }
+        this.setProgressBar();
         return this.page;
+    },
+    setProgressBar: function () {
+        $(PROGRESS_BAR_ID).css('width', `${(this.page / this.totalSteps) * 100}%`);
     },
     showStep: function () {
         $(`${STEPS_CONTAINER_ID} .step`).each((index, element) => {
@@ -101,7 +112,6 @@ const pageManager = {
         const regData = this.getRegData();
         
         for (const key in regData) {
-            console.log(key, regData[key]);
             if (Array.isArray(regData[key])) {
                 regData[key].forEach((file, index) => {
                     formData.append(`${key}_${index}`, file);
@@ -128,6 +138,19 @@ const pageManager = {
     }
 }
 
+function goNextWindow() {
+    $(WINDOW_1_ID).fadeOut(100, () => {
+        $(WINDOW_2_ID).fadeIn(200, () => {
+            setTimeout(() => {
+                $('.otp-input').first().focus();
+            }, 300)
+            setTimeout(() => {
+                $(OTP_RESEND_BTN_ID).removeAttr('disabled');
+            }, 3000)
+        });
+    });
+}
+
 function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=false) {
     if (body_content) {
         $(`#${id} .modal-body`).html(body_content);
@@ -148,31 +171,14 @@ function showModal(id, body_content=null, static_backdrop=false, hide_close_btn=
     mBootstrap.show()
 }
 
-function showError(alertContainerId, msg) {
-    $(alertContainerId).removeClass("alert-warning");
-    $(alertContainerId).addClass("alert-danger");
-    $(`${alertContainerId} .error_message_text`).text(msg)
-    $(alertContainerId).show(200,()=>{
-        setTimeout(()=>{
-            $(alertContainerId).hide()
-        }, 20000)
-    })
-}
 
-function showWarning(alertContainerId, msg) {
-    $(alertContainerId).removeClass("alert-danger");
-    $(alertContainerId).addClass("alert-warning");
-    $(`${alertContainerId} .error_message_text`).text(msg)
-    $(alertContainerId).show(200,()=>{
-        setTimeout(()=>{
-            $(alertContainerId).hide(200)
-        }, 20000)
-    })
-}
-
-function showToast() {
+function showToast(message, title="Error", scope="danger") {
     const toastLiveExample = document.getElementById('liveToast')
     const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastLiveExample)
+    toastLiveExample.querySelector('.toast-body').innerText = message
+    toastLiveExample.querySelector('.title').innerText = title
+    toastLiveExample.classList.remove('bg-danger', 'bg-warning', 'bg-success', 'bg-info')
+    toastLiveExample.classList.add(`bg-${scope}`)
     toastBootstrap.show()
 }
 
@@ -191,7 +197,9 @@ function validateStepInputs(step) {
     $(`#step_${step} input`).each((index, element) => {
         // skip file input
         if ($(element).attr('type') === 'file') {
-            return;
+            if ($(element).attr('required') && !$(element).val()) {
+                toggleIsInvalid(element, true);
+            }
         }
         // first check if the input is required
         if ($(element).attr('required')) {
@@ -237,7 +245,6 @@ function validateStepInputs(step) {
         let requiredFields = parent.find(
             requiredFieldClasses.map((className) => `.${className}`).join(',')
         )
-        console.log(typeof requiredFields);
         const any_field_filled = requiredFields.map((index, field) => $(field).val().length > 0).get().some((val) => val);
         toggleIsInvalid(element, any_field_filled);
     });
@@ -279,7 +286,7 @@ function format_rpc_data(data) {
 function send_otp() {
     const email = $('#email').val();
     if (!isValidEmail(email)) {
-        showError(ALERT_CONTAINER_ID, 'Invalid Email');
+        showToast('Invalid email address');
         return;
     }
     $.ajax({
@@ -293,24 +300,14 @@ function send_otp() {
         },
         data: JSON.stringify(format_rpc_data({email: email})),
         success: function (data) {
-            console.log(data);
             if (data?.result?.status === 'success') {
-                showWarning(ALERT_CONTAINER_ID, 'OTP has been sent to your email.');
-                $(SEND_OTP_BTN_ID).hide();
-                $(OTP_INPUT_CONTAINER_ID).show(
-                    200,
-                    () => {
-                        $(`${OTP_INPUT_CONTAINER_ID} input`).focus();
-                    }
-                );
-                $(VERIFY_OTP_BTN_ID).show();
-                $('#email').prop('readonly', true);
+                goNextWindow();                    
             } else {
-                showError(ALERT_CONTAINER_ID, data?.result?.message || 'Failed to send OTP');
+                showToast(data?.result?.message || 'Failed to send OTP');
             }
         },
         error: function (xhr, status, error) {
-            showError(ALERT_CONTAINER_ID, 'Failed to send OTP');
+            showToast('Failed to send OTP');
         },
         complete: function () {
             $(SEND_OTP_BTN_ID).prop('disabled', false);
@@ -318,11 +315,60 @@ function send_otp() {
     });
 }
 
+function resend_otp() {
+    const email = pageManager.email;
+    $.ajax({
+        type: 'POST',
+        url: SEND_OTP_API,
+        contentType: 'application/json',
+        dataType: 'json',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader('X-CSRFToken', get_csrf_token());
+            $(OTP_RESEND_BTN_ID).prop('disabled', true);
+            let countdown = 15;
+            const interval = setInterval(() => {
+                $(OTP_RESEND_BTN_ID).text(`Resend OTP in ${countdown} seconds`);
+                countdown -= 1;
+            }, 1000);
+            setTimeout(() => {
+                clearInterval(interval);
+                $(OTP_RESEND_BTN_ID).text('Resend OTP');
+                $(OTP_RESEND_BTN_ID).prop('disabled', false);
+            }, 15 * 1000);
+        },
+        data: JSON.stringify(format_rpc_data({email: email})),
+        success: function (data) {
+            if (data?.result?.status === 'success') {
+                showToast('OTP resent successfully, please check your inbox/spam', 'Success', 'success');
+            } else {
+                showToast(data?.result?.message || 'Failed to send OTP');
+            }
+        },
+        error: function (xhr, status, error) {
+            showToast('Failed to send OTP');
+        },
+    });
+}
+
+function getOtpInput() {
+    const otp = [];
+    $('.otp-input').each((index, element) => {
+        const value = $(element).val();
+        if (value) {
+            otp.push(value);
+        }
+    });    
+    if (otp.length !== NUM_OTP_DIGITS) {
+        return null;
+    }    
+    return otp.join('');
+}
+
 function verify_otp() {
     const email = $('#email').val();
-    const otp = $('#otp').val();
+    const otp = getOtpInput();
     if (!otp) {
-        showError(ALERT_CONTAINER_ID, 'OTP is required');
+        showToast('Please enter valid OTP');
         return;
     }
     $.ajax({
@@ -337,9 +383,9 @@ function verify_otp() {
         data: JSON.stringify(format_rpc_data({email: email, otp: otp})),
         success: function (data) {
             if (data?.result?.status === 'success') {
-                showWarning(ALERT_CONTAINER_ID, 'OTP verified. Proceeding to registration.');
+                showToast('OTP verified successfully, proceeding to next step', 'Success', 'success');
                 setTimeout(() => {
-                    $(OTP_FORM_CONTAINER_ID).hide(200, () => {
+                    $(WINDOW_2_ID).fadeOut(200, () => {
                         $(REG_FORM_CONTAINER_ID).show(200);
                         pageManager.email = email;
                         pageManager.otp = otp;
@@ -347,12 +393,11 @@ function verify_otp() {
                 }, 1500);
             } else {
                 const error_msg = data?.result?.message || 'Invalid OTP. Please try again.';
-                showError(ALERT_CONTAINER_ID, error_msg);
+                showToast(error_msg);
             }
         },
         error: function (xhr, status, error) {
-            console.log(xhr, status, error);
-            showError(ALERT_CONTAINER_ID, 'Invalid OTP. Please try again.');
+            showToast('Invalid OTP. Please try again.')
         },
         complete: function () {
             $(VERIFY_OTP_BTN_ID).prop('disabled', false);
@@ -371,7 +416,6 @@ function submit_form(formData) {
         },
         data: formData,
         success: function (data) {
-            console.log(data);
             if (data?.status === 'success') {
                 showModal(
                     MODAL_1,
@@ -380,7 +424,7 @@ function submit_form(formData) {
                     true
                 );
             } else {
-                showModal(MODAL_1, data?.data?.html || 'Failed to submit form', true);
+                showModal(MODAL_1, data?.data?.html || data?.message || 'Failed to submit form', true);
             }
         },
         error: function (xhr, status, error) {
@@ -395,11 +439,55 @@ function submit_form(formData) {
     });
 }
 
+function enableOtpInput() {
+    $(".otp-input").on('keyup', function (e) {
+        if (e.keyCode === 8) {
+            return;
+        }
+        const current_position = $(this).data('position');
+        if (e.keyCode === 13) {
+            verify_otp();
+        }
+        if (isNaN(parseInt($(this).val()))) {
+            $(this).val('');
+            return;
+        }
+        const next_position = current_position + 1;
+        if (next_position <= NUM_OTP_DIGITS) {
+            $(`input[data-position=${next_position}]`).removeAttr('disabled').focus();
+        } else {
+            $(VERIFY_OTP_BTN_ID).removeAttr('disabled');
+        }
+    });
+    $('input[data-position="1"]').on('paste', function(e) {
+        e.preventDefault();
+        var pastedData = e.originalEvent.clipboardData.getData('text');
+        var digits = pastedData.match(/\d/g);
+        if (digits && digits.length > 0) {
+            var numDigits = Math.min(digits.length, 6);
+            for (var i = 1; i <= numDigits; i++) {
+                var input = $('input[data-position="' + i + '"]');
+                input.val(digits[i - 1]);
+                input.removeAttr('disabled');
+            }
+            if (numDigits < 6) {
+                var nextInput = $('input[data-position="' + (numDigits + 1) + '"]');
+                if (nextInput.length > 0) {
+                    nextInput.removeAttr('disabled').focus();
+                }
+            } else {
+                $(VERIFY_OTP_BTN_ID).removeAttr('disabled');
+                $('input[data-position="6"]').focus();
+            }
+        }
+    });
+}
+
 $(document).ready(function () {
     $(SEND_OTP_BTN_ID).on('click', send_otp);
+    $(OTP_RESEND_BTN_ID).on('click', resend_otp);
     $(VERIFY_OTP_BTN_ID).on('click', verify_otp);
     $(NEXT_BTN_ID).on('click', () => {
-        console.log('Next Button Clicked');
         validateStepInputs(pageManager.page);
         pageManager.goNext();
     });
@@ -408,6 +496,7 @@ $(document).ready(function () {
     });
     $(ADD_MORE_CLIENT_BTN_ID).on('click', addMoreClientReference);
     $(SUBMIT_BTN_ID).on('click', () => {
+        validateStepInputs(pageManager.page);
         pageManager.handleSubmitForm(submit_form);
     });
     $(DECLARATION_CHECKBOX_ID).on('change', function () {
@@ -424,4 +513,5 @@ $(document).ready(function () {
             verify_otp();
         }
     });
+    enableOtpInput();
 });

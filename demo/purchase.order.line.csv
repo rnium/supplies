@@ -76,3 +76,9 @@ rfq_line_74,product.product_product_24,rfq_36,3,882,48,2025-02-13,Individual Wor
 rfq_line_75,product.product_product_25,rfq_36,4,292,52,2025-02-13,Acoustic Bloc Screens
 rfq_line_76,product.product_product_24,rfq_37,3,878,46,2025-02-15,Individual Workplace
 rfq_line_77,product.product_product_25,rfq_37,4,289,49,2025-02-15,Acoustic Bloc Screens
+rfq_line_78,product_server_x1,rfq_38,100,4899,210,2025-02-20,Server X1
+rfq_line_79,product_workstation_z5,rfq_38,200,2450,100,2025-02-20,Workstation Z5
+rfq_line_80,product_gpu_rtx_5090,rfq_38,350,1750,100,2025-02-20,GPU RTX 5090
+rfq_line_81,product_server_x1,rfq_39,100,4999,200,2025-02-20,Server X1
+rfq_line_82,product_workstation_z5,rfq_39,200,2499,150,2025-02-20,Workstation Z5
+rfq_line_83,product_gpu_rtx_5090,rfq_39,350,1799,100,2025-02-20,GPU RTX 5090

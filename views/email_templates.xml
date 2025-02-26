@@ -20,6 +20,24 @@
         </field>
     </record>
 
+    <record id="email_template_model_supplies_vendor_registration_reviewer" model="mail.template">
+        <field name="name">Supplier Registration Reviewer Notification</field>
+        <field name="model_id" ref="base.model_res_users"/>
+        <field name="email_to">{{object.email}}</field>
+        <field name="subject">New Supplier Registration</field>
+        <field name="body_html" type="html">
+            <h3>Dear User</h3>
+            <p>
+                A new supplier registration is submitted for review. Please review the registration and take necessary actions.
+                View the registration: <a t-att-href="ctx.get('reg_url')" t-esc="ctx.get('reg_url')"/>.
+            </p>
+            <p>Regards</p>
+            <p>
+                <t t-esc="ctx.get('company_name') or not_available"/>
+            </p>
+        </field>
+    </record>
+
     <record id="email_template_model_supplies_vendor_registration_confirmation" model="mail.template">
         <field name="name">Supplier Registration OTP Reminder</field>
         <field name="model_id" ref="model_supplies_registration"/>

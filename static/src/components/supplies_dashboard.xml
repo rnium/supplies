@@ -38,7 +38,7 @@
                             <StatBar rfp_stats="state.rfp" />
                             <t t-if="state.productLines.length > 0">
                                 <div class="my-3 p-4 bg-white products-container shadow-1 border-1">
-                                    <h2 class="text-muted" style="font-weight: 600">Products Purchased</h2>
+                                    <h2 class="text-muted" style="font-weight: 600">Product Breakdown</h2>
                                     <div class="table-responsive border-1">
                                         <table class="table table-hover border-1">
                                             <thead>

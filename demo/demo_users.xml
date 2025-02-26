@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="demo_rony" model="res.partner">
+            <field name="name">Rony Demo</field>
+            <field name="is_company" eval="False"/>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo/demo_rony.jpg"/>
+        </record>
+
+        <record id="user_rony" model="res.users">
+            <field name="name">Rony Demo</field>
+            <field name="login">rony</field>
+            <field name="email">rony.demo@example.com</field>
+            <field name="password">rony</field>
+            <field name="partner_id" ref="demo_rony"/>
+            <field name="groups_id" eval="[(6, 0, [ref('supplies.group_supplies_reviewer'), ref('purchase.group_purchase_user')])]"/>
+            <field name="company_id" ref="base.main_company"/>
+            <field name="image_1920" type="base64" file="supplies/static/img/demo/demo_rony.jpg"/>
+        </record>
+    </data>
+</odoo>

@@ -85,18 +85,23 @@ class SuppliesPortal(CustomerPortal):
 
         if request.httprequest.method == 'POST':
             try:
+                partner_id = request.env.user.partner_id
+                if partner_id.supplier_rank < 1:
+                    raise AttributeError('You are not a supplier.')
                 rfq_schema = schemas.PurchaseOrderSchema(
                     **dict(
                         request.httprequest.form.items(),
                         rfp_id=rfp.id,
-                        partner_id=request.env.user.partner_id.id,
-                        user_id=rfp.create_uid.id
+                        partner_id=partner_id.id,
+                        user_id=rfp.review_by.id
                     )
                 )
             except ValidationError as e:
                 errors = e.errors()
                 for error in errors:
                     error_list.append(error['msg'])
+            except AttributeError as e:
+                error_list.append(str(e))
             else:
                 data = rfq_schema.model_dump(exclude_none=True)
                 order_line = data.pop('order_line')

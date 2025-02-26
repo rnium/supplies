@@ -13,11 +13,24 @@ class SuppliesRegistrationContact(models.Model):
     email = fields.Char(string='Email')
     phone = fields.Char(string='Phone')
     address = fields.Char(string='Address')
+    
+    @api.model
+    def cleanup_dangling_contacts(self):
+        all_registrations = self.env['supplies.registration'].search([])
+        used_contact_ids = (
+            all_registrations.mapped('primary_contact_id').ids +
+            all_registrations.mapped('finance_contact_id').ids +
+            all_registrations.mapped('authorized_contact_id').ids +
+            all_registrations.mapped('client_ref_ids').ids
+        )
+        dangling_contacts = self.search([('id', 'not in', used_contact_ids)])
+        dangling_contacts.unlink()
+        
 
-
-class SuppliesRegistration(models.Model):
+class SuppliesRegistration(models.TransientModel):
     _name = 'supplies.registration'
     _description = 'Supplies Registration'
+    _transient_max_hours = 24 * 30 # 30 days
 
     state = fields.Selection(
         [
@@ -96,10 +109,10 @@ class SuppliesRegistration(models.Model):
             raise ValidationError('Invalid state change')
         # check for existing company with the same email or TIN
         existing_company = self.env['res.partner'].sudo().search(
-            ['|', ('email', '=', self.email), ('vat', '=', self.vat)]
+            ['|', ('email', '=', self.email), ('vat', '!=', False), ('vat', '=', self.vat)]
         )
         if existing_company:
-            raise ValidationError('Company with the same email or vat already exists')
+            raise ValidationError('Company with the same email or TIN already exists')
         company_schema = schemas.CompanySchema.model_validate(self)
         bank_schema = schemas.BankSchema.model_validate(self)
         bank_ids_schema = schemas.BankAccountSchema.model_validate(self)
@@ -152,10 +165,3 @@ class SuppliesRegistration(models.Model):
             'view_mode': 'form',
             'target': 'new',
         }
-
-    @api.model
-    def cleanup_registrations(self):
-        # delete all registrations that is not in 'submitted' state and it's created more than 30 days ago
-        thirty_days_ago = fields.Date.subtract(fields.Date.today(), days=30)
-        registrations = self.search([('state', '!=', 'submitted'), ('create_date', '<', thirty_days_ago)])
-        registrations.unlink()

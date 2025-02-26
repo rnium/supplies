@@ -106,6 +106,5 @@ class RfpReportWizard(models.TransientModel):
         try:
             self.html_preview = utils.generate_html_preview(self.env, self.supplier_id, accepted_rfps)
         except Exception as e:
-            print(e)
             self.html_preview = utils.get_error_response_html('Failed to generate the report')
 

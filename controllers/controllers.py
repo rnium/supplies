@@ -5,6 +5,7 @@ from ..utils import controller_utils as utils
 from ..utils import schemas
 from pydantic import ValidationError
 from odoo import fields
+from ..utils.mail_utils import get_smtp_server_email, get_reviewers
 import json
 
 
@@ -27,6 +28,12 @@ class SupplierRegistration(http.Controller):
         is_valid, message = utils.validate_email_address(request, email)
         if not is_valid:
             return utils.format_response('error', message)
+        # limit 5 OTPs sent to an email address which is not expired
+        otps = request.env['supplies.registration.otp'].sudo().search(
+            [('email', '=', email), ('expiry_time', '>=', fields.Datetime.now())]
+        )
+        if len(otps) >= 5:
+            return utils.format_response('error', 'Maximum number of OTPs sent. Please try again later')
         otp_obj = request.env['supplies.registration.otp'].sudo().create(
             {'email': email}
         )
@@ -34,7 +41,6 @@ class SupplierRegistration(http.Controller):
         try:
             otp_obj.send_otp_email()
         except Exception as e:
-            print(e)
             return utils.format_response('error', 'Failed to send OTP')
         return utils.format_response('success', 'OTP sent successfully to your email address')
 
@@ -71,9 +77,16 @@ class SupplierRegistration(http.Controller):
                 ),
                 headers={'Content-Type': 'application/json'}
             )
+        if not utils.check_unique_tin_trade_lic(request.env, form_data):
+            return request.make_response(
+                json.dumps(
+                    utils.format_response('error', '<h3>TIN or Trade License already exists</h3>')
+                ),
+                headers={'Content-Type': 'application/json'}
+            )
         try:
             reg_data_schema = schemas.SupplierRegistrationSchema(**form_data, **files)
-            utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
+            registration = utils.create_supplier_registration(request.env, reg_data_schema.model_dump())
         except ValidationError as e:
             errors = e.errors(include_input=False, include_context=False, include_url=False)
             data = json.dumps(
@@ -86,6 +99,19 @@ class SupplierRegistration(http.Controller):
                 )
             )
         else:
+            reviewers = get_reviewers(request.env)
+            reg_url = utils.generate_registration_url(request.env, registration.id)
+            email_values = {
+                'email_from': get_smtp_server_email(request.env),
+            }
+            contexts = {
+                'reg_url': reg_url,
+                'company_name': request.env.company.name,
+            }
+            for reviewer in reviewers:
+                template = request.env.ref('supplies.email_template_model_supplies_vendor_registration_reviewer').sudo()
+                template.with_context(**contexts).send_mail(reviewer.id, email_values=email_values)
+
             data = json.dumps(
                 utils.format_response(
                     'success',

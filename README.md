@@ -46,7 +46,7 @@ This project is built on Odoo 17 and is containerized using Docker. It integrate
 1. **Clone the Supplies Repository:**
 
    ```bash
-   git clone --branch rony_30207_final_project --single-branch https://github.com/rnium/supplies.git supplies
+   git clone --branch main --single-branch https://github.com/rnium/supplies.git supplies
    ```
 
 2. **Pull the Prebuilt Image:**
